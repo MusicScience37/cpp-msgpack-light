@@ -10,6 +10,7 @@ poetry env use 3.11
 poetry install
 
 poetry run pre-commit install
+poetry run pre-commit install --hook-type commit-msg
 
 git config commit.template .gitmessage
 
