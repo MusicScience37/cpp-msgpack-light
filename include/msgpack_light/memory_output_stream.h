@@ -24,12 +24,14 @@
 #include <cstring>
 #include <new>
 
+#include "msgpack_light/output_stream.h"
+
 namespace msgpack_light {
 
 /*!
  * \brief Class of streams to write data to memory.
  */
-class memory_output_stream {
+class memory_output_stream final : public output_stream {
 public:
     /*!
      * \brief Constructor.
@@ -63,7 +65,7 @@ public:
      * \param[in] data Pointer to the data.
      * \param[in] size Size of the data.
      */
-    void write(const unsigned char* data, std::size_t size) {
+    void write(const unsigned char* data, std::size_t size) override {
         const std::size_t new_written = written_ + size;
         if (new_written > capacity_) {
             const std::size_t new_capacity = new_written * 2U;

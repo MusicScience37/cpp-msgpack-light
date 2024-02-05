@@ -152,7 +152,7 @@ private:
  * \param[in] rhs Right-hand-side data.
  * \return Connected data.
  */
-[[nodiscard]] binary operator+(const binary& lhs, const binary& rhs) {
+[[nodiscard]] inline binary operator+(const binary& lhs, const binary& rhs) {
     return binary(lhs) += rhs;
 }
 
@@ -204,7 +204,7 @@ namespace msgpack_light_test {
  * \param[in] value Value.
  * \return Output stream.
  */
-std::ostream& operator<<(std::ostream& stream, const binary& value) {
+inline std::ostream& operator<<(std::ostream& stream, const binary& value) {
     fmt::format_to(std::ostreambuf_iterator<char>(stream), "{}", value);
     return stream;
 }
