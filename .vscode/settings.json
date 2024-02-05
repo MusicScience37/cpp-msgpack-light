@@ -52,5 +52,5 @@
     }
   },
   "isort.args": ["--profile", "black"],
-  "cSpell.enableFiletypes": ["plantuml"]
+  "cSpell.enableFiletypes": ["plantuml", "toml"]
 }

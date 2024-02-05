@@ -50,6 +50,7 @@
     "hicpp",
     "INTEG",
     "interruptible",
+    "isort",
     "IWYU",
     "Kabashima",
     "Kenta",
