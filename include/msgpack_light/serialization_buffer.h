@@ -21,7 +21,7 @@
 
 #include "msgpack_light/output_stream.h"
 
-namespace msgpack_light::details {
+namespace msgpack_light {
 
 /*!
  * \brief Class of buffers to serialize data.
@@ -72,4 +72,4 @@ private:
     output_stream& stream_;
 };
 
-}  // namespace msgpack_light::details
+}  // namespace msgpack_light

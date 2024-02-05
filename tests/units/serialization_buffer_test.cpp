@@ -17,7 +17,7 @@
  * \file
  * \brief Test of serialization_buffer class.
  */
-#include "msgpack_light/details/serialization_buffer.h"
+#include "msgpack_light/serialization_buffer.h"
 
 #include <catch2/catch_test_macros.hpp>
 
@@ -26,7 +26,7 @@
 
 TEST_CASE("msgpack_light::serialization_buffer") {
     using msgpack_light::memory_output_stream;
-    using msgpack_light::details::serialization_buffer;
+    using msgpack_light::serialization_buffer;
     using msgpack_light_test::binary;
 
     SECTION("serialize value `false`") {
