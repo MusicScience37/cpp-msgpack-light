@@ -1,0 +1,27 @@
+@startuml serializer_classes
+
+title Classes to Serialize Data
+
+interface output_stream {
+    {abstract} + write(data: const unsigned char*, size: std::size_t) : void
+}
+
+class serialization_buffer {
+    - write(data: const unsigned char*, size: std::size_t) : void
+    + serialize_positive_fixint(value: std::uint8_t) : void
+    (other functions to write various types in MessagePack specification)
+}
+serialization_buffer o-- output_stream : (via pointer)
+
+class serialization_traits<T> {
+    {static} + serialize(buffer: serialization_buffer&, data: const T&) : void
+}
+serialization_traits ..> serialization_buffer : use
+
+class "(Free function)" as free_function {
+    + serialize_to(stream: output_stream&, data: const T&) : void
+}
+free_function ..> serialization_traits : use
+free_function ..> serialization_buffer : create and use
+
+@enduml
