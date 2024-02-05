@@ -1,0 +1,54 @@
+{
+  "build": { "dockerfile": "Dockerfile" },
+  "runArgs": [
+    // Configuration for GDB.
+    "--cap-add=SYS_PTRACE",
+    "--security-opt",
+    "seccomp=unconfined"
+  ],
+  "mounts": [
+    {
+      "type": "volume",
+      "source": "${localWorkspaceFolderBasename}-cache",
+      "target": "/cache_volume/"
+    }
+  ],
+  "containerEnv": {
+    "ASAN_OPTIONS": "alloc_dealloc_mismatch=0",
+    "CCACHE_COMPILERCHECK": "content",
+    "CCACHE_DIR": "/cache_volume/ccache/",
+    "VCPKG_DEFAULT_BINARY_CACHE": "/cache_volume/vcpkg/",
+    "POETRY_CACHE_DIR": "/cache_volume/poetry/"
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-vscode.cpptools",
+        "llvm-vs-code-extensions.vscode-clangd",
+        "twxs.cmake",
+        "ms-vscode.cmake-tools",
+        "cheshirekow.cmake-format",
+        "streetsidesoftware.code-spell-checker",
+        "cschlosser.doxdocgen",
+        "davidanson.vscode-markdownlint",
+        "jebbs.plantuml",
+        "esbenp.prettier-vscode",
+        "ms-python.python",
+        "njpwerner.autodocstring",
+        "lextudio.restructuredtext",
+        "trond-snekvik.simple-rst",
+        "ms-azuretools.vscode-docker",
+        "tamasfe.even-better-toml",
+        "redhat.vscode-yaml",
+        "ms-python.black-formatter",
+        "ms-python.isort"
+      ],
+      "settings": {
+        "cmakeFormat.exePath": "/workspaces/cpp-msgpack-light/.venv/bin/cmake-format",
+        "plantuml.jar": "/usr/local/plantuml/plantuml.jar"
+      }
+    }
+  },
+  "postCreateCommand": "bash ./.devcontainer/setup.bash",
+  "remoteUser": "ubuntu"
+}
