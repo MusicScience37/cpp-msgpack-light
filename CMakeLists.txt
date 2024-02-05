@@ -40,6 +40,7 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY $<1:${CMAKE_BINARY_DIR}/bin>)
 
 if(${UPPER_PROJECT_NAME}_TESTING)
     find_package(Catch2 REQUIRED)
+    find_package(fmt REQUIRED)
 endif()
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS

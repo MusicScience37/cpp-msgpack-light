@@ -1,3 +1,3 @@
 set(SOURCE_FILES
-    dummy_test.cpp
+    memory_output_stream_test.cpp
 )

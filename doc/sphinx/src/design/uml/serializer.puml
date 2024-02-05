@@ -1,0 +1,19 @@
+@startuml serializer_classes
+
+title Classes to Serialize Data
+
+interface output_stream <<Concept>> {
+    {abstract} + write(data: const unsigned char*, size: std::size_t) : void
+}
+
+class serializer_traits<T> {
+    {static} + serialize<OutputStream>(serializer: serializer<OutputStream>&, data: const T&) : void
+}
+
+class serializer<OutputStream> {
+    + serialize<T>(data: const T&) : void
+}
+serializer o-- output_stream : (via pointer)
+serializer <.> serializer_traits
+
+@enduml
