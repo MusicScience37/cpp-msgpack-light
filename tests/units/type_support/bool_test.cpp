@@ -15,9 +15,9 @@
  */
 /*!
  * \file
- * \brief Test of classes to support serialization of scalar data types.
+ * \brief Test of classes to support serialization of boolean values.
  */
-#include "msgpack_light/type_support/scalars.h"
+#include "msgpack_light/type_support/bool.h"
 
 #include <catch2/catch_test_macros.hpp>
 

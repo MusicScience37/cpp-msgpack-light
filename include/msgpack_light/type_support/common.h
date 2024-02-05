@@ -19,4 +19,4 @@
  */
 #pragma once
 
-#include "msgpack_light/type_support/scalars.h"
+#include "msgpack_light/type_support/bool.h"
