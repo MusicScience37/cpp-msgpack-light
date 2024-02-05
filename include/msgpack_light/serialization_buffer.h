@@ -20,6 +20,7 @@
 #pragma once
 
 #include "msgpack_light/output_stream.h"
+#include "msgpack_light/type_support/fwd.h"
 
 namespace msgpack_light {
 
@@ -31,7 +32,9 @@ public:
     /*!
      * \brief Constructor.
      *
-     * \param[in] stream Stream to write output to.
+     * \param[out] stream Stream to write output to.
+     *
+     * \warning This class hold the reference of the given stream.
      */
     explicit serialization_buffer(output_stream& stream) : stream_(stream) {}
 
@@ -48,6 +51,17 @@ public:
         } else {
             put(false_byte);
         }
+    }
+
+    /*!
+     * \brief Serialize data.
+     *
+     * \tparam T Type of data.
+     * \param[in] data Data.
+     */
+    template <typename T>
+    void serialize(const T& data) {
+        type_support::serialization_traits<T>::serialize(*this, data);
     }
 
 private:

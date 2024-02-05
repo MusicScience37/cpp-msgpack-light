@@ -15,19 +15,30 @@
  */
 /*!
  * \file
- * \brief Forward declaration of serializer_traits class.
+ * \brief Definition of classes to support serialization of scalar data types.
  */
 #pragma once
 
-namespace msgpack_light {
+#include "msgpack_light/serialization_buffer.h"
+#include "msgpack_light/type_support/fwd.h"
+
+namespace msgpack_light::type_support {
 
 /*!
- * \brief Class to define functions to serialize objects of various types.
- *
- * \tparam T Type of the object to serialize.
- * \tparam SFINAE Template parameter to use for SFINAE.
+ * \brief Class to serialize boolean values.
  */
-template <typename T, typename SFINAE>
-class serializer_traits;
+template <>
+struct serialization_traits<bool> {
+public:
+    /*!
+     * \brief Serialize a value.
+     *
+     * \param[out] buffer Buffer.
+     * \param[in] value Value.
+     */
+    static void serialize(serialization_buffer& buffer, bool value) {
+        buffer.serialize_bool(value);
+    }
+};
 
-}  // namespace msgpack_light
+}  // namespace msgpack_light::type_support

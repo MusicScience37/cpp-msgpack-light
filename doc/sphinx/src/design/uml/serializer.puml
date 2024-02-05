@@ -8,13 +8,13 @@ interface output_stream {
 
 class serialization_buffer {
     - write(data: const unsigned char*, size: std::size_t) : void
-    + write_positive_fixint(value: std::uint8_t) : void
+    + serialize_positive_fixint(value: std::uint8_t) : void
     (other functions to write various types in MessagePack specification)
 }
 serialization_buffer o-- output_stream : (via pointer)
 
 class serialization_traits<T> {
-    {static} + serialize<OutputStream>(buffer: serialization_buffer&, data: const T&) : void
+    {static} + serialize(buffer: serialization_buffer&, data: const T&) : void
 }
 serialization_traits ..> serialization_buffer : use
 
