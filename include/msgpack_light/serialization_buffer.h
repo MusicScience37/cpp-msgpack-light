@@ -20,6 +20,7 @@
 #pragma once
 
 #include "msgpack_light/output_stream.h"
+#include "msgpack_light/serialization_buffer_fwd.h"
 #include "msgpack_light/type_support/fwd.h"
 
 namespace msgpack_light {
