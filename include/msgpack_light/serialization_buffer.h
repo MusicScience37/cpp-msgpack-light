@@ -78,7 +78,7 @@ public:
      *
      * \param[in] value Value.
      */
-    void serialize_negative_fixint(std::uint8_t value) {
+    void serialize_negative_fixint(std::int8_t value) {
         put(static_cast<unsigned char>(value));
     }
 
