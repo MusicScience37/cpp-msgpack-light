@@ -85,7 +85,7 @@ template <typename T>
 constexpr auto max_uint32 = static_cast<T>(0xFFFFFFFF);
 
 /*!
- * \brief Maximum value in negative fixint format.
+ * \brief Minimum value in negative fixint format.
  *
  * \tparam T Type of the integer.
  */
@@ -95,7 +95,7 @@ constexpr auto min_negative_fixint =
     static_cast<T>(static_cast<std::int8_t>(0b11100000));
 
 /*!
- * \brief Maximum value in int 8 format.
+ * \brief Minimum value in int 8 format.
  *
  * \tparam T Type of the integer.
  */
@@ -105,7 +105,7 @@ constexpr auto min_int8 =
     static_cast<T>(static_cast<std::int8_t>(0X80));
 
 /*!
- * \brief Maximum value in int 16 format.
+ * \brief Minimum value in int 16 format.
  *
  * \tparam T Type of the integer.
  */
@@ -113,7 +113,7 @@ template <typename T>
 constexpr auto min_int16 = static_cast<T>(static_cast<std::int16_t>(0X8000));
 
 /*!
- * \brief Maximum value in int 32 format.
+ * \brief Minimum value in int 32 format.
  *
  * \tparam T Type of the integer.
  */
