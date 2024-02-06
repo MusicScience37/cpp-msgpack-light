@@ -71,4 +71,31 @@ inline void to_big_endian<2U>(
     to_big_endian_impl<std::uint16_t, std::uint_fast16_t, 2U>(from, to);
 }
 
+/*!
+ * \brief Convert to big endian.
+ *
+ * \param[in] from Input.
+ * \param[out] to Output.
+ */
+template <>
+inline void to_big_endian<4U>(
+    const void* from, std::array<unsigned char, 4U>* to) noexcept {
+    to_big_endian_impl<std::uint32_t, std::uint_fast32_t, 4U>(from, to);
+}
+
+/*!
+ * \brief Convert to big endian.
+ *
+ * \param[in] from Input.
+ * \param[out] to Output.
+ */
+template <>
+// NOLINTNEXTLINE(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
+inline void to_big_endian<8U>(
+    // NOLINTNEXTLINE(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
+    const void* from, std::array<unsigned char, 8U>* to) noexcept {
+    // NOLINTNEXTLINE(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
+    to_big_endian_impl<std::uint64_t, std::uint_fast64_t, 8U>(from, to);
+}
+
 }  // namespace msgpack_light::details

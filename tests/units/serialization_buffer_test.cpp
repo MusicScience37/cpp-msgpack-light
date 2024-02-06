@@ -180,4 +180,75 @@ TEST_CASE("msgpack_light::serialization_buffer") {
             CHECK(binary(stream.data(), stream.size()) == binary("CDFFFF"));
         }
     }
+
+    SECTION("serialize uint 32") {
+        SECTION("serialize `0x10000`") {
+            memory_output_stream stream;
+            serialization_buffer buffer(stream);
+
+            constexpr auto value = static_cast<std::uint32_t>(0x10000);
+            buffer.serialize_uint32(value);
+
+            CHECK(binary(stream.data(), stream.size()) == binary("CE00010000"));
+        }
+
+        SECTION("serialize `123456789`") {
+            memory_output_stream stream;
+            serialization_buffer buffer(stream);
+
+            constexpr auto value = static_cast<std::uint32_t>(123456789);
+            buffer.serialize_uint32(value);
+
+            CHECK(binary(stream.data(), stream.size()) == binary("CE075BCD15"));
+        }
+
+        SECTION("serialize `0xFFFFFFFF`") {
+            memory_output_stream stream;
+            serialization_buffer buffer(stream);
+
+            constexpr auto value = static_cast<std::uint32_t>(0xFFFFFFFF);
+            buffer.serialize_uint32(value);
+
+            // cspell: ignore CEFFFFFFFF
+            CHECK(binary(stream.data(), stream.size()) == binary("CEFFFFFFFF"));
+        }
+    }
+
+    SECTION("serialize uint 64") {
+        SECTION("serialize `0x100000000`") {
+            memory_output_stream stream;
+            serialization_buffer buffer(stream);
+
+            constexpr auto value = static_cast<std::uint64_t>(0x100000000);
+            buffer.serialize_uint64(value);
+
+            CHECK(binary(stream.data(), stream.size()) ==
+                binary("CF0000000100000000"));
+        }
+
+        SECTION("serialize `1234567890123456789`") {
+            memory_output_stream stream;
+            serialization_buffer buffer(stream);
+
+            constexpr auto value =
+                static_cast<std::uint64_t>(1234567890123456789);
+            buffer.serialize_uint64(value);
+
+            CHECK(binary(stream.data(), stream.size()) ==
+                binary("CF112210F47DE98115"));
+        }
+
+        SECTION("serialize `0xFFFFFFFFFFFFFFFF`") {
+            memory_output_stream stream;
+            serialization_buffer buffer(stream);
+
+            constexpr auto value =
+                static_cast<std::uint64_t>(0xFFFFFFFFFFFFFFFF);
+            buffer.serialize_uint64(value);
+
+            // cspell: ignore CFFFFFFFFFFFFFFFFF
+            CHECK(binary(stream.data(), stream.size()) ==
+                binary("CFFFFFFFFFFFFFFFFF"));
+        }
+    }
 }

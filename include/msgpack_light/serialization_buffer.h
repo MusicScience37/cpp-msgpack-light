@@ -107,6 +107,33 @@ public:
     }
 
     /*!
+     * \brief Serialize a value in uint 32 format.
+     *
+     * \param[in] value Value.
+     */
+    void serialize_uint32(std::uint32_t value) {
+        constexpr auto prefix = static_cast<unsigned char>(0xCE);
+        put(prefix);
+        std::array<unsigned char, 4U> buffer{};
+        details::to_big_endian(&value, &buffer);
+        write(buffer.data(), buffer.size());
+    }
+
+    /*!
+     * \brief Serialize a value in uint 64 format.
+     *
+     * \param[in] value Value.
+     */
+    void serialize_uint64(std::uint64_t value) {
+        constexpr auto prefix = static_cast<unsigned char>(0xCF);
+        put(prefix);
+        // NOLINTNEXTLINE(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
+        std::array<unsigned char, 8U> buffer{};
+        details::to_big_endian(&value, &buffer);
+        write(buffer.data(), buffer.size());
+    }
+
+    /*!
      * \brief Serialize data.
      *
      * \tparam T Type of data.
