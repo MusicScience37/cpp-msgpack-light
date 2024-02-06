@@ -193,4 +193,42 @@ TEST_CASE("msgpack_light::serialization_buffer") {
 
         CHECK(binary(stream.data(), stream.size()) == expected_binary);
     }
+
+    SECTION("serialize int 32") {
+        std::int32_t value{};
+        binary expected_binary{};
+        std::tie(value, expected_binary) = GENERATE(table<std::int32_t, binary>(
+            {{static_cast<std::int32_t>(0xFFFF7EEE), binary("D2FFFF7EEE")},
+                {static_cast<std::int32_t>(-1234567890), binary("D2B669FD2E")},
+                {static_cast<std::int32_t>(0x80000000),
+                    binary("D280000000")}}));
+        INFO("value = " << value);
+
+        memory_output_stream stream;
+        serialization_buffer buffer(stream);
+
+        buffer.serialize_int32(value);
+
+        CHECK(binary(stream.data(), stream.size()) == expected_binary);
+    }
+
+    SECTION("serialize int 64") {
+        std::int64_t value{};
+        binary expected_binary{};
+        std::tie(value, expected_binary) = GENERATE(table<std::int64_t, binary>(
+            {{static_cast<std::int64_t>(0xFFFFFFFF7EEEEEEE),
+                 binary("D3FFFFFFFF7EEEEEEE")},
+                {static_cast<std::int64_t>(-1234567890123456789),
+                    binary("D3EEDDEF0B82167EEB")},
+                {static_cast<std::int64_t>(0x8000000000000000),
+                    binary("D38000000000000000")}}));
+        INFO("value = " << value);
+
+        memory_output_stream stream;
+        serialization_buffer buffer(stream);
+
+        buffer.serialize_int64(value);
+
+        CHECK(binary(stream.data(), stream.size()) == expected_binary);
+    }
 }
