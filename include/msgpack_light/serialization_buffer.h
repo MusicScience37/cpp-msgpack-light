@@ -134,6 +134,30 @@ public:
     }
 
     /*!
+     * \brief Serialize a value in int 8 format.
+     *
+     * \param[in] value Value.
+     */
+    void serialize_int8(std::int8_t value) {
+        constexpr auto prefix = static_cast<unsigned char>(0xD0);
+        put(prefix);
+        put(static_cast<unsigned char>(value));
+    }
+
+    /*!
+     * \brief Serialize a value in int 16 format.
+     *
+     * \param[in] value Value.
+     */
+    void serialize_int16(std::int16_t value) {
+        constexpr auto prefix = static_cast<unsigned char>(0xD1);
+        put(prefix);
+        std::array<unsigned char, 2U> buffer{};
+        details::to_big_endian(&value, &buffer);
+        write(buffer.data(), buffer.size());
+    }
+
+    /*!
      * \brief Serialize data.
      *
      * \tparam T Type of data.

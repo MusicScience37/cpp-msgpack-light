@@ -251,4 +251,68 @@ TEST_CASE("msgpack_light::serialization_buffer") {
                 binary("CFFFFFFFFFFFFFFFFF"));
         }
     }
+
+    SECTION("serialize int 8") {
+        SECTION("serialize `0xDF`") {
+            memory_output_stream stream;
+            serialization_buffer buffer(stream);
+
+            constexpr auto value = static_cast<std::int8_t>(0xDF);
+            buffer.serialize_int8(value);
+
+            CHECK(binary(stream.data(), stream.size()) == binary("D0DF"));
+        }
+
+        SECTION("serialize `-98`") {
+            memory_output_stream stream;
+            serialization_buffer buffer(stream);
+
+            constexpr auto value = static_cast<std::int8_t>(-98);
+            buffer.serialize_int8(value);
+
+            CHECK(binary(stream.data(), stream.size()) == binary("D09E"));
+        }
+
+        SECTION("serialize `0x80`") {
+            memory_output_stream stream;
+            serialization_buffer buffer(stream);
+
+            constexpr auto value = static_cast<std::int8_t>(0x80);
+            buffer.serialize_int8(value);
+
+            CHECK(binary(stream.data(), stream.size()) == binary("D080"));
+        }
+    }
+
+    SECTION("serialize int 16") {
+        SECTION("serialize `0xFF7F") {
+            memory_output_stream stream;
+            serialization_buffer buffer(stream);
+
+            constexpr auto value = static_cast<std::int16_t>(0xFF7F);
+            buffer.serialize_int16(value);
+
+            CHECK(binary(stream.data(), stream.size()) == binary("D1FF7F"));
+        }
+
+        SECTION("serialize `-12345") {
+            memory_output_stream stream;
+            serialization_buffer buffer(stream);
+
+            constexpr auto value = static_cast<std::int16_t>(-12345);
+            buffer.serialize_int16(value);
+
+            CHECK(binary(stream.data(), stream.size()) == binary("D1CFC7"));
+        }
+
+        SECTION("serialize `0x8000") {
+            memory_output_stream stream;
+            serialization_buffer buffer(stream);
+
+            constexpr auto value = static_cast<std::int16_t>(0x8000);
+            buffer.serialize_int16(value);
+
+            CHECK(binary(stream.data(), stream.size()) == binary("D18000"));
+        }
+    }
 }
