@@ -1,12 +1,15 @@
 #!/usr/bin/env python3
 """Helper script to create lists of source codes for build."""
 
-from pathlib import Path
 import subprocess
+from pathlib import Path
 
 THIS_DIR = Path(__file__).parent.absolute()
 
-SOURCE_PATHS = [THIS_DIR.parent / "tests" / "units"]
+SOURCE_PATHS = [
+    THIS_DIR.parent / "tests" / "units",
+    THIS_DIR.parent / "tests" / "integ",
+]
 
 UNITY_SRC_SUFFIX = "unity_source.cpp"
 SOURCE_LIST_CMAKE_SUFFIX = "source_list.cmake"
