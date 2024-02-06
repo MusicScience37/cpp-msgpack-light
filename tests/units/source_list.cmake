@@ -3,5 +3,6 @@ set(SOURCE_FILES
     serialization_buffer_test.cpp
     serialize_test.cpp
     type_support/bool_test.cpp
+    type_support/float_test.cpp
     type_support/integer_test.cpp
 )
