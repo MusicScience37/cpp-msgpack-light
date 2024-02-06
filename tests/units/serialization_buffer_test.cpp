@@ -22,6 +22,7 @@
 #include <cstdint>
 
 #include <catch2/catch_test_macros.hpp>
+#include <catch2/generators/catch_generators.hpp>
 
 #include "msgpack_light/memory_output_stream.h"
 #include "msgpack_light_test/binary.h"
@@ -32,287 +33,164 @@ TEST_CASE("msgpack_light::serialization_buffer") {
     using msgpack_light_test::binary;
 
     SECTION("serialize bool") {
-        SECTION("serialize value `false`") {
-            memory_output_stream stream;
-            serialization_buffer buffer(stream);
+        bool value{};
+        binary expected_binary{};
+        std::tie(value, expected_binary) = GENERATE(
+            table<bool, binary>({{false, binary("C2")}, {true, binary("C3")}}));
+        INFO("value = " << value);
 
-            buffer.serialize_bool(false);
+        memory_output_stream stream;
+        serialization_buffer buffer(stream);
 
-            CHECK(binary(stream.data(), stream.size()) == binary("C2"));
-        }
+        buffer.serialize_bool(value);
 
-        SECTION("serialize value `true`") {
-            memory_output_stream stream;
-            serialization_buffer buffer(stream);
-
-            buffer.serialize_bool(true);
-
-            CHECK(binary(stream.data(), stream.size()) == binary("C3"));
-        }
+        CHECK(binary(stream.data(), stream.size()) == expected_binary);
     }
 
     SECTION("serialize positive fixint") {
-        SECTION("serialize value `0`") {
-            memory_output_stream stream;
-            serialization_buffer buffer(stream);
+        std::uint8_t value{};
+        binary expected_binary{};
+        std::tie(value, expected_binary) = GENERATE(table<std::uint8_t, binary>(
+            {{static_cast<std::uint8_t>(0), binary("00")},
+                {static_cast<std::uint8_t>(57), binary("39")},
+                {static_cast<std::uint8_t>(0x7F), binary("7F")}}));
+        INFO("value = " << value);
 
-            constexpr auto value = static_cast<std::uint8_t>(0);
-            buffer.serialize_positive_fixint(value);
+        memory_output_stream stream;
+        serialization_buffer buffer(stream);
 
-            CHECK(binary(stream.data(), stream.size()) == binary("00"));
-        }
+        buffer.serialize_positive_fixint(value);
 
-        SECTION("serialize value `57`") {
-            memory_output_stream stream;
-            serialization_buffer buffer(stream);
-
-            constexpr auto value = static_cast<std::uint8_t>(57);
-            buffer.serialize_positive_fixint(value);
-
-            CHECK(binary(stream.data(), stream.size()) == binary("39"));
-        }
-
-        SECTION("serialize value `0x7F`") {
-            memory_output_stream stream;
-            serialization_buffer buffer(stream);
-
-            constexpr auto value = static_cast<std::uint8_t>(0x7F);
-            buffer.serialize_positive_fixint(value);
-
-            CHECK(binary(stream.data(), stream.size()) == binary("7F"));
-        }
+        CHECK(binary(stream.data(), stream.size()) == expected_binary);
     }
 
     SECTION("serialize negative fixint") {
-        SECTION("serialize value `-1`") {
-            memory_output_stream stream;
-            serialization_buffer buffer(stream);
+        std::int8_t value{};
+        binary expected_binary{};
+        std::tie(value, expected_binary) = GENERATE(table<std::int8_t, binary>(
+            {{static_cast<std::int8_t>(-1), binary("FF")},
+                {static_cast<std::int8_t>(-13), binary("F3")},
+                {static_cast<std::int8_t>(0xE0), binary("E0")}}));
+        INFO("value = " << value);
 
-            constexpr auto value = static_cast<std::int8_t>(-1);
-            buffer.serialize_negative_fixint(value);
+        memory_output_stream stream;
+        serialization_buffer buffer(stream);
 
-            CHECK(binary(stream.data(), stream.size()) == binary("FF"));
-        }
+        buffer.serialize_negative_fixint(value);
 
-        SECTION("serialize value `-13`") {
-            memory_output_stream stream;
-            serialization_buffer buffer(stream);
-
-            constexpr auto value = static_cast<std::int8_t>(-13);
-            buffer.serialize_negative_fixint(value);
-
-            CHECK(binary(stream.data(), stream.size()) == binary("F3"));
-        }
-
-        SECTION("serialize value `0xE0`") {
-            memory_output_stream stream;
-            serialization_buffer buffer(stream);
-
-            constexpr auto value = static_cast<std::int8_t>(0xE0);
-            buffer.serialize_negative_fixint(value);
-
-            CHECK(binary(stream.data(), stream.size()) == binary("E0"));
-        }
+        CHECK(binary(stream.data(), stream.size()) == expected_binary);
     }
 
     SECTION("format uint 8") {
-        SECTION("serialize `0x80") {
-            memory_output_stream stream;
-            serialization_buffer buffer(stream);
+        std::uint8_t value{};
+        binary expected_binary{};
+        std::tie(value, expected_binary) = GENERATE(table<std::uint8_t, binary>(
+            {{static_cast<std::uint8_t>(0x80), binary("CC80")},
+                {static_cast<std::uint8_t>(0xB0), binary("CCB0")},
+                // cspell: ignore CCFF
+                {static_cast<std::uint8_t>(0xFF), binary("CCFF")}}));
+        INFO("value = " << value);
 
-            constexpr auto value = static_cast<std::uint8_t>(0x80);
-            buffer.serialize_uint8(value);
+        memory_output_stream stream;
+        serialization_buffer buffer(stream);
 
-            CHECK(binary(stream.data(), stream.size()) == binary("CC80"));
-        }
+        buffer.serialize_uint8(value);
 
-        SECTION("serialize `176") {
-            memory_output_stream stream;
-            serialization_buffer buffer(stream);
-
-            constexpr auto value = static_cast<std::uint8_t>(0xB0);
-            buffer.serialize_uint8(value);
-
-            CHECK(binary(stream.data(), stream.size()) == binary("CCB0"));
-        }
-
-        SECTION("serialize `0xFF") {
-            memory_output_stream stream;
-            serialization_buffer buffer(stream);
-
-            constexpr auto value = static_cast<std::uint8_t>(0xFF);
-            buffer.serialize_uint8(value);
-
-            // cspell: ignore CCFF
-            CHECK(binary(stream.data(), stream.size()) == binary("CCFF"));
-        }
+        CHECK(binary(stream.data(), stream.size()) == expected_binary);
     }
 
     SECTION("serialize uint 16") {
-        SECTION("serialize `0x100`") {
-            memory_output_stream stream;
-            serialization_buffer buffer(stream);
+        std::uint16_t value{};
+        binary expected_binary{};
+        std::tie(value, expected_binary) =
+            GENERATE(table<std::uint16_t, binary>(
+                {{static_cast<std::uint16_t>(0x100), binary("CD0100")},
+                    {static_cast<std::uint16_t>(12345), binary("CD3039")},
+                    // cspell: ignore CDFFFF
+                    {static_cast<std::uint16_t>(0xFFFF), binary("CDFFFF")}}));
+        INFO("value = " << value);
 
-            constexpr auto value = static_cast<std::uint16_t>(0x100);
-            buffer.serialize_uint16(value);
+        memory_output_stream stream;
+        serialization_buffer buffer(stream);
 
-            CHECK(binary(stream.data(), stream.size()) == binary("CD0100"));
-        }
+        buffer.serialize_uint16(value);
 
-        SECTION("serialize `12345`") {
-            memory_output_stream stream;
-            serialization_buffer buffer(stream);
-
-            constexpr auto value = static_cast<std::uint16_t>(12345);
-            buffer.serialize_uint16(value);
-
-            CHECK(binary(stream.data(), stream.size()) == binary("CD3039"));
-        }
-
-        SECTION("serialize `0xFFFF`") {
-            memory_output_stream stream;
-            serialization_buffer buffer(stream);
-
-            constexpr auto value = static_cast<std::uint16_t>(0xFFFF);
-            buffer.serialize_uint16(value);
-
-            // cspell: ignore CDFFFF
-            CHECK(binary(stream.data(), stream.size()) == binary("CDFFFF"));
-        }
+        CHECK(binary(stream.data(), stream.size()) == expected_binary);
     }
 
     SECTION("serialize uint 32") {
-        SECTION("serialize `0x10000`") {
-            memory_output_stream stream;
-            serialization_buffer buffer(stream);
+        std::uint32_t value{};
+        binary expected_binary{};
+        std::tie(value, expected_binary) = GENERATE(
+            table<std::uint32_t, binary>({{static_cast<std::uint32_t>(0x10000),
+                                              binary("CE00010000")},
+                {static_cast<std::uint32_t>(123456789), binary("CE075BCD15")},
+                // cspell: ignore CEFFFFFFFF
+                {static_cast<std::uint32_t>(0xFFFFFFFF),
+                    binary("CEFFFFFFFF")}}));
+        INFO("value = " << value);
 
-            constexpr auto value = static_cast<std::uint32_t>(0x10000);
-            buffer.serialize_uint32(value);
+        memory_output_stream stream;
+        serialization_buffer buffer(stream);
 
-            CHECK(binary(stream.data(), stream.size()) == binary("CE00010000"));
-        }
+        buffer.serialize_uint32(value);
 
-        SECTION("serialize `123456789`") {
-            memory_output_stream stream;
-            serialization_buffer buffer(stream);
-
-            constexpr auto value = static_cast<std::uint32_t>(123456789);
-            buffer.serialize_uint32(value);
-
-            CHECK(binary(stream.data(), stream.size()) == binary("CE075BCD15"));
-        }
-
-        SECTION("serialize `0xFFFFFFFF`") {
-            memory_output_stream stream;
-            serialization_buffer buffer(stream);
-
-            constexpr auto value = static_cast<std::uint32_t>(0xFFFFFFFF);
-            buffer.serialize_uint32(value);
-
-            // cspell: ignore CEFFFFFFFF
-            CHECK(binary(stream.data(), stream.size()) == binary("CEFFFFFFFF"));
-        }
+        CHECK(binary(stream.data(), stream.size()) == expected_binary);
     }
 
     SECTION("serialize uint 64") {
-        SECTION("serialize `0x100000000`") {
-            memory_output_stream stream;
-            serialization_buffer buffer(stream);
+        std::uint64_t value{};
+        binary expected_binary{};
+        std::tie(value, expected_binary) =
+            GENERATE(table<std::uint64_t, binary>(
+                {{static_cast<std::uint64_t>(0x100000000),
+                     binary("CF0000000100000000")},
+                    {static_cast<std::uint64_t>(1234567890123456789),
+                        binary("CF112210F47DE98115")},
+                    // cspell: ignore CFFFFFFFFFFFFFFFFF
+                    {static_cast<std::uint64_t>(0xFFFFFFFFFFFFFFFF),
+                        binary("CFFFFFFFFFFFFFFFFF")}}));
+        INFO("value = " << value);
 
-            constexpr auto value = static_cast<std::uint64_t>(0x100000000);
-            buffer.serialize_uint64(value);
+        memory_output_stream stream;
+        serialization_buffer buffer(stream);
 
-            CHECK(binary(stream.data(), stream.size()) ==
-                binary("CF0000000100000000"));
-        }
+        buffer.serialize_uint64(value);
 
-        SECTION("serialize `1234567890123456789`") {
-            memory_output_stream stream;
-            serialization_buffer buffer(stream);
-
-            constexpr auto value =
-                static_cast<std::uint64_t>(1234567890123456789);
-            buffer.serialize_uint64(value);
-
-            CHECK(binary(stream.data(), stream.size()) ==
-                binary("CF112210F47DE98115"));
-        }
-
-        SECTION("serialize `0xFFFFFFFFFFFFFFFF`") {
-            memory_output_stream stream;
-            serialization_buffer buffer(stream);
-
-            constexpr auto value =
-                static_cast<std::uint64_t>(0xFFFFFFFFFFFFFFFF);
-            buffer.serialize_uint64(value);
-
-            // cspell: ignore CFFFFFFFFFFFFFFFFF
-            CHECK(binary(stream.data(), stream.size()) ==
-                binary("CFFFFFFFFFFFFFFFFF"));
-        }
+        CHECK(binary(stream.data(), stream.size()) == expected_binary);
     }
 
     SECTION("serialize int 8") {
-        SECTION("serialize `0xDF`") {
-            memory_output_stream stream;
-            serialization_buffer buffer(stream);
+        std::int8_t value{};
+        binary expected_binary{};
+        std::tie(value, expected_binary) = GENERATE(table<std::int8_t, binary>(
+            {{static_cast<std::int8_t>(0xDF), binary("D0DF")},
+                {static_cast<std::int8_t>(-98), binary("D09E")},
+                {static_cast<std::int8_t>(0x80), binary("D080")}}));
+        INFO("value = " << value);
 
-            constexpr auto value = static_cast<std::int8_t>(0xDF);
-            buffer.serialize_int8(value);
+        memory_output_stream stream;
+        serialization_buffer buffer(stream);
 
-            CHECK(binary(stream.data(), stream.size()) == binary("D0DF"));
-        }
+        buffer.serialize_int8(value);
 
-        SECTION("serialize `-98`") {
-            memory_output_stream stream;
-            serialization_buffer buffer(stream);
-
-            constexpr auto value = static_cast<std::int8_t>(-98);
-            buffer.serialize_int8(value);
-
-            CHECK(binary(stream.data(), stream.size()) == binary("D09E"));
-        }
-
-        SECTION("serialize `0x80`") {
-            memory_output_stream stream;
-            serialization_buffer buffer(stream);
-
-            constexpr auto value = static_cast<std::int8_t>(0x80);
-            buffer.serialize_int8(value);
-
-            CHECK(binary(stream.data(), stream.size()) == binary("D080"));
-        }
+        CHECK(binary(stream.data(), stream.size()) == expected_binary);
     }
 
     SECTION("serialize int 16") {
-        SECTION("serialize `0xFF7F") {
-            memory_output_stream stream;
-            serialization_buffer buffer(stream);
+        std::int16_t value{};
+        binary expected_binary{};
+        std::tie(value, expected_binary) = GENERATE(table<std::int16_t, binary>(
+            {{static_cast<std::int16_t>(0xFF7F), binary("D1FF7F")},
+                {static_cast<std::int16_t>(-12345), binary("D1CFC7")},
+                {static_cast<std::int16_t>(0x8000), binary("D18000")}}));
+        INFO("value = " << value);
 
-            constexpr auto value = static_cast<std::int16_t>(0xFF7F);
-            buffer.serialize_int16(value);
+        memory_output_stream stream;
+        serialization_buffer buffer(stream);
 
-            CHECK(binary(stream.data(), stream.size()) == binary("D1FF7F"));
-        }
+        buffer.serialize_int16(value);
 
-        SECTION("serialize `-12345") {
-            memory_output_stream stream;
-            serialization_buffer buffer(stream);
-
-            constexpr auto value = static_cast<std::int16_t>(-12345);
-            buffer.serialize_int16(value);
-
-            CHECK(binary(stream.data(), stream.size()) == binary("D1CFC7"));
-        }
-
-        SECTION("serialize `0x8000") {
-            memory_output_stream stream;
-            serialization_buffer buffer(stream);
-
-            constexpr auto value = static_cast<std::int16_t>(0x8000);
-            buffer.serialize_int16(value);
-
-            CHECK(binary(stream.data(), stream.size()) == binary("D18000"));
-        }
+        CHECK(binary(stream.data(), stream.size()) == expected_binary);
     }
 }
