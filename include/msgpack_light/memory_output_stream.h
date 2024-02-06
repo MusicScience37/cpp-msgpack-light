@@ -24,6 +24,7 @@
 #include <cstring>
 #include <new>
 
+#include "msgpack_light/binary.h"
 #include "msgpack_light/output_stream.h"
 
 namespace msgpack_light {
@@ -96,6 +97,13 @@ public:
      * \return Size of the written data.
      */
     [[nodiscard]] std::size_t size() const noexcept { return written_; }
+
+    /*!
+     * \brief Get the data as binary object.
+     *
+     * \return binary object.
+     */
+    [[nodiscard]] binary as_binary() const { return binary(data(), size()); }
 
 private:
     //! Size of the initial buffer.

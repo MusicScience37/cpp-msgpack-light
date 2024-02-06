@@ -15,7 +15,7 @@
  */
 /*!
  * \file
- * \brief Definition of classes to support serialization of scalar data types.
+ * \brief Definition of classes to support serialization of boolean values.
  */
 #pragma once
 

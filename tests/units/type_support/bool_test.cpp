@@ -15,20 +15,20 @@
  */
 /*!
  * \file
- * \brief Test of classes to support serialization of scalar data types.
+ * \brief Test of classes to support serialization of boolean values.
  */
-#include "msgpack_light/type_support/scalars.h"
+#include "msgpack_light/type_support/bool.h"
 
 #include <catch2/catch_test_macros.hpp>
 
+#include "msgpack_light/binary.h"
 #include "msgpack_light/memory_output_stream.h"
 #include "msgpack_light/serialization_buffer.h"
-#include "msgpack_light_test/binary.h"
 
 TEST_CASE("msgpack_light::type_support::serialization_traits<bool>") {
+    using msgpack_light::binary;
     using msgpack_light::memory_output_stream;
     using msgpack_light::serialization_buffer;
-    using msgpack_light_test::binary;
 
     SECTION("serialize value `false`") {
         memory_output_stream stream;
@@ -36,7 +36,7 @@ TEST_CASE("msgpack_light::type_support::serialization_traits<bool>") {
 
         buffer.serialize(false);
 
-        CHECK(binary(stream.data(), stream.size()) == binary("C2"));
+        CHECK(stream.as_binary() == binary("C2"));
     }
 
     SECTION("serialize value `true`") {
@@ -45,6 +45,6 @@ TEST_CASE("msgpack_light::type_support::serialization_traits<bool>") {
 
         buffer.serialize(true);
 
-        CHECK(binary(stream.data(), stream.size()) == binary("C3"));
+        CHECK(stream.as_binary() == binary("C3"));
     }
 }

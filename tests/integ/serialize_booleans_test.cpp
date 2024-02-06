@@ -15,37 +15,30 @@
  */
 /*!
  * \file
- * \brief Test of serialize function.
+ * \brief Test to serialize boolean values.
  */
-#include "msgpack_light/serialize.h"
-
 #include <catch2/catch_test_macros.hpp>
+#include <catch2/generators/catch_generators.hpp>
+#include <msgpack.hpp>
 
 #include "msgpack_light/binary.h"
-#include "msgpack_light/memory_output_stream.h"
+#include "msgpack_light/serialize.h"
 
-TEST_CASE("msgpack_light::serialize_to") {
+TEST_CASE("serialize boolean values") {
     using msgpack_light::binary;
-    using msgpack_light::memory_output_stream;
-    using msgpack_light::serialize_to;
-
-    SECTION("serialize data") {
-        memory_output_stream stream;
-
-        serialize_to(stream, false);
-
-        CHECK(stream.as_binary() == binary("C2"));
-    }
-}
-
-TEST_CASE("msgpack_light::serialize") {
-    using msgpack_light::binary;
-    using msgpack_light::memory_output_stream;
     using msgpack_light::serialize;
 
-    SECTION("serialize data") {
-        const auto data = serialize(false);
+    SECTION("serialize") {
+        const bool value = GENERATE(true, false);
+        INFO("value = " << value);
 
-        CHECK(data == binary("C2"));
+        const binary serialized = serialize(value);
+
+        const msgpack::object_handle deserialized = msgpack::unpack(
+            // NOLINTNEXTLINE(cppcoreguidelines-pro-type-reinterpret-cast)
+            reinterpret_cast<const char*>(serialized.data()),
+            serialized.size());
+
+        CHECK(deserialized->as<bool>() == value);
     }
 }

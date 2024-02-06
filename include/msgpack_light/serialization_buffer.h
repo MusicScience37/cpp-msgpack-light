@@ -19,6 +19,10 @@
  */
 #pragma once
 
+#include <array>
+#include <cstdint>
+
+#include "msgpack_light/details/to_big_endian.h"
 #include "msgpack_light/output_stream.h"
 #include "msgpack_light/serialization_buffer_fwd.h"
 #include "msgpack_light/type_support/fwd.h"
@@ -52,6 +56,132 @@ public:
         } else {
             put(false_byte);
         }
+    }
+
+    /*!
+     * \brief Serialize a value in positive fixint format.
+     *
+     * \warning This function assumes that the value is in the range of 0 to
+     * `0x7F`.
+     *
+     * \param[in] value Value.
+     */
+    void serialize_positive_fixint(std::uint8_t value) {
+        put(static_cast<unsigned char>(value));
+    }
+
+    /*!
+     * \brief Serialize a value in negative fixint format.
+     *
+     * \warning This function assumes that the value is in the range of `-1` to
+     * `0xE0`.
+     *
+     * \param[in] value Value.
+     */
+    void serialize_negative_fixint(std::int8_t value) {
+        put(static_cast<unsigned char>(value));
+    }
+
+    /*!
+     * \brief Serialize a value in uint 8 format.
+     *
+     * \param[in] value Value.
+     */
+    void serialize_uint8(std::uint8_t value) {
+        constexpr auto prefix = static_cast<unsigned char>(0xCC);
+        put(prefix);
+        put(static_cast<unsigned char>(value));
+    }
+
+    /*!
+     * \brief Serialize a value in uint 16 format.
+     *
+     * \param[in] value Value.
+     */
+    void serialize_uint16(std::uint16_t value) {
+        constexpr auto prefix = static_cast<unsigned char>(0xCD);
+        put(prefix);
+        std::array<unsigned char, 2U> buffer{};
+        details::to_big_endian(&value, &buffer);
+        write(buffer.data(), buffer.size());
+    }
+
+    /*!
+     * \brief Serialize a value in uint 32 format.
+     *
+     * \param[in] value Value.
+     */
+    void serialize_uint32(std::uint32_t value) {
+        constexpr auto prefix = static_cast<unsigned char>(0xCE);
+        put(prefix);
+        std::array<unsigned char, 4U> buffer{};
+        details::to_big_endian(&value, &buffer);
+        write(buffer.data(), buffer.size());
+    }
+
+    /*!
+     * \brief Serialize a value in uint 64 format.
+     *
+     * \param[in] value Value.
+     */
+    void serialize_uint64(std::uint64_t value) {
+        constexpr auto prefix = static_cast<unsigned char>(0xCF);
+        put(prefix);
+        // NOLINTNEXTLINE(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
+        std::array<unsigned char, 8U> buffer{};
+        details::to_big_endian(&value, &buffer);
+        write(buffer.data(), buffer.size());
+    }
+
+    /*!
+     * \brief Serialize a value in int 8 format.
+     *
+     * \param[in] value Value.
+     */
+    void serialize_int8(std::int8_t value) {
+        constexpr auto prefix = static_cast<unsigned char>(0xD0);
+        put(prefix);
+        put(static_cast<unsigned char>(value));
+    }
+
+    /*!
+     * \brief Serialize a value in int 16 format.
+     *
+     * \param[in] value Value.
+     */
+    void serialize_int16(std::int16_t value) {
+        constexpr auto prefix = static_cast<unsigned char>(0xD1);
+        put(prefix);
+        std::array<unsigned char, 2U> buffer{};
+        details::to_big_endian(&value, &buffer);
+        write(buffer.data(), buffer.size());
+    }
+
+    /*!
+     * \brief Serialize a value in int 32 format.
+     *
+     * \param[in] value Value.
+     */
+    void serialize_int32(std::int32_t value) {
+        constexpr auto prefix = static_cast<unsigned char>(0xD2);
+        put(prefix);
+        std::array<unsigned char, 4U> buffer{};
+        details::to_big_endian(&value, &buffer);
+        write(buffer.data(), buffer.size());
+    }
+
+    /*!
+     * \brief Serialize a value in int 64 format.
+     *
+     * \param[in] value Value.
+     */
+    void serialize_int64(std::int64_t value) {
+        constexpr auto prefix = static_cast<unsigned char>(0xD3);
+        put(prefix);
+        // NOLINTNEXTLINE(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
+        std::array<unsigned char, 8U> buffer{};
+        details::to_big_endian(&value, &buffer);
+        write(buffer.data(), buffer.size());
     }
 
     /*!

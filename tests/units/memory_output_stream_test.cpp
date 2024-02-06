@@ -23,11 +23,11 @@
 
 #include <catch2/catch_test_macros.hpp>
 
-#include "msgpack_light_test/binary.h"
+#include "msgpack_light/binary.h"
 
 TEST_CASE("msgpack_light::memory_output_stream") {
+    using msgpack_light::binary;
     using msgpack_light::memory_output_stream;
-    using msgpack_light_test::binary;
 
     SECTION("initialize") {
         memory_output_stream stream;
@@ -44,7 +44,7 @@ TEST_CASE("msgpack_light::memory_output_stream") {
         const auto written_data = binary("010203");
         stream.write(written_data.data(), written_data.size());
 
-        CHECK(binary(stream.data(), stream.size()) == written_data);
+        CHECK(stream.as_binary() == written_data);
     }
 
     SECTION("write data twice") {
@@ -55,8 +55,7 @@ TEST_CASE("msgpack_light::memory_output_stream") {
         const auto written_data2 = binary("0405");
         stream.write(written_data2.data(), written_data2.size());
 
-        CHECK(binary(stream.data(), stream.size()) ==
-            written_data1 + written_data2);
+        CHECK(stream.as_binary() == written_data1 + written_data2);
     }
 
     SECTION("write large data") {
@@ -66,6 +65,6 @@ TEST_CASE("msgpack_light::memory_output_stream") {
             std::vector<unsigned char>(1000, static_cast<unsigned char>(1)));
         stream.write(written_data.data(), written_data.size());
 
-        CHECK(binary(stream.data(), stream.size()) == written_data);
+        CHECK(stream.as_binary() == written_data);
     }
 }
