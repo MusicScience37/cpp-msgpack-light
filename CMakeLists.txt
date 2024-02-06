@@ -58,6 +58,7 @@ add_library(${PROJECT_NAME} INTERFACE)
 target_include_directories(
     ${PROJECT_NAME} INTERFACE ${${UPPER_PROJECT_NAME}_SOURCE_DIR}/include)
 target_link_libraries(${PROJECT_NAME} INTERFACE ${PROJECT_NAME}_cpp_warnings)
+target_compile_features(${PROJECT_NAME} INTERFACE cxx_std_17)
 
 if(${UPPER_PROJECT_NAME}_BUILD_DOC)
     add_subdirectory(doc)
