@@ -19,6 +19,10 @@
  */
 #pragma once
 
+#include <array>
+#include <cstdint>
+
+#include "msgpack_light/details/to_big_endian.h"
 #include "msgpack_light/output_stream.h"
 #include "msgpack_light/serialization_buffer_fwd.h"
 #include "msgpack_light/type_support/fwd.h"
@@ -52,6 +56,54 @@ public:
         } else {
             put(false_byte);
         }
+    }
+
+    /*!
+     * \brief Serialize a value in positive fixint format.
+     *
+     * \warning This function assumes that the value is in the range of 0 to
+     * `0x7F`.
+     *
+     * \param[in] value Value.
+     */
+    void serialize_positive_fixint(std::uint8_t value) {
+        put(static_cast<unsigned char>(value));
+    }
+
+    /*!
+     * \brief Serialize a value in negative fixint format.
+     *
+     * \warning This function assumes that the value is in the range of `-1` to
+     * `0xE0`.
+     *
+     * \param[in] value Value.
+     */
+    void serialize_negative_fixint(std::uint8_t value) {
+        put(static_cast<unsigned char>(value));
+    }
+
+    /*!
+     * \brief Serialize a value in uint 8 format.
+     *
+     * \param[in] value Value.
+     */
+    void serialize_uint8(std::uint8_t value) {
+        constexpr auto prefix = static_cast<unsigned char>(0xCC);
+        put(prefix);
+        put(static_cast<unsigned char>(value));
+    }
+
+    /*!
+     * \brief Serialize a value in uint 16 format.
+     *
+     * \param[in] value Value.
+     */
+    void serialize_uint16(std::uint16_t value) {
+        constexpr auto prefix = static_cast<unsigned char>(0xCD);
+        put(prefix);
+        std::array<unsigned char, 2U> buffer{};
+        details::to_big_endian(&value, &buffer);
+        write(buffer.data(), buffer.size());
     }
 
     /*!
