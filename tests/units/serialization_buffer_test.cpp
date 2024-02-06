@@ -24,13 +24,13 @@
 #include <catch2/catch_test_macros.hpp>
 #include <catch2/generators/catch_generators.hpp>
 
+#include "msgpack_light/binary.h"
 #include "msgpack_light/memory_output_stream.h"
-#include "msgpack_light_test/binary.h"
 
 TEST_CASE("msgpack_light::serialization_buffer") {
+    using msgpack_light::binary;
     using msgpack_light::memory_output_stream;
     using msgpack_light::serialization_buffer;
-    using msgpack_light_test::binary;
 
     SECTION("serialize bool") {
         bool value{};
@@ -44,7 +44,7 @@ TEST_CASE("msgpack_light::serialization_buffer") {
 
         buffer.serialize_bool(value);
 
-        CHECK(binary(stream.data(), stream.size()) == expected_binary);
+        CHECK(stream.as_binary() == expected_binary);
     }
 
     SECTION("serialize positive fixint") {
@@ -61,7 +61,7 @@ TEST_CASE("msgpack_light::serialization_buffer") {
 
         buffer.serialize_positive_fixint(value);
 
-        CHECK(binary(stream.data(), stream.size()) == expected_binary);
+        CHECK(stream.as_binary() == expected_binary);
     }
 
     SECTION("serialize negative fixint") {
@@ -78,7 +78,7 @@ TEST_CASE("msgpack_light::serialization_buffer") {
 
         buffer.serialize_negative_fixint(value);
 
-        CHECK(binary(stream.data(), stream.size()) == expected_binary);
+        CHECK(stream.as_binary() == expected_binary);
     }
 
     SECTION("format uint 8") {
@@ -96,7 +96,7 @@ TEST_CASE("msgpack_light::serialization_buffer") {
 
         buffer.serialize_uint8(value);
 
-        CHECK(binary(stream.data(), stream.size()) == expected_binary);
+        CHECK(stream.as_binary() == expected_binary);
     }
 
     SECTION("serialize uint 16") {
@@ -115,7 +115,7 @@ TEST_CASE("msgpack_light::serialization_buffer") {
 
         buffer.serialize_uint16(value);
 
-        CHECK(binary(stream.data(), stream.size()) == expected_binary);
+        CHECK(stream.as_binary() == expected_binary);
     }
 
     SECTION("serialize uint 32") {
@@ -135,7 +135,7 @@ TEST_CASE("msgpack_light::serialization_buffer") {
 
         buffer.serialize_uint32(value);
 
-        CHECK(binary(stream.data(), stream.size()) == expected_binary);
+        CHECK(stream.as_binary() == expected_binary);
     }
 
     SECTION("serialize uint 64") {
@@ -157,7 +157,7 @@ TEST_CASE("msgpack_light::serialization_buffer") {
 
         buffer.serialize_uint64(value);
 
-        CHECK(binary(stream.data(), stream.size()) == expected_binary);
+        CHECK(stream.as_binary() == expected_binary);
     }
 
     SECTION("serialize int 8") {
@@ -174,7 +174,7 @@ TEST_CASE("msgpack_light::serialization_buffer") {
 
         buffer.serialize_int8(value);
 
-        CHECK(binary(stream.data(), stream.size()) == expected_binary);
+        CHECK(stream.as_binary() == expected_binary);
     }
 
     SECTION("serialize int 16") {
@@ -191,7 +191,7 @@ TEST_CASE("msgpack_light::serialization_buffer") {
 
         buffer.serialize_int16(value);
 
-        CHECK(binary(stream.data(), stream.size()) == expected_binary);
+        CHECK(stream.as_binary() == expected_binary);
     }
 
     SECTION("serialize int 32") {
@@ -209,7 +209,7 @@ TEST_CASE("msgpack_light::serialization_buffer") {
 
         buffer.serialize_int32(value);
 
-        CHECK(binary(stream.data(), stream.size()) == expected_binary);
+        CHECK(stream.as_binary() == expected_binary);
     }
 
     SECTION("serialize int 64") {
@@ -229,6 +229,6 @@ TEST_CASE("msgpack_light::serialization_buffer") {
 
         buffer.serialize_int64(value);
 
-        CHECK(binary(stream.data(), stream.size()) == expected_binary);
+        CHECK(stream.as_binary() == expected_binary);
     }
 }

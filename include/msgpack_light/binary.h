@@ -21,14 +21,11 @@
 
 #include <cstddef>
 #include <initializer_list>
-#include <iterator>
 #include <ostream>
 #include <string_view>
 #include <vector>
 
-#include <fmt/format.h>
-
-namespace msgpack_light_test {
+namespace msgpack_light {
 
 /*!
  * \brief Class of binary data.
@@ -156,47 +153,6 @@ private:
     return binary(lhs) += rhs;
 }
 
-}  // namespace msgpack_light_test
-
-namespace fmt {
-
-/*!
- * \brief Specialization of fmt::formatter for msgpack_light_test::binary.
- */
-template <>
-struct formatter<msgpack_light_test::binary> {
-    /*!
-     * \brief Parse a format.
-     *
-     * \param[in] context Context in fmt library.
-     * \return Iterator after parsing.
-     */
-    constexpr auto
-    parse(  // NOLINT(readability-convert-member-functions-to-static): Interface of an external library.
-        format_parse_context& context) -> format_parse_context::iterator {
-        return context.end();
-    }
-
-    /*!
-     * \brief Format a value.
-     *
-     * \param[in] value Value.
-     * \param[in] context Context in fmt library.
-     * \return Iterator after formatting.
-     */
-    auto
-    format(  // NOLINT(readability-convert-member-functions-to-static): Interface of an external library.
-        const msgpack_light_test::binary& value, format_context& context) const
-        -> format_context::iterator {
-        return fmt::format_to(context.out(), "{:02X}",
-            fmt::join(value.data(), value.data() + value.size(), ""));
-    }
-};
-
-}  // namespace fmt
-
-namespace msgpack_light_test {
-
 /*!
  * \brief Format a value to a stream.
  *
@@ -205,8 +161,15 @@ namespace msgpack_light_test {
  * \return Output stream.
  */
 inline std::ostream& operator<<(std::ostream& stream, const binary& value) {
-    fmt::format_to(std::ostreambuf_iterator<char>(stream), "{}", value);
+    constexpr std::string_view hex_digits = "0123456789ABCDEF";
+    for (std::size_t i = 0; i < value.size(); ++i) {
+        const unsigned int byte = value.data()[i];
+        // NOLINTNEXTLINE(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
+        stream << hex_digits[(byte >> 4U) & 0x0FU];
+        // NOLINTNEXTLINE(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
+        stream << hex_digits[byte & 0x0FU];
+    }
     return stream;
 }
 
-}  // namespace msgpack_light_test
+}  // namespace msgpack_light

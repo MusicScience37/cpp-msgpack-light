@@ -21,19 +21,19 @@
 
 #include <catch2/catch_test_macros.hpp>
 
+#include "msgpack_light/binary.h"
 #include "msgpack_light/memory_output_stream.h"
-#include "msgpack_light_test/binary.h"
 
 TEST_CASE("msgpack_light::serialize_to") {
+    using msgpack_light::binary;
     using msgpack_light::memory_output_stream;
     using msgpack_light::serialize_to;
-    using msgpack_light_test::binary;
 
     SECTION("serialize data") {
         memory_output_stream stream;
 
         serialize_to(stream, false);
 
-        CHECK(binary(stream.data(), stream.size()) == binary("C2"));
+        CHECK(stream.as_binary() == binary("C2"));
     }
 }
