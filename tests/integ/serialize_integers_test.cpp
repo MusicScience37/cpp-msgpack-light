@@ -139,7 +139,7 @@ TEMPLATE_TEST_CASE("serialize unsigned integers", "", std::uint8_t,
     }
 }
 
-TEMPLATE_TEST_CASE("serialize unsigned integers", "", std::int8_t, std::int16_t,
+TEMPLATE_TEST_CASE("serialize signed integers", "", std::int8_t, std::int16_t,
     std::int32_t, std::int64_t) {
     using msgpack_light::serialize;
     using integer_type = TestType;
