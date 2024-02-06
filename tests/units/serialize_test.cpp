@@ -37,3 +37,15 @@ TEST_CASE("msgpack_light::serialize_to") {
         CHECK(stream.as_binary() == binary("C2"));
     }
 }
+
+TEST_CASE("msgpack_light::serialize") {
+    using msgpack_light::binary;
+    using msgpack_light::memory_output_stream;
+    using msgpack_light::serialize;
+
+    SECTION("serialize data") {
+        const auto data = serialize(false);
+
+        CHECK(data == binary("C2"));
+    }
+}

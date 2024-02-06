@@ -19,6 +19,8 @@
  */
 #pragma once
 
+#include "msgpack_light/binary.h"
+#include "msgpack_light/memory_output_stream.h"
 #include "msgpack_light/output_stream.h"
 #include "msgpack_light/serialization_buffer.h"
 #include "msgpack_light/type_support/common.h"
@@ -33,9 +35,23 @@ namespace msgpack_light {
  * \param[in] data Data.
  */
 template <typename T>
-void serialize_to(output_stream& stream, const T& data) {
+inline void serialize_to(output_stream& stream, const T& data) {
     serialization_buffer buffer(stream);
     buffer.serialize(data);
+}
+
+/*!
+ * \brief Serialize data.
+ *
+ * \tparam T Type of data to serialize.
+ * \param[in] data Data to serialize.
+ * \return Serialized binary data.
+ */
+template <typename T>
+[[nodiscard]] inline binary serialize(const T& data) {
+    memory_output_stream stream;
+    serialize_to(stream, data);
+    return stream.as_binary();
 }
 
 }  // namespace msgpack_light
