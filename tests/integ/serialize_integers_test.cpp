@@ -300,7 +300,7 @@ TEMPLATE_TEST_CASE("serialize signed integers", "", std::int8_t, std::int16_t,
             "serialize values from 0xFFFFFFFF7FFFFFFF to 0x8000000000000000") {
             static const auto create_value = [](auto value) {
                 return static_cast<integer_type>(
-                    static_cast<std::int32_t>(value));
+                    static_cast<std::int64_t>(value));
             };
             const integer_type value =
                 GENERATE(create_value(0xFFFFFFFF7FFFFFFF),
