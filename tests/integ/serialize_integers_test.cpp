@@ -32,9 +32,9 @@
 
 TEMPLATE_TEST_CASE("serialize unsigned integers", "", std::uint8_t,
     std::uint16_t, std::uint32_t, std::uint64_t) {
+    using msgpack_light::binary;
     using msgpack_light::serialize;
     using integer_type = TestType;
-    using msgpack_light::binary;
 
     SECTION("serialize values from 0x00 to 0xFF") {
         static const auto create_value = [](auto value) {
@@ -141,9 +141,9 @@ TEMPLATE_TEST_CASE("serialize unsigned integers", "", std::uint8_t,
 
 TEMPLATE_TEST_CASE("serialize signed integers", "", std::int8_t, std::int16_t,
     std::int32_t, std::int64_t) {
+    using msgpack_light::binary;
     using msgpack_light::serialize;
     using integer_type = TestType;
-    using msgpack_light::binary;
 
     SECTION("serialize values from 0x00 to 0x7F") {
         static const auto create_value = [](auto value) {

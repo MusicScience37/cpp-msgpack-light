@@ -21,6 +21,7 @@
 
 #include <array>
 #include <cstdint>
+#include <limits>
 
 #include "msgpack_light/details/to_big_endian.h"
 #include "msgpack_light/output_stream.h"
@@ -177,6 +178,44 @@ public:
      */
     void serialize_int64(std::int64_t value) {
         constexpr auto prefix = static_cast<unsigned char>(0xD3);
+        put(prefix);
+        // NOLINTNEXTLINE(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
+        std::array<unsigned char, 8U> buffer{};
+        details::to_big_endian(&value, &buffer);
+        write(buffer.data(), buffer.size());
+    }
+
+    /*!
+     * \brief Serialize a value in float 32 format.
+     *
+     * \param[in] value Value.
+     */
+    void serialize_float32(float value) {
+        static_assert(std::numeric_limits<float>::is_iec559,
+            "IEEE 754 single precision floating point number is required.");
+        static_assert(sizeof(float) == 4U,
+            "IEEE 754 single precision floating point number is required.");
+
+        constexpr auto prefix = static_cast<unsigned char>(0xCA);
+        put(prefix);
+        std::array<unsigned char, 4U> buffer{};
+        details::to_big_endian(&value, &buffer);
+        write(buffer.data(), buffer.size());
+    }
+
+    /*!
+     * \brief Serialize a value in float 64 format.
+     *
+     * \param[in] value Value.
+     */
+    void serialize_float64(double value) {
+        static_assert(std::numeric_limits<double>::is_iec559,
+            "IEEE 754 double precision floating point number is required.");
+        // NOLINTNEXTLINE(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
+        static_assert(sizeof(double) == 8U,
+            "IEEE 754 double precision floating point number is required.");
+
+        constexpr auto prefix = static_cast<unsigned char>(0xCB);
         put(prefix);
         // NOLINTNEXTLINE(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
         std::array<unsigned char, 8U> buffer{};

@@ -20,4 +20,5 @@
 #pragma once
 
 #include "msgpack_light/type_support/bool.h"
+#include "msgpack_light/type_support/float.h"
 #include "msgpack_light/type_support/integer.h"

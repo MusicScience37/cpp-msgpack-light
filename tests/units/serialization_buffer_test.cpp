@@ -231,4 +231,28 @@ TEST_CASE("msgpack_light::serialization_buffer") {
 
         CHECK(stream.as_binary() == expected_binary);
     }
+
+    SECTION("serialize float 32") {
+        constexpr float value = 0x1.23456p+0F;
+        const auto expected_binary = binary("CA3F91A2B0");
+
+        memory_output_stream stream;
+        serialization_buffer buffer(stream);
+
+        buffer.serialize_float32(value);
+
+        CHECK(stream.as_binary() == expected_binary);
+    }
+
+    SECTION("serialize float 64") {
+        constexpr double value = 0x1.23456789ABCDEp+0;
+        const auto expected_binary = binary("CB3FF23456789ABCDE");
+
+        memory_output_stream stream;
+        serialization_buffer buffer(stream);
+
+        buffer.serialize_float64(value);
+
+        CHECK(stream.as_binary() == expected_binary);
+    }
 }
