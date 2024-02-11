@@ -38,6 +38,7 @@ template <typename T>
 inline void serialize_to(output_stream& stream, const T& data) {
     serialization_buffer buffer(stream);
     buffer.serialize(data);
+    buffer.flush();
 }
 
 /*!

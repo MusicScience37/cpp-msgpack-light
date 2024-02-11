@@ -69,9 +69,10 @@ BASELINE_F(serialize_uint32, msgpack_cxx, serialize_integers_fixture, 100, 0) {
 BENCHMARK_F(
     serialize_uint32, msgpack_light, serialize_integers_fixture, 100, 0) {
     msgpack_light::memory_output_stream stream;
+    msgpack_light::serialization_buffer buffer(stream);
     const auto& data = get_data<std::uint32_t>();
     for (auto value : data) {
-        msgpack_light::serialize_to(stream, value);
+        buffer.serialize(value);
     }
 }
 
@@ -88,8 +89,9 @@ BASELINE_F(serialize_int32, msgpack_cxx, serialize_integers_fixture, 100, 0) {
 BENCHMARK_F(
     serialize_int32, msgpack_light, serialize_integers_fixture, 100, 0) {
     msgpack_light::memory_output_stream stream;
+    msgpack_light::serialization_buffer buffer(stream);
     const auto& data = get_data<std::int32_t>();
     for (auto value : data) {
-        msgpack_light::serialize_to(stream, value);
+        buffer.serialize(value);
     }
 }

@@ -44,6 +44,7 @@ TEST_CASE("msgpack_light::serialization_buffer") {
 
         buffer.serialize_bool(value);
 
+        buffer.flush();
         CHECK(stream.as_binary() == expected_binary);
     }
 
@@ -61,6 +62,7 @@ TEST_CASE("msgpack_light::serialization_buffer") {
 
         buffer.serialize_positive_fixint(value);
 
+        buffer.flush();
         CHECK(stream.as_binary() == expected_binary);
     }
 
@@ -78,6 +80,7 @@ TEST_CASE("msgpack_light::serialization_buffer") {
 
         buffer.serialize_negative_fixint(value);
 
+        buffer.flush();
         CHECK(stream.as_binary() == expected_binary);
     }
 
@@ -96,6 +99,7 @@ TEST_CASE("msgpack_light::serialization_buffer") {
 
         buffer.serialize_uint8(value);
 
+        buffer.flush();
         CHECK(stream.as_binary() == expected_binary);
     }
 
@@ -115,6 +119,7 @@ TEST_CASE("msgpack_light::serialization_buffer") {
 
         buffer.serialize_uint16(value);
 
+        buffer.flush();
         CHECK(stream.as_binary() == expected_binary);
     }
 
@@ -135,6 +140,7 @@ TEST_CASE("msgpack_light::serialization_buffer") {
 
         buffer.serialize_uint32(value);
 
+        buffer.flush();
         CHECK(stream.as_binary() == expected_binary);
     }
 
@@ -157,6 +163,7 @@ TEST_CASE("msgpack_light::serialization_buffer") {
 
         buffer.serialize_uint64(value);
 
+        buffer.flush();
         CHECK(stream.as_binary() == expected_binary);
     }
 
@@ -174,6 +181,7 @@ TEST_CASE("msgpack_light::serialization_buffer") {
 
         buffer.serialize_int8(value);
 
+        buffer.flush();
         CHECK(stream.as_binary() == expected_binary);
     }
 
@@ -191,6 +199,7 @@ TEST_CASE("msgpack_light::serialization_buffer") {
 
         buffer.serialize_int16(value);
 
+        buffer.flush();
         CHECK(stream.as_binary() == expected_binary);
     }
 
@@ -209,6 +218,7 @@ TEST_CASE("msgpack_light::serialization_buffer") {
 
         buffer.serialize_int32(value);
 
+        buffer.flush();
         CHECK(stream.as_binary() == expected_binary);
     }
 
@@ -229,6 +239,7 @@ TEST_CASE("msgpack_light::serialization_buffer") {
 
         buffer.serialize_int64(value);
 
+        buffer.flush();
         CHECK(stream.as_binary() == expected_binary);
     }
 
@@ -241,6 +252,7 @@ TEST_CASE("msgpack_light::serialization_buffer") {
 
         buffer.serialize_float32(value);
 
+        buffer.flush();
         CHECK(stream.as_binary() == expected_binary);
     }
 
@@ -253,6 +265,7 @@ TEST_CASE("msgpack_light::serialization_buffer") {
 
         buffer.serialize_float64(value);
 
+        buffer.flush();
         CHECK(stream.as_binary() == expected_binary);
     }
 }

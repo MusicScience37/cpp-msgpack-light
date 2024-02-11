@@ -40,6 +40,7 @@ TEST_CASE("msgpack_light::type_support::serialization_traits<float>") {
 
         buffer.serialize(value);
 
+        buffer.flush();
         CHECK(stream.as_binary() == expected_binary);
     }
 }
@@ -58,6 +59,7 @@ TEST_CASE("msgpack_light::type_support::serialization_traits<double>") {
 
         buffer.serialize(value);
 
+        buffer.flush();
         CHECK(stream.as_binary() == expected_binary);
     }
 }
