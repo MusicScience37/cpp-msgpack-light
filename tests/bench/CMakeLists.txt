@@ -15,7 +15,7 @@ target_include_directories(bench_unity
                            PRIVATE ${${UPPER_PROJECT_NAME}_TEST_INCLUDE_DIR})
 if(${UPPER_PROJECT_NAME}_TEST_BENCHMARKS)
     add_test(
-        NAME ${TARGET}
-        COMMAND ${TARGET} -t result.csv
+        NAME bench
+        COMMAND bench -t result.csv
         WORKING_DIRECTORY ${${UPPER_PROJECT_NAME}_BENCH_DIR})
 endif()
