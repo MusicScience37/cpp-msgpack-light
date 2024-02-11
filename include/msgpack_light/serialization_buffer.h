@@ -21,6 +21,7 @@
 
 #include <array>
 #include <cstdint>
+#include <cstdlib>
 #include <limits>
 
 #include "msgpack_light/details/to_big_endian.h"
@@ -43,6 +44,16 @@ public:
      * \warning This class hold the reference of the given stream.
      */
     explicit serialization_buffer(output_stream& stream) : stream_(stream) {}
+
+    serialization_buffer(const serialization_buffer&) = delete;
+    serialization_buffer(serialization_buffer&&) = delete;
+    serialization_buffer& operator=(const serialization_buffer&) = delete;
+    serialization_buffer& operator=(serialization_buffer&&) = delete;
+
+    /*!
+     * \brief Destructor.
+     */
+    ~serialization_buffer() noexcept { flush(); }
 
     /*!
      * \brief Serialize a boolean value.
@@ -234,6 +245,14 @@ public:
         type_support::serialization_traits<T>::serialize(*this, data);
     }
 
+    /*!
+     * \brief Flush the internal buffer in this object.
+     */
+    void flush() {
+        stream_.write(buffer_.data(), current_position_in_buffer_);
+        current_position_in_buffer_ = 0U;
+    }
+
 private:
     /*!
      * \brief Write data.
@@ -242,7 +261,16 @@ private:
      * \param[in] size Size of the data.
      */
     void write(const unsigned char* data, std::size_t size) {
-        stream_.write(data, size);
+        if (buffer_size - current_position_in_buffer_ < size) {
+            flush();
+            if (buffer_size < size) {
+                stream_.write(data, size);
+                return;
+            }
+        }
+
+        std::memcpy(buffer_.data() + current_position_in_buffer_, data, size);
+        current_position_in_buffer_ += size;
     }
 
     /*!
@@ -250,10 +278,25 @@ private:
      *
      * \param[in] data Data.
      */
-    void put(unsigned char data) { write(&data, 1U); }
+    void put(unsigned char data) {
+        if (buffer_size == current_position_in_buffer_) {
+            flush();
+        }
+        *(buffer_.data() + current_position_in_buffer_) = data;
+        ++current_position_in_buffer_;
+    }
 
     //! Stream to write output to.
     output_stream& stream_;
+
+    //! Size of the internal buffer.
+    static constexpr std::size_t buffer_size = 1024U;
+
+    //! Internal buffer.
+    std::array<unsigned char, buffer_size> buffer_{};
+
+    //! Current position in the internal buffer.
+    std::size_t current_position_in_buffer_{0U};
 };
 
 }  // namespace msgpack_light

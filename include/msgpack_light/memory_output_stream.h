@@ -107,7 +107,7 @@ public:
 
 private:
     //! Size of the initial buffer.
-    static constexpr std::size_t initial_buffer_size = 512;
+    static constexpr std::size_t initial_buffer_size = 1024U;
 
     //! Pointer to the current buffer.
     unsigned char* buffer_;

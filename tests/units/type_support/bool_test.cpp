@@ -36,6 +36,7 @@ TEST_CASE("msgpack_light::type_support::serialization_traits<bool>") {
 
         buffer.serialize(false);
 
+        buffer.flush();
         CHECK(stream.as_binary() == binary("C2"));
     }
 
@@ -45,6 +46,7 @@ TEST_CASE("msgpack_light::type_support::serialization_traits<bool>") {
 
         buffer.serialize(true);
 
+        buffer.flush();
         CHECK(stream.as_binary() == binary("C3"));
     }
 }

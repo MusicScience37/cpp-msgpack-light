@@ -56,6 +56,7 @@ TEMPLATE_TEST_CASE(
 
         buffer.serialize(value);
 
+        buffer.flush();
         CHECK(stream.as_binary() == expected_binary);
     }
 
@@ -76,6 +77,7 @@ TEMPLATE_TEST_CASE(
 
             buffer.serialize(value);
 
+            buffer.flush();
             CHECK(stream.as_binary() == expected_binary);
         }
     }
@@ -100,6 +102,7 @@ TEMPLATE_TEST_CASE(
 
             buffer.serialize(value);
 
+            buffer.flush();
             CHECK(stream.as_binary() == expected_binary);
         }
     }
@@ -126,6 +129,7 @@ TEMPLATE_TEST_CASE(
 
             buffer.serialize(value);
 
+            buffer.flush();
             CHECK(stream.as_binary() == expected_binary);
         }
     }
@@ -153,6 +157,7 @@ TEMPLATE_TEST_CASE(
 
         buffer.serialize(value);
 
+        buffer.flush();
         CHECK(stream.as_binary() == expected_binary);
     }
 
@@ -176,6 +181,7 @@ TEMPLATE_TEST_CASE(
 
             buffer.serialize(value);
 
+            buffer.flush();
             CHECK(stream.as_binary() == expected_binary);
         }
     }
@@ -199,6 +205,7 @@ TEMPLATE_TEST_CASE(
 
             buffer.serialize(value);
 
+            buffer.flush();
             CHECK(stream.as_binary() == expected_binary);
         }
     }
@@ -226,6 +233,7 @@ TEMPLATE_TEST_CASE(
 
             buffer.serialize(value);
 
+            buffer.flush();
             CHECK(stream.as_binary() == expected_binary);
         }
     }
@@ -250,6 +258,7 @@ TEMPLATE_TEST_CASE(
 
         buffer.serialize(value);
 
+        buffer.flush();
         CHECK(stream.as_binary() == expected_binary);
     }
 
@@ -273,6 +282,7 @@ TEMPLATE_TEST_CASE(
 
             buffer.serialize(value);
 
+            buffer.flush();
             CHECK(stream.as_binary() == expected_binary);
         }
     }
@@ -298,6 +308,7 @@ TEMPLATE_TEST_CASE(
 
             buffer.serialize(value);
 
+            buffer.flush();
             CHECK(stream.as_binary() == expected_binary);
         }
     }
@@ -328,6 +339,7 @@ TEMPLATE_TEST_CASE(
 
             buffer.serialize(value);
 
+            buffer.flush();
             CHECK(stream.as_binary() == expected_binary);
         }
     }

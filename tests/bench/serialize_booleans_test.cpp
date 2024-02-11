@@ -25,6 +25,7 @@
 
 #include "msgpack_light/binary.h"
 #include "msgpack_light/memory_output_stream.h"
+#include "msgpack_light/serialization_buffer_fwd.h"
 #include "msgpack_light/serialize.h"
 
 class serialize_booleans_fixture : public celero::TestFixture {
@@ -62,8 +63,9 @@ BASELINE_F(
 BENCHMARK_F(
     serialize_booleans, msgpack_light, serialize_booleans_fixture, 100, 0) {
     msgpack_light::memory_output_stream stream;
+    msgpack_light::serialization_buffer buffer(stream);
     const auto& data = get_data();
     for (bool value : data) {
-        msgpack_light::serialize_to(stream, value);
+        buffer.serialize(value);
     }
 }
