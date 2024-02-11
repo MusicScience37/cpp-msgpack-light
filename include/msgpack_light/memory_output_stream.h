@@ -22,12 +22,44 @@
 #include <cstddef>
 #include <cstdlib>
 #include <cstring>
+#include <limits>
 #include <new>
 
 #include "msgpack_light/binary.h"
 #include "msgpack_light/output_stream.h"
 
 namespace msgpack_light {
+
+namespace details {
+
+/*!
+ * \brief Calculate the size of an expanded buffer.
+ *
+ * \param[in] current_size Current size.
+ * \param[in] additional_size Additional size.
+ * \return Size of the expanded buffer.
+ */
+[[nodiscard]] inline std::size_t calculate_expanded_memory_buffer_size(
+    std::size_t current_size, std::size_t additional_size) {
+    std::size_t next_size = current_size;
+    while (true) {
+        next_size *= 2;
+        if (next_size <= current_size) {
+            // Overflow
+            const std::size_t max_size =
+                std::numeric_limits<std::size_t>::max();
+            if (max_size - current_size >= additional_size) {
+                return max_size;
+            }
+            throw std::bad_alloc();
+        }
+        if (next_size - current_size >= additional_size) {
+            return next_size;
+        }
+    }
+}
+
+}  // namespace details
 
 /*!
  * \brief Class of streams to write data to memory.
@@ -67,9 +99,11 @@ public:
      * \param[in] size Size of the data.
      */
     void write(const unsigned char* data, std::size_t size) override {
-        const std::size_t new_written = written_ + size;
-        if (new_written > capacity_) {
-            const std::size_t new_capacity = new_written * 2U;
+        const std::size_t remaining = capacity_ - written_;
+        if (remaining < size) {
+            const std::size_t new_capacity =
+                details::calculate_expanded_memory_buffer_size(
+                    capacity_, size - remaining);
             auto* new_buffer = static_cast<unsigned char*>(
                 // NOLINTNEXTLINE(hicpp-no-malloc, cppcoreguidelines-no-malloc): This class is a container.
                 std::realloc(buffer_, new_capacity));
@@ -81,7 +115,7 @@ public:
         }
 
         std::memcpy(buffer_ + written_, data, size);
-        written_ = new_written;
+        written_ += size;
     }
 
     /*!
