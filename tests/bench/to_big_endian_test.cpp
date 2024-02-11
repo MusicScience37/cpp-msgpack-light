@@ -31,6 +31,11 @@ class to_big_endian_fixture : public celero::TestFixture {
 public:
     to_big_endian_fixture() {
         celero::DoNotOptimizeAway(get_data<std::uint16_t>());
+        celero::DoNotOptimizeAway(get_data<std::uint32_t>());
+        celero::DoNotOptimizeAway(get_data<std::uint64_t>());
+        celero::DoNotOptimizeAway(get_buffer<2U>());
+        celero::DoNotOptimizeAway(get_buffer<4U>());
+        celero::DoNotOptimizeAway(get_buffer<8U>());  // NOLINT
     }
 
     template <typename T>
@@ -39,11 +44,18 @@ public:
         return data;
     }
 
+    template <std::size_t N>
+    static std::vector<std::array<unsigned char, N>>& get_buffer() {
+        static auto buffer = create_buffer<N>();
+        return buffer;
+    }
+
+    static constexpr std::size_t size = 1000;
+
 private:
     template <typename T>
     static std::vector<T> create_data() {
         std::vector<T> data;
-        constexpr std::size_t size = 1000;
         data.reserve(size);
         std::mt19937 generator;  // NOLINT
         std::uniform_int_distribution<T> distribution;
@@ -52,15 +64,22 @@ private:
         }
         return data;
     }
+
+    template <std::size_t N>
+    static std::vector<std::array<unsigned char, N>> create_buffer() {
+        std::vector<std::array<unsigned char, N>> buffer;
+        buffer.resize(size);
+        return buffer;
+    }
 };
 
 // NOLINTNEXTLINE
 BASELINE_F(to_big_endian2, default, to_big_endian_fixture, 100, 0) {
     using integer_type = std::uint16_t;
     const auto& data = get_data<integer_type>();
-    std::array<unsigned char, sizeof(integer_type)> buffer{};
-    for (auto value : data) {
-        msgpack_light::details::to_big_endian(&value, &buffer);
+    auto& buffer = get_buffer<sizeof(integer_type)>();
+    for (std::size_t i = 0; i < size; ++i) {
+        msgpack_light::details::to_big_endian(&data[i], &buffer[i]);
     }
 }
 
@@ -68,9 +87,9 @@ BASELINE_F(to_big_endian2, default, to_big_endian_fixture, 100, 0) {
 BASELINE_F(to_big_endian4, default, to_big_endian_fixture, 100, 0) {
     using integer_type = std::uint32_t;
     const auto& data = get_data<integer_type>();
-    std::array<unsigned char, sizeof(integer_type)> buffer{};
-    for (auto value : data) {
-        msgpack_light::details::to_big_endian(&value, &buffer);
+    auto& buffer = get_buffer<sizeof(integer_type)>();
+    for (std::size_t i = 0; i < size; ++i) {
+        msgpack_light::details::to_big_endian(&data[i], &buffer[i]);
     }
 }
 
@@ -78,8 +97,8 @@ BASELINE_F(to_big_endian4, default, to_big_endian_fixture, 100, 0) {
 BASELINE_F(to_big_endian8, default, to_big_endian_fixture, 100, 0) {
     using integer_type = std::uint64_t;
     const auto& data = get_data<integer_type>();
-    std::array<unsigned char, sizeof(integer_type)> buffer{};
-    for (auto value : data) {
-        msgpack_light::details::to_big_endian(&value, &buffer);
+    auto& buffer = get_buffer<sizeof(integer_type)>();
+    for (std::size_t i = 0; i < size; ++i) {
+        msgpack_light::details::to_big_endian(&data[i], &buffer[i]);
     }
 }
