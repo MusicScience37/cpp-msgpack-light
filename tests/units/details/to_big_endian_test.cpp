@@ -49,6 +49,7 @@ TEST_CASE("msgpack_light::details::to_big_endian") {
     }
 
     SECTION("convert 8 byte integer") {
+        // NOLINTNEXTLINE
         std::array<unsigned char, 8U> buffer{};
 
         constexpr auto value = static_cast<std::uint64_t>(0x123456789ABCDEF1U);
