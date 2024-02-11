@@ -61,7 +61,7 @@ inline void to_big_endian<2U>(
 template <>
 inline void to_big_endian<4U>(
     const void* from, std::array<unsigned char, 4U>* to) noexcept {
-    std::uint64_t value{};
+    std::uint32_t value{};
     std::memcpy(&value, from, sizeof(value));
     (*to)[0U] = static_cast<unsigned char>(value >> 24U);  // NOLINT
     (*to)[1U] = static_cast<unsigned char>(value >> 16U);  // NOLINT
