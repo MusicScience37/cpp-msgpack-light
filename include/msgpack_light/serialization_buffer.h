@@ -278,7 +278,13 @@ private:
      *
      * \param[in] data Data.
      */
-    void put(unsigned char data) { write(&data, 1U); }
+    void put(unsigned char data) {
+        if (buffer_size == current_position_in_buffer_) {
+            flush();
+        }
+        *(buffer_.data() + current_position_in_buffer_) = data;
+        ++current_position_in_buffer_;
+    }
 
     //! Stream to write output to.
     output_stream& stream_;
