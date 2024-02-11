@@ -59,7 +59,7 @@ private:
 // NOLINTNEXTLINE
 BASELINE_F(serialize_uint32, msgpack_cxx, serialize_integers_fixture, 100, 0) {
     msgpack::sbuffer buffer;
-    const auto data = get_data<std::uint32_t>();
+    const auto& data = get_data<std::uint32_t>();
     for (auto value : data) {
         msgpack::pack(buffer, value);
     }
@@ -69,7 +69,7 @@ BASELINE_F(serialize_uint32, msgpack_cxx, serialize_integers_fixture, 100, 0) {
 BENCHMARK_F(
     serialize_uint32, msgpack_light, serialize_integers_fixture, 100, 0) {
     msgpack_light::memory_output_stream stream;
-    const auto data = get_data<std::uint32_t>();
+    const auto& data = get_data<std::uint32_t>();
     for (auto value : data) {
         msgpack_light::serialize_to(stream, value);
     }
@@ -78,7 +78,7 @@ BENCHMARK_F(
 // NOLINTNEXTLINE
 BASELINE_F(serialize_int32, msgpack_cxx, serialize_integers_fixture, 100, 0) {
     msgpack::sbuffer buffer;
-    const auto data = get_data<std::int32_t>();
+    const auto& data = get_data<std::int32_t>();
     for (auto value : data) {
         msgpack::pack(buffer, value);
     }
@@ -88,7 +88,7 @@ BASELINE_F(serialize_int32, msgpack_cxx, serialize_integers_fixture, 100, 0) {
 BENCHMARK_F(
     serialize_int32, msgpack_light, serialize_integers_fixture, 100, 0) {
     msgpack_light::memory_output_stream stream;
-    const auto data = get_data<std::int32_t>();
+    const auto& data = get_data<std::int32_t>();
     for (auto value : data) {
         msgpack_light::serialize_to(stream, value);
     }

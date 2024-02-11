@@ -59,7 +59,7 @@ private:
 // NOLINTNEXTLINE
 BASELINE_F(serialize_float, msgpack_cxx, serialize_float_fixture, 100, 0) {
     msgpack::sbuffer buffer;
-    const auto data = get_data<float>();
+    const auto& data = get_data<float>();
     for (auto value : data) {
         msgpack::pack(buffer, value);
     }
@@ -68,7 +68,7 @@ BASELINE_F(serialize_float, msgpack_cxx, serialize_float_fixture, 100, 0) {
 // NOLINTNEXTLINE
 BENCHMARK_F(serialize_float, msgpack_light, serialize_float_fixture, 100, 0) {
     msgpack_light::memory_output_stream stream;
-    const auto data = get_data<float>();
+    const auto& data = get_data<float>();
     for (auto value : data) {
         msgpack_light::serialize_to(stream, value);
     }
@@ -77,7 +77,7 @@ BENCHMARK_F(serialize_float, msgpack_light, serialize_float_fixture, 100, 0) {
 // NOLINTNEXTLINE
 BASELINE_F(serialize_double, msgpack_cxx, serialize_float_fixture, 100, 0) {
     msgpack::sbuffer buffer;
-    const auto data = get_data<double>();
+    const auto& data = get_data<double>();
     for (auto value : data) {
         msgpack::pack(buffer, value);
     }
@@ -86,7 +86,7 @@ BASELINE_F(serialize_double, msgpack_cxx, serialize_float_fixture, 100, 0) {
 // NOLINTNEXTLINE
 BENCHMARK_F(serialize_double, msgpack_light, serialize_float_fixture, 100, 0) {
     msgpack_light::memory_output_stream stream;
-    const auto data = get_data<double>();
+    const auto& data = get_data<double>();
     for (auto value : data) {
         msgpack_light::serialize_to(stream, value);
     }

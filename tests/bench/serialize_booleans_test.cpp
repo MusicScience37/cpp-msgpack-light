@@ -52,7 +52,7 @@ private:
 BASELINE_F(
     serialize_booleans, msgpack_cxx, serialize_booleans_fixture, 100, 0) {
     msgpack::sbuffer buffer;
-    const auto data = get_data();
+    const auto& data = get_data();
     for (bool value : data) {
         msgpack::pack(buffer, value);
     }
@@ -62,7 +62,7 @@ BASELINE_F(
 BENCHMARK_F(
     serialize_booleans, msgpack_light, serialize_booleans_fixture, 100, 0) {
     msgpack_light::memory_output_stream stream;
-    const auto data = get_data();
+    const auto& data = get_data();
     for (bool value : data) {
         msgpack_light::serialize_to(stream, value);
     }
