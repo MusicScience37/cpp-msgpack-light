@@ -29,28 +29,6 @@ namespace msgpack_light::details {
 /*!
  * \brief Convert to big endian.
  *
- * \tparam UIntType Type of unsigned integer in N bytes.
- * \tparam FastUIntType Type of unsigned integer for calculation.
- * \tparam N Number of bytes.
- * \param[in] from Input.
- * \param[out] to Output.
- */
-template <typename UIntType, typename FastUIntType, std::size_t N>
-inline void to_big_endian_impl(
-    const void* from, std::array<unsigned char, N>* to) noexcept {
-    UIntType value_buffer;
-    std::memcpy(&value_buffer, from, sizeof(value_buffer));
-    auto value = static_cast<FastUIntType>(value_buffer);
-    for (std::size_t i = 0U; i < N; ++i) {
-        (*to)[N - 1U - i] =
-            static_cast<unsigned char>(value & 0xFFU);  // NOLINT
-        value >>= 8U;                                   // NOLINT
-    }
-}
-
-/*!
- * \brief Convert to big endian.
- *
  * \tparam N Number of bytes.
  * \param[in] from Input.
  * \param[out] to Output.
@@ -68,7 +46,10 @@ inline void to_big_endian(
 template <>
 inline void to_big_endian<2U>(
     const void* from, std::array<unsigned char, 2U>* to) noexcept {
-    to_big_endian_impl<std::uint16_t, std::uint_fast16_t, 2U>(from, to);
+    std::uint16_t value{};
+    std::memcpy(&value, from, sizeof(value));
+    (*to)[0U] = static_cast<unsigned char>(value >> 8U);  // NOLINT
+    (*to)[1U] = static_cast<unsigned char>(value);        // NOLINT
 }
 
 /*!
@@ -80,7 +61,12 @@ inline void to_big_endian<2U>(
 template <>
 inline void to_big_endian<4U>(
     const void* from, std::array<unsigned char, 4U>* to) noexcept {
-    to_big_endian_impl<std::uint32_t, std::uint_fast32_t, 4U>(from, to);
+    std::uint32_t value{};
+    std::memcpy(&value, from, sizeof(value));
+    (*to)[0U] = static_cast<unsigned char>(value >> 24U);  // NOLINT
+    (*to)[1U] = static_cast<unsigned char>(value >> 16U);  // NOLINT
+    (*to)[2U] = static_cast<unsigned char>(value >> 8U);   // NOLINT
+    (*to)[3U] = static_cast<unsigned char>(value);         // NOLINT
 }
 
 /*!
@@ -94,8 +80,16 @@ template <>
 inline void to_big_endian<8U>(
     // NOLINTNEXTLINE(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
     const void* from, std::array<unsigned char, 8U>* to) noexcept {
-    // NOLINTNEXTLINE(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
-    to_big_endian_impl<std::uint64_t, std::uint_fast64_t, 8U>(from, to);
+    std::uint64_t value{};
+    std::memcpy(&value, from, sizeof(value));
+    (*to)[0U] = static_cast<unsigned char>(value >> 56U);  // NOLINT
+    (*to)[1U] = static_cast<unsigned char>(value >> 48U);  // NOLINT
+    (*to)[2U] = static_cast<unsigned char>(value >> 40U);  // NOLINT
+    (*to)[3U] = static_cast<unsigned char>(value >> 32U);  // NOLINT
+    (*to)[4U] = static_cast<unsigned char>(value >> 24U);  // NOLINT
+    (*to)[5U] = static_cast<unsigned char>(value >> 16U);  // NOLINT
+    (*to)[6U] = static_cast<unsigned char>(value >> 8U);   // NOLINT
+    (*to)[7U] = static_cast<unsigned char>(value);         // NOLINT
 }
 
 }  // namespace msgpack_light::details
