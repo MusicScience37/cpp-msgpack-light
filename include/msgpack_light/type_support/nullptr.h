@@ -15,11 +15,32 @@
  */
 /*!
  * \file
- * \brief Header to include headers to support common data types.
+ * \brief Definition of classes to support serialization of nullptr.
  */
 #pragma once
 
-#include "msgpack_light/type_support/bool.h"
-#include "msgpack_light/type_support/float.h"
-#include "msgpack_light/type_support/integer.h"
-#include "msgpack_light/type_support/nullptr.h"
+#include <cstddef>
+
+#include "msgpack_light/serialization_buffer.h"
+#include "msgpack_light/type_support/fwd.h"
+
+namespace msgpack_light::type_support {
+
+/*!
+ * \brief Class to serialize nullptr.
+ */
+template <>
+struct serialization_traits<std::nullptr_t> {
+public:
+    /*!
+     * \brief Serialize a value.
+     *
+     * \param[out] buffer Buffer.
+     */
+    static void serialize(
+        serialization_buffer& buffer, std::nullptr_t /*value*/) {
+        buffer.serialize_nil();
+    }
+};
+
+}  // namespace msgpack_light::type_support
