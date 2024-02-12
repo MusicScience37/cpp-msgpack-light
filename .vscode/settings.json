@@ -52,6 +52,6 @@
     }
   },
   "isort.args": ["--profile", "black"],
-  "cSpell.enableFiletypes": ["plantuml", "toml"],
+  "cSpell.enableFiletypes": ["cmake", "plantuml", "toml"],
   "cmake.ctest.allowParallelJobs": true
 }

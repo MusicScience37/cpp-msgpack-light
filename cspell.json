@@ -65,6 +65,7 @@
     "MusicScience37",
     "NOLINT",
     "NOLINTNEXTLINE",
+    "nullptr",
     "plantuml",
     "profdata",
     "profraw",
