@@ -56,6 +56,14 @@ public:
     ~serialization_buffer() noexcept { flush(); }
 
     /*!
+     * \brief Serialize a nli value.
+     */
+    void serialize_nil() {
+        constexpr auto nil_byte = static_cast<unsigned char>(0xC0);
+        put(nil_byte);
+    }
+
+    /*!
      * \brief Serialize a boolean value.
      *
      * \param[in] value Value.

@@ -32,6 +32,17 @@ TEST_CASE("msgpack_light::serialization_buffer") {
     using msgpack_light::memory_output_stream;
     using msgpack_light::serialization_buffer;
 
+    SECTION("serialize nil") {
+        memory_output_stream stream;
+        serialization_buffer buffer(stream);
+
+        buffer.serialize_nil();
+
+        buffer.flush();
+        binary expected_binary{"C0"};
+        CHECK(stream.as_binary() == expected_binary);
+    }
+
     SECTION("serialize bool") {
         bool value{};
         binary expected_binary{};
