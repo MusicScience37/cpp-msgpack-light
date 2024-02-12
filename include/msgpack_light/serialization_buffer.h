@@ -23,6 +23,7 @@
 #include <cstdint>
 #include <cstdlib>
 #include <limits>
+#include <stdexcept>
 
 #include "msgpack_light/details/to_big_endian.h"
 #include "msgpack_light/output_stream.h"
