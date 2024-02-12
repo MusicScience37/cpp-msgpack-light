@@ -279,4 +279,33 @@ TEST_CASE("msgpack_light::serialization_buffer") {
         buffer.flush();
         CHECK(stream.as_binary() == expected_binary);
     }
+
+    SECTION("write data") {
+        const std::size_t data_size = GENERATE(static_cast<std::size_t>(0),
+            static_cast<std::size_t>(1), static_cast<std::size_t>(1023),
+            static_cast<std::size_t>(1024), static_cast<std::size_t>(1025));
+        const auto data_vec = std::vector<unsigned char>(
+            data_size, static_cast<unsigned char>(0x81));
+        const auto data = binary(data_vec.data(), data_vec.size());
+
+        memory_output_stream stream;
+        serialization_buffer buffer(stream);
+
+        buffer.write(data.data(), data.size());
+
+        buffer.flush();
+        CHECK(stream.as_binary() == data);
+    }
+
+    SECTION("write a byte") {
+        const auto data = binary("81");
+
+        memory_output_stream stream;
+        serialization_buffer buffer(stream);
+
+        buffer.put(*data.data());
+
+        buffer.flush();
+        CHECK(stream.as_binary() == data);
+    }
 }

@@ -261,7 +261,6 @@ public:
         current_position_in_buffer_ = 0U;
     }
 
-private:
     /*!
      * \brief Write data.
      *
@@ -294,6 +293,7 @@ private:
         ++current_position_in_buffer_;
     }
 
+private:
     //! Stream to write output to.
     output_stream& stream_;
 
