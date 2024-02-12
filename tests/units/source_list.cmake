@@ -6,5 +6,6 @@ set(SOURCE_FILES
     type_support/bool_test.cpp
     type_support/float_test.cpp
     type_support/integer_test.cpp
+    type_support/nullptr_test.cpp
     type_support/optional_test.cpp
 )

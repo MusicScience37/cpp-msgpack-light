@@ -5,4 +5,5 @@
 #include "type_support/bool_test.cpp"     // NOLINT(bugprone-suspicious-include)
 #include "type_support/float_test.cpp"    // NOLINT(bugprone-suspicious-include)
 #include "type_support/integer_test.cpp"  // NOLINT(bugprone-suspicious-include)
+#include "type_support/nullptr_test.cpp"  // NOLINT(bugprone-suspicious-include)
 #include "type_support/optional_test.cpp"  // NOLINT(bugprone-suspicious-include)
