@@ -243,6 +243,92 @@ public:
     }
 
     /*!
+     * \brief Serialize a size of fixstr format.
+     *
+     * \warning This function assumes that the size is in the range of 0 to
+     * `0x1F`.
+     *
+     * \param[in] size Size.
+     */
+    void serialize_fixstr_size(std::uint8_t size) {
+        constexpr auto prefix = static_cast<unsigned char>(0xA0);
+        put(prefix | size);
+    }
+
+    /*!
+     * \brief Serialize a size of str 8 format.
+     *
+     * \param[in] size Size.
+     */
+    void serialize_str8_size(std::uint8_t size) {
+        constexpr auto prefix = static_cast<unsigned char>(0xD9);
+        put(prefix);
+        put(static_cast<unsigned char>(size));
+    }
+
+    /*!
+     * \brief Serialize a size of str 16 format.
+     *
+     * \param[in] size Size.
+     */
+    void serialize_str16_size(std::uint16_t size) {
+        constexpr auto prefix = static_cast<unsigned char>(0xDA);
+        put(prefix);
+        std::array<unsigned char, 2U> buffer{};
+        details::to_big_endian(&size, &buffer);
+        write(buffer.data(), buffer.size());
+    }
+
+    /*!
+     * \brief Serialize a size of str 32 format.
+     *
+     * \param[in] size Size.
+     */
+    void serialize_str32_size(std::uint32_t size) {
+        constexpr auto prefix = static_cast<unsigned char>(0xDB);
+        put(prefix);
+        std::array<unsigned char, 4U> buffer{};
+        details::to_big_endian(&size, &buffer);
+        write(buffer.data(), buffer.size());
+    }
+
+    /*!
+     * \brief Serialize a size of a string.
+     *
+     * \param[in] size Size.
+     */
+    void serialize_str_size(std::size_t size) {
+        constexpr auto max_fixstr_size = static_cast<std::size_t>(0b11111U);
+        constexpr auto max_str8_size = static_cast<std::size_t>(0xFF);
+        constexpr auto max_str16_size = static_cast<std::size_t>(0xFFFF);
+
+        if (size <= max_str8_size) {
+            if (size <= max_fixstr_size) {
+                serialize_fixstr_size(static_cast<std::uint8_t>(size));
+                return;
+            }
+
+            serialize_str8_size(static_cast<std::uint8_t>(size));
+            return;
+        }
+
+        if (size <= max_str16_size) {
+            serialize_str16_size(static_cast<std::uint16_t>(size));
+            return;
+        }
+
+        if constexpr (sizeof(std::size_t) > 4U) {
+            constexpr auto max_str32_size =
+                static_cast<std::size_t>(0xFFFFFFFF);
+            if (size > max_str32_size) {
+                throw std::runtime_error("Size is too large.");
+            }
+        }
+
+        serialize_str32_size(static_cast<std::uint32_t>(size));
+    }
+
+    /*!
      * \brief Serialize data.
      *
      * \tparam T Type of data.

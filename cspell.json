@@ -42,6 +42,7 @@
     "enduml",
     "fcoverage",
     "fixint",
+    "fixstr",
     "fprofile",
     "fsanitize",
     "genhtml",
