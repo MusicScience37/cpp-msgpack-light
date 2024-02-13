@@ -394,6 +394,92 @@ TEST_CASE("msgpack_light::serialization_buffer") {
         }
     }
 
+    SECTION("serialize sizes of bin 8") {
+        std::uint8_t size{};
+        binary expected_binary;
+        std::tie(size, expected_binary) = GENERATE(table<std::uint8_t, binary>(
+            {{static_cast<std::uint8_t>(0x00U), binary("C400")},
+                {static_cast<std::uint8_t>(0xA7U), binary("C4A7")},
+                {static_cast<std::uint8_t>(0xFFU), binary("C4FF")}}));
+
+        memory_output_stream stream;
+        serialization_buffer buffer(stream);
+
+        buffer.serialize_bin8_size(size);
+
+        buffer.flush();
+        CHECK(stream.as_binary() == expected_binary);
+    }
+
+    SECTION("serialize sizes of bin 16") {
+        std::uint16_t size{};
+        binary expected_binary;
+        std::tie(size, expected_binary) = GENERATE(table<std::uint16_t, binary>(
+            {{static_cast<std::uint16_t>(0x0100U), binary("C50100")},
+                {static_cast<std::uint16_t>(0x8A54U), binary("C58A54")},
+                {static_cast<std::uint16_t>(0xFFFFU), binary("C5FFFF")}}));
+
+        memory_output_stream stream;
+        serialization_buffer buffer(stream);
+
+        buffer.serialize_bin16_size(size);
+
+        buffer.flush();
+        CHECK(stream.as_binary() == expected_binary);
+    }
+
+    SECTION("serialize sizes of bin 32") {
+        std::uint32_t size{};
+        binary expected_binary;
+        std::tie(size, expected_binary) = GENERATE(table<std::uint32_t, binary>(
+            {{static_cast<std::uint32_t>(0x00010000U), binary("C600010000")},
+                {static_cast<std::uint32_t>(0xA57B531CU), binary("C6A57B531C")},
+                {static_cast<std::uint32_t>(0xFFFFFFFFU),
+                    binary("C6FFFFFFFF")}}));
+
+        memory_output_stream stream;
+        serialization_buffer buffer(stream);
+
+        buffer.serialize_bin32_size(size);
+
+        buffer.flush();
+        CHECK(stream.as_binary() == expected_binary);
+    }
+
+    SECTION("serialize size of binaries") {
+        std::size_t size{};
+        binary expected_binary;
+        std::tie(size, expected_binary) = GENERATE(table<std::size_t, binary>(
+            {{static_cast<std::size_t>(0x00U), binary("C400")},
+                {static_cast<std::size_t>(0xA7U), binary("C4A7")},
+                {static_cast<std::size_t>(0xFFU), binary("C4FF")},
+                {static_cast<std::size_t>(0x0100U), binary("C50100")},
+                {static_cast<std::size_t>(0x8A54U), binary("C58A54")},
+                {static_cast<std::size_t>(0xFFFFU), binary("C5FFFF")},
+                {static_cast<std::size_t>(0x00010000U), binary("C600010000")},
+                {static_cast<std::size_t>(0xA57B531CU), binary("C6A57B531C")},
+                {static_cast<std::size_t>(0xFFFFFFFFU),
+                    binary("C6FFFFFFFF")}}));
+
+        memory_output_stream stream;
+        serialization_buffer buffer(stream);
+
+        buffer.serialize_bin_size(size);
+
+        buffer.flush();
+        CHECK(stream.as_binary() == expected_binary);
+    }
+
+    if constexpr (sizeof(std::size_t) > 4U) {
+        SECTION("try to serialize too large size of binary") {
+            memory_output_stream stream;
+            serialization_buffer buffer(stream);
+
+            constexpr auto size = static_cast<std::size_t>(0x100000000U);
+            CHECK_THROWS(buffer.serialize_bin_size(size));
+        }
+    }
+
     SECTION("write data") {
         const std::size_t data_size =
             GENERATE(static_cast<std::size_t>(0), static_cast<std::size_t>(1),
