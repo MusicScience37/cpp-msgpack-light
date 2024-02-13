@@ -331,6 +331,73 @@ public:
     }
 
     /*!
+     * \brief Serialize a size of bin 8 format.
+     *
+     * \param[in] size Size.
+     */
+    void serialize_bin8_size(std::uint8_t size) {
+        constexpr auto prefix = static_cast<unsigned char>(0xC4);
+        put(prefix);
+        put(static_cast<unsigned char>(size));
+    }
+
+    /*!
+     * \brief Serialize a size of bin 16 format.
+     *
+     * \param[in] size Size.
+     */
+    void serialize_bin16_size(std::uint16_t size) {
+        constexpr auto prefix = static_cast<unsigned char>(0xC5);
+        put(prefix);
+        std::array<unsigned char, 2U> buffer{};
+        details::to_big_endian(&size, &buffer);
+        write(buffer.data(), buffer.size());
+    }
+
+    /*!
+     * \brief Serialize a size of bin 32 format.
+     *
+     * \param[in] size Size.
+     */
+    void serialize_bin32_size(std::uint32_t size) {
+        constexpr auto prefix = static_cast<unsigned char>(0xC6);
+        put(prefix);
+        std::array<unsigned char, 4U> buffer{};
+        details::to_big_endian(&size, &buffer);
+        write(buffer.data(), buffer.size());
+    }
+
+    /*!
+     * \brief Serialize a size of a binary.
+     *
+     * \param[in] size Size.
+     */
+    void serialize_bin_size(std::size_t size) {
+        constexpr auto max_bin8_size = static_cast<std::size_t>(0xFF);
+        constexpr auto max_bin16_size = static_cast<std::size_t>(0xFFFF);
+
+        if (size <= max_bin8_size) {
+            serialize_bin8_size(static_cast<std::uint8_t>(size));
+            return;
+        }
+
+        if (size <= max_bin16_size) {
+            serialize_bin16_size(static_cast<std::uint16_t>(size));
+            return;
+        }
+
+        if constexpr (sizeof(std::size_t) > 4U) {
+            constexpr auto max_bin32_size =
+                static_cast<std::size_t>(0xFFFFFFFF);
+            if (size > max_bin32_size) {
+                throw std::runtime_error("Size is too large.");
+            }
+        }
+
+        serialize_bin32_size(static_cast<std::uint32_t>(size));
+    }
+
+    /*!
      * \brief Serialize data.
      *
      * \tparam T Type of data.

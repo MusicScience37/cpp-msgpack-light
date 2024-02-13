@@ -9,4 +9,5 @@ set(SOURCE_FILES
     type_support/nullptr_test.cpp
     type_support/optional_test.cpp
     type_support/string_test.cpp
+    type_support/vector_test.cpp
 )
