@@ -25,12 +25,14 @@
 #include <catch2/generators/catch_generators.hpp>
 
 #include "msgpack_light/binary.h"
+#include "msgpack_light/details/static_memory_buffer_size.h"
 #include "msgpack_light/memory_output_stream.h"
 
 TEST_CASE("msgpack_light::serialization_buffer") {
     using msgpack_light::binary;
     using msgpack_light::memory_output_stream;
     using msgpack_light::serialization_buffer;
+    using msgpack_light::details::static_memory_buffer_size;
 
     SECTION("serialize nil") {
         memory_output_stream stream;
@@ -278,5 +280,148 @@ TEST_CASE("msgpack_light::serialization_buffer") {
 
         buffer.flush();
         CHECK(stream.as_binary() == expected_binary);
+    }
+
+    SECTION("serialize size of fixstr") {
+        std::uint8_t size{};
+        binary expected_binary;
+        std::tie(size, expected_binary) = GENERATE(table<std::uint8_t, binary>(
+            {{static_cast<std::uint8_t>(0x00U), binary("A0")},
+                {static_cast<std::uint8_t>(0x01U), binary("A1")},
+                {static_cast<std::uint8_t>(0x0AU), binary("AA")},
+                {static_cast<std::uint8_t>(0x1FU), binary("BF")}}));
+
+        memory_output_stream stream;
+        serialization_buffer buffer(stream);
+
+        buffer.serialize_fixstr_size(size);
+
+        buffer.flush();
+        CHECK(stream.as_binary() == expected_binary);
+    }
+
+    SECTION("serialize size of str 8") {
+        std::uint8_t size{};
+        binary expected_binary;
+        std::tie(size, expected_binary) = GENERATE(table<std::uint8_t, binary>(
+            {{static_cast<std::uint8_t>(0x20U), binary("D920")},
+                {static_cast<std::uint8_t>(0xA7U), binary("D9A7")},
+                {static_cast<std::uint8_t>(0xFFU), binary("D9FF")}}));
+
+        memory_output_stream stream;
+        serialization_buffer buffer(stream);
+
+        buffer.serialize_str8_size(size);
+
+        buffer.flush();
+        CHECK(stream.as_binary() == expected_binary);
+    }
+
+    SECTION("serialize size of str 16") {
+        std::uint16_t size{};
+        binary expected_binary;
+        std::tie(size, expected_binary) = GENERATE(table<std::uint16_t, binary>(
+            {{static_cast<std::uint16_t>(0x0100U), binary("DA0100")},
+                {static_cast<std::uint16_t>(0x8A54U), binary("DA8A54")},
+                // cspell: ignore DAFFFF
+                {static_cast<std::uint16_t>(0xFFFFU), binary("DAFFFF")}}));
+
+        memory_output_stream stream;
+        serialization_buffer buffer(stream);
+
+        buffer.serialize_str16_size(size);
+
+        buffer.flush();
+        CHECK(stream.as_binary() == expected_binary);
+    }
+
+    SECTION("serialize size of str 32") {
+        std::uint32_t size{};
+        binary expected_binary;
+        std::tie(size, expected_binary) = GENERATE(table<std::uint32_t, binary>(
+            {{static_cast<std::uint32_t>(0x00010000U), binary("DB00010000")},
+                {static_cast<std::uint32_t>(0xA57B531CU), binary("DBA57B531C")},
+                // cspell: ignore DBFFFFFFFF
+                {static_cast<std::uint32_t>(0xFFFFFFFFU),
+                    binary("DBFFFFFFFF")}}));
+
+        memory_output_stream stream;
+        serialization_buffer buffer(stream);
+
+        buffer.serialize_str32_size(size);
+
+        buffer.flush();
+        CHECK(stream.as_binary() == expected_binary);
+    }
+
+    SECTION("serialize size of strings") {
+        std::size_t size{};
+        binary expected_binary;
+        std::tie(size, expected_binary) = GENERATE(table<std::size_t, binary>(
+            {{static_cast<std::size_t>(0x00U), binary("A0")},
+                {static_cast<std::size_t>(0x01U), binary("A1")},
+                {static_cast<std::size_t>(0x0AU), binary("AA")},
+                {static_cast<std::size_t>(0x1FU), binary("BF")},
+                {static_cast<std::size_t>(0x20U), binary("D920")},
+                {static_cast<std::size_t>(0xA7U), binary("D9A7")},
+                {static_cast<std::size_t>(0xFFU), binary("D9FF")},
+                {static_cast<std::size_t>(0x0100U), binary("DA0100")},
+                {static_cast<std::size_t>(0x8A54U), binary("DA8A54")},
+                // cspell: ignore DAFFFF
+                {static_cast<std::size_t>(0xFFFFU), binary("DAFFFF")},
+                {static_cast<std::size_t>(0x00010000U), binary("DB00010000")},
+                {static_cast<std::size_t>(0xA57B531CU), binary("DBA57B531C")},
+                // cspell: ignore DBFFFFFFFF
+                {static_cast<std::size_t>(0xFFFFFFFFU),
+                    binary("DBFFFFFFFF")}}));
+
+        memory_output_stream stream;
+        serialization_buffer buffer(stream);
+
+        buffer.serialize_str_size(size);
+
+        buffer.flush();
+        CHECK(stream.as_binary() == expected_binary);
+    }
+
+    if constexpr (sizeof(std::size_t) > 4U) {
+        SECTION("try to serialize too large size of string") {
+            memory_output_stream stream;
+            serialization_buffer buffer(stream);
+
+            constexpr auto size = static_cast<std::size_t>(0x100000000U);
+            CHECK_THROWS(buffer.serialize_str_size(size));
+        }
+    }
+
+    SECTION("write data") {
+        const std::size_t data_size =
+            GENERATE(static_cast<std::size_t>(0), static_cast<std::size_t>(1),
+                static_cast<std::size_t>(static_memory_buffer_size - 1U),
+                static_cast<std::size_t>(static_memory_buffer_size),
+                static_cast<std::size_t>(static_memory_buffer_size + 1U));
+        const auto data_vec = std::vector<unsigned char>(
+            data_size, static_cast<unsigned char>(0x81));
+        const auto data = binary(data_vec.data(), data_vec.size());
+
+        memory_output_stream stream;
+        serialization_buffer buffer(stream);
+
+        buffer.write(data.data(), data.size());
+
+        buffer.flush();
+        CHECK(stream.as_binary() == data);
+    }
+
+    SECTION("write a byte") {
+        const auto data = binary("81");
+
+        memory_output_stream stream;
+        serialization_buffer buffer(stream);
+
+        buffer.put(*data.data());
+
+        buffer.flush();
+        CHECK(stream.as_binary() == data);
     }
 }

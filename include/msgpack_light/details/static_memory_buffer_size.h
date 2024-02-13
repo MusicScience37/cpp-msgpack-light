@@ -15,12 +15,17 @@
  */
 /*!
  * \file
- * \brief Header to include headers to support common data types.
+ * \brief Definition of static_memory_buffer_size constant.
  */
 #pragma once
 
-#include "msgpack_light/type_support/bool.h"
-#include "msgpack_light/type_support/float.h"
-#include "msgpack_light/type_support/integer.h"
-#include "msgpack_light/type_support/nullptr.h"
-#include "msgpack_light/type_support/string.h"
+#include <cstddef>
+
+namespace msgpack_light::details {
+
+/*!
+ * \brief Size of buffers on memory defined using static arrays.
+ */
+constexpr std::size_t static_memory_buffer_size = 128U;
+
+}  // namespace msgpack_light::details
