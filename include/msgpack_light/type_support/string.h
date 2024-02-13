@@ -56,9 +56,11 @@ public:
 /*!
  * \brief Class to serialize strings.
  */
-template <>
-struct serialization_traits<std::string>
-    : public details::general_string_serialization_traits<std::string> {};
+template <typename Allocator>
+struct serialization_traits<
+    std::basic_string<char, std::char_traits<char>, Allocator>>
+    : public details::general_string_serialization_traits<
+          std::basic_string<char, std::char_traits<char>, Allocator>> {};
 
 /*!
  * \brief Class to serialize strings.
