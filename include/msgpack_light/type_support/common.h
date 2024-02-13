@@ -23,3 +23,4 @@
 #include "msgpack_light/type_support/float.h"
 #include "msgpack_light/type_support/integer.h"
 #include "msgpack_light/type_support/nullptr.h"
+#include "msgpack_light/type_support/string.h"
