@@ -41,6 +41,7 @@
     "endmacro",
     "enduml",
     "fcoverage",
+    "fixarray",
     "fixint",
     "fixstr",
     "fprofile",

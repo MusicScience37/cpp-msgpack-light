@@ -398,6 +398,74 @@ public:
     }
 
     /*!
+     * \brief Serialize a size of fixarray format.
+     *
+     * \warning This function assumes that the size is in the range of 0 to 15.
+     *
+     * \param[in] size Size.
+     */
+    void serialize_fixarray_size(std::uint8_t size) {
+        constexpr auto prefix = static_cast<unsigned char>(0x90);
+        put(prefix | size);
+    }
+
+    /*!
+     * \brief Serialize a size of array 16 format.
+     *
+     * \param[in] size Size.
+     */
+    void serialize_array16_size(std::uint16_t size) {
+        constexpr auto prefix = static_cast<unsigned char>(0xDC);
+        put(prefix);
+        std::array<unsigned char, 2U> buffer{};
+        details::to_big_endian(&size, &buffer);
+        write(buffer.data(), buffer.size());
+    }
+
+    /*!
+     * \brief Serialize a size of array 32 format.
+     *
+     * \param[in] size Size.
+     */
+    void serialize_array32_size(std::uint32_t size) {
+        constexpr auto prefix = static_cast<unsigned char>(0xDD);
+        put(prefix);
+        std::array<unsigned char, 4U> buffer{};
+        details::to_big_endian(&size, &buffer);
+        write(buffer.data(), buffer.size());
+    }
+
+    /*!
+     * \brief Serialize a size of an array.
+     *
+     * \param[in] size Size.
+     */
+    void serialize_array_size(std::size_t size) {
+        constexpr auto max_fixarray_size = static_cast<std::size_t>(15);
+        constexpr auto max_array16_size = static_cast<std::size_t>(0xFFFF);
+
+        if (size <= max_fixarray_size) {
+            serialize_fixarray_size(static_cast<std::uint8_t>(size));
+            return;
+        }
+
+        if (size <= max_array16_size) {
+            serialize_array16_size(static_cast<std::uint16_t>(size));
+            return;
+        }
+
+        if constexpr (sizeof(std::size_t) > 4U) {
+            constexpr auto max_array32_size =
+                static_cast<std::size_t>(0xFFFFFFFF);
+            if (size > max_array32_size) {
+                throw std::runtime_error("Size is too large.");
+            }
+        }
+
+        serialize_array32_size(static_cast<std::uint32_t>(size));
+    }
+
+    /*!
      * \brief Serialize data.
      *
      * \tparam T Type of data.
