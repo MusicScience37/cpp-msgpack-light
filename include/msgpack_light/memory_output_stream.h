@@ -26,6 +26,7 @@
 #include <new>
 
 #include "msgpack_light/binary.h"
+#include "msgpack_light/details/static_memory_buffer_size.h"
 #include "msgpack_light/output_stream.h"
 
 namespace msgpack_light {
@@ -141,7 +142,9 @@ public:
 
 private:
     //! Size of the initial buffer.
-    static constexpr std::size_t initial_buffer_size = 1024U;
+    static constexpr std::size_t initial_buffer_size = 4096U;
+
+    static_assert(initial_buffer_size > details::static_memory_buffer_size);
 
     //! Pointer to the current buffer.
     unsigned char* buffer_;

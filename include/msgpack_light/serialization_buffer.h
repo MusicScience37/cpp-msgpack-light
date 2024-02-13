@@ -25,6 +25,7 @@
 #include <limits>
 #include <stdexcept>
 
+#include "msgpack_light/details/static_memory_buffer_size.h"
 #include "msgpack_light/details/to_big_endian.h"
 #include "msgpack_light/output_stream.h"
 #include "msgpack_light/serialization_buffer_fwd.h"
@@ -385,7 +386,8 @@ private:
     output_stream& stream_;
 
     //! Size of the internal buffer.
-    static constexpr std::size_t buffer_size = 1024U;
+    static constexpr std::size_t buffer_size =
+        details::static_memory_buffer_size;
 
     //! Internal buffer.
     std::array<unsigned char, buffer_size> buffer_{};

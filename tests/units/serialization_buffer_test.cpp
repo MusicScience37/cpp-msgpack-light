@@ -25,12 +25,14 @@
 #include <catch2/generators/catch_generators.hpp>
 
 #include "msgpack_light/binary.h"
+#include "msgpack_light/details/static_memory_buffer_size.h"
 #include "msgpack_light/memory_output_stream.h"
 
 TEST_CASE("msgpack_light::serialization_buffer") {
     using msgpack_light::binary;
     using msgpack_light::memory_output_stream;
     using msgpack_light::serialization_buffer;
+    using msgpack_light::details::static_memory_buffer_size;
 
     SECTION("serialize nil") {
         memory_output_stream stream;
@@ -393,9 +395,11 @@ TEST_CASE("msgpack_light::serialization_buffer") {
     }
 
     SECTION("write data") {
-        const std::size_t data_size = GENERATE(static_cast<std::size_t>(0),
-            static_cast<std::size_t>(1), static_cast<std::size_t>(1023),
-            static_cast<std::size_t>(1024), static_cast<std::size_t>(1025));
+        const std::size_t data_size =
+            GENERATE(static_cast<std::size_t>(0), static_cast<std::size_t>(1),
+                static_cast<std::size_t>(static_memory_buffer_size - 1U),
+                static_cast<std::size_t>(static_memory_buffer_size),
+                static_cast<std::size_t>(static_memory_buffer_size + 1U));
         const auto data_vec = std::vector<unsigned char>(
             data_size, static_cast<unsigned char>(0x81));
         const auto data = binary(data_vec.data(), data_vec.size());
