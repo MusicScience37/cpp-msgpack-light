@@ -24,6 +24,8 @@
 #include <cstdint>
 #include <cstring>
 
+#include "msgpack_light/details/mutable_static_binary_view.h"
+
 namespace msgpack_light::details {
 
 /*!
@@ -35,7 +37,7 @@ namespace msgpack_light::details {
  */
 template <std::size_t N>
 inline void to_big_endian(
-    const void* from, std::array<unsigned char, N>* to) noexcept;
+    const void* from, mutable_static_binary_view<N> to) noexcept;
 
 /*!
  * \brief Convert to big endian.
@@ -45,11 +47,11 @@ inline void to_big_endian(
  */
 template <>
 inline void to_big_endian<2U>(
-    const void* from, std::array<unsigned char, 2U>* to) noexcept {
+    const void* from, mutable_static_binary_view<2U> to) noexcept {
     std::uint16_t value{};
     std::memcpy(&value, from, sizeof(value));
-    (*to)[0U] = static_cast<unsigned char>(value >> 8U);  // NOLINT
-    (*to)[1U] = static_cast<unsigned char>(value);        // NOLINT
+    to[0U] = static_cast<unsigned char>(value >> 8U);  // NOLINT
+    to[1U] = static_cast<unsigned char>(value);        // NOLINT
 }
 
 /*!
@@ -60,13 +62,13 @@ inline void to_big_endian<2U>(
  */
 template <>
 inline void to_big_endian<4U>(
-    const void* from, std::array<unsigned char, 4U>* to) noexcept {
+    const void* from, mutable_static_binary_view<4U> to) noexcept {
     std::uint32_t value{};
     std::memcpy(&value, from, sizeof(value));
-    (*to)[0U] = static_cast<unsigned char>(value >> 24U);  // NOLINT
-    (*to)[1U] = static_cast<unsigned char>(value >> 16U);  // NOLINT
-    (*to)[2U] = static_cast<unsigned char>(value >> 8U);   // NOLINT
-    (*to)[3U] = static_cast<unsigned char>(value);         // NOLINT
+    to[0U] = static_cast<unsigned char>(value >> 24U);  // NOLINT
+    to[1U] = static_cast<unsigned char>(value >> 16U);  // NOLINT
+    to[2U] = static_cast<unsigned char>(value >> 8U);   // NOLINT
+    to[3U] = static_cast<unsigned char>(value);         // NOLINT
 }
 
 /*!
@@ -79,17 +81,30 @@ template <>
 // NOLINTNEXTLINE(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
 inline void to_big_endian<8U>(
     // NOLINTNEXTLINE(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
-    const void* from, std::array<unsigned char, 8U>* to) noexcept {
+    const void* from, mutable_static_binary_view<8U> to) noexcept {
     std::uint64_t value{};
     std::memcpy(&value, from, sizeof(value));
-    (*to)[0U] = static_cast<unsigned char>(value >> 56U);  // NOLINT
-    (*to)[1U] = static_cast<unsigned char>(value >> 48U);  // NOLINT
-    (*to)[2U] = static_cast<unsigned char>(value >> 40U);  // NOLINT
-    (*to)[3U] = static_cast<unsigned char>(value >> 32U);  // NOLINT
-    (*to)[4U] = static_cast<unsigned char>(value >> 24U);  // NOLINT
-    (*to)[5U] = static_cast<unsigned char>(value >> 16U);  // NOLINT
-    (*to)[6U] = static_cast<unsigned char>(value >> 8U);   // NOLINT
-    (*to)[7U] = static_cast<unsigned char>(value);         // NOLINT
+    to[0U] = static_cast<unsigned char>(value >> 56U);  // NOLINT
+    to[1U] = static_cast<unsigned char>(value >> 48U);  // NOLINT
+    to[2U] = static_cast<unsigned char>(value >> 40U);  // NOLINT
+    to[3U] = static_cast<unsigned char>(value >> 32U);  // NOLINT
+    to[4U] = static_cast<unsigned char>(value >> 24U);  // NOLINT
+    to[5U] = static_cast<unsigned char>(value >> 16U);  // NOLINT
+    to[6U] = static_cast<unsigned char>(value >> 8U);   // NOLINT
+    to[7U] = static_cast<unsigned char>(value);         // NOLINT
+}
+
+/*!
+ * \brief Convert to big endian.
+ *
+ * \tparam N Number of bytes.
+ * \param[in] from Input.
+ * \param[out] to Output.
+ */
+template <std::size_t N>
+inline void to_big_endian(
+    const void* from, std::array<unsigned char, N>* to) noexcept {
+    to_big_endian(from, mutable_static_binary_view<N>(to->data()));
 }
 
 }  // namespace msgpack_light::details
