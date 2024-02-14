@@ -15,9 +15,10 @@
  */
 /*!
  * \file
- * \brief Test of classes to support serialization of vectors.
+ * \brief Test of classes to support serialization of std::unordered_set
+ * objects.
  */
-#include "msgpack_light/type_support/vector.h"
+#include "msgpack_light/type_support/unordered_set.h"
 
 #include <catch2/catch_test_macros.hpp>
 #include <catch2/generators/catch_generators.hpp>
@@ -28,19 +29,19 @@
 #include "msgpack_light/type_support/common.h"
 
 TEST_CASE(
-    "msgpack_light::type_support::serialization_traits<std::vector<int>>") {
+    "msgpack_light::type_support::serialization_traits<std::unordered_set<int>"
+    ">") {
     using msgpack_light::binary;
     using msgpack_light::memory_output_stream;
     using msgpack_light::serialization_buffer;
 
     SECTION("serialize") {
-        std::vector<int> value;
+        std::unordered_set<int> value;
         binary expected_binary;
-        std::tie(value, expected_binary) = GENERATE(
-            table<std::vector<int>, binary>({{std::vector<int>(), binary("90")},
-                {std::vector<int>{0x2A}, binary("912A")},
-                {std::vector<int>{0x2A, 0x3B}, binary("922A3B")},
-                {std::vector<int>{0x2A, 0x3B, 0x4C}, binary("932A3B4C")}}));
+        std::tie(value, expected_binary) =
+            GENERATE(table<std::unordered_set<int>, binary>(
+                {{std::unordered_set<int>(), binary("90")},
+                    {std::unordered_set<int>{0x2A}, binary("912A")}}));
 
         memory_output_stream stream;
         serialization_buffer buffer(stream);
@@ -53,23 +54,19 @@ TEST_CASE(
 }
 
 TEST_CASE(
-    "msgpack_light::type_support::serialization_traits<std::vector<unsigned "
-    "char>>") {
+    "msgpack_light::type_support::serialization_traits<std::unordered_multiset<"
+    "int>>") {
     using msgpack_light::binary;
     using msgpack_light::memory_output_stream;
     using msgpack_light::serialization_buffer;
 
     SECTION("serialize") {
-        std::vector<unsigned char> value;
+        std::unordered_multiset<int> value;
         binary expected_binary;
         std::tie(value, expected_binary) =
-            GENERATE(table<std::vector<unsigned char>,
-                binary>({{std::vector<unsigned char>(), binary("C400")},
-                {std::vector<unsigned char>{static_cast<unsigned char>(0xAB)},
-                    binary("C401AB")},
-                {std::vector<unsigned char>{static_cast<unsigned char>(0xAB),
-                     static_cast<unsigned char>(0xCD)},
-                    binary("C402ABCD")}}));
+            GENERATE(table<std::unordered_multiset<int>, binary>(
+                {{std::unordered_multiset<int>(), binary("90")},
+                    {std::unordered_multiset<int>{0x2A}, binary("912A")}}));
 
         memory_output_stream stream;
         serialization_buffer buffer(stream);

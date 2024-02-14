@@ -26,7 +26,6 @@
 #include "msgpack_light/binary.h"
 #include "msgpack_light/memory_output_stream.h"
 #include "msgpack_light/serialize.h"
-#include "msgpack_light/type_support/vector.h"
 
 class serialize_binaries_fixture : public celero::TestFixture {
 public:

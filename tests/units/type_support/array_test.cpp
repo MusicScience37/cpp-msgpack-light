@@ -15,9 +15,9 @@
  */
 /*!
  * \file
- * \brief Test of classes to support serialization of vectors.
+ * \brief Test of classes to support serialization of std::array objects.
  */
-#include "msgpack_light/type_support/vector.h"
+#include "msgpack_light/type_support/array.h"
 
 #include <catch2/catch_test_macros.hpp>
 #include <catch2/generators/catch_generators.hpp>
@@ -28,19 +28,14 @@
 #include "msgpack_light/type_support/common.h"
 
 TEST_CASE(
-    "msgpack_light::type_support::serialization_traits<std::vector<int>>") {
+    "msgpack_light::type_support::serialization_traits<std::array<int>>") {
     using msgpack_light::binary;
     using msgpack_light::memory_output_stream;
     using msgpack_light::serialization_buffer;
 
-    SECTION("serialize") {
-        std::vector<int> value;
-        binary expected_binary;
-        std::tie(value, expected_binary) = GENERATE(
-            table<std::vector<int>, binary>({{std::vector<int>(), binary("90")},
-                {std::vector<int>{0x2A}, binary("912A")},
-                {std::vector<int>{0x2A, 0x3B}, binary("922A3B")},
-                {std::vector<int>{0x2A, 0x3B, 0x4C}, binary("932A3B4C")}}));
+    SECTION("serialize an empty array") {
+        const std::array<int, 0> value{};
+        const auto expected_binary = binary("90");
 
         memory_output_stream stream;
         serialization_buffer buffer(stream);
@@ -50,26 +45,36 @@ TEST_CASE(
         buffer.flush();
         CHECK(stream.as_binary() == expected_binary);
     }
-}
 
-TEST_CASE(
-    "msgpack_light::type_support::serialization_traits<std::vector<unsigned "
-    "char>>") {
-    using msgpack_light::binary;
-    using msgpack_light::memory_output_stream;
-    using msgpack_light::serialization_buffer;
+    SECTION("serialize an array with one element") {
+        const std::array<int, 1> value{0x2A};
+        const auto expected_binary = binary("912A");
 
-    SECTION("serialize") {
-        std::vector<unsigned char> value;
-        binary expected_binary;
-        std::tie(value, expected_binary) =
-            GENERATE(table<std::vector<unsigned char>,
-                binary>({{std::vector<unsigned char>(), binary("C400")},
-                {std::vector<unsigned char>{static_cast<unsigned char>(0xAB)},
-                    binary("C401AB")},
-                {std::vector<unsigned char>{static_cast<unsigned char>(0xAB),
-                     static_cast<unsigned char>(0xCD)},
-                    binary("C402ABCD")}}));
+        memory_output_stream stream;
+        serialization_buffer buffer(stream);
+
+        buffer.serialize(value);
+
+        buffer.flush();
+        CHECK(stream.as_binary() == expected_binary);
+    }
+
+    SECTION("serialize an array with two elements") {
+        const std::array<int, 2> value{0x2A, 0x3B};
+        const auto expected_binary = binary("922A3B");
+
+        memory_output_stream stream;
+        serialization_buffer buffer(stream);
+
+        buffer.serialize(value);
+
+        buffer.flush();
+        CHECK(stream.as_binary() == expected_binary);
+    }
+
+    SECTION("serialize an array with two elements") {
+        const std::array<int, 3> value{0x2A, 0x3B, 0x4C};
+        const auto expected_binary = binary("932A3B4C");
 
         memory_output_stream stream;
         serialization_buffer buffer(stream);

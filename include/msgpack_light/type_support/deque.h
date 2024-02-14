@@ -15,13 +15,26 @@
  */
 /*!
  * \file
- * \brief Header to include headers to support common data types.
+ * \brief Definition of classes to support serialization of std::deque objects.
  */
 #pragma once
 
-#include "msgpack_light/type_support/bool.h"
-#include "msgpack_light/type_support/float.h"
-#include "msgpack_light/type_support/integer.h"
-#include "msgpack_light/type_support/nullptr.h"
-#include "msgpack_light/type_support/string.h"
-#include "msgpack_light/type_support/vector.h"
+#include <deque>
+
+#include "msgpack_light/type_support/details/general_array_container_traits.h"
+#include "msgpack_light/type_support/fwd.h"
+
+namespace msgpack_light::type_support {
+
+/*!
+ * \brief Class to serialize std::deque objects.
+ *
+ * \tparam T Type of elements.
+ * \tparam Allocator Type of allocators.
+ */
+template <typename T, typename Allocator>
+struct serialization_traits<std::deque<T, Allocator>>
+    : public details::general_array_container_traits<std::deque<T, Allocator>> {
+};
+
+}  // namespace msgpack_light::type_support

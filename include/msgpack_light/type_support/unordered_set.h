@@ -15,38 +15,39 @@
  */
 /*!
  * \file
- * \brief Definition of classes to support serialization of vectors.
+ * \brief Definition of classes to support serialization of std::unordered_set
+ * objects.
  */
 #pragma once
 
-#include <vector>
+#include <unordered_set>
 
-#include "msgpack_light/serialization_buffer.h"
 #include "msgpack_light/type_support/details/general_array_container_traits.h"
-#include "msgpack_light/type_support/details/general_binary_container_traits.h"
 #include "msgpack_light/type_support/fwd.h"
 
 namespace msgpack_light::type_support {
 
 /*!
- * \brief Class to serialize std::vector objects.
+ * \brief Class to serialize std::unordered_set objects.
+ *
+ * \tparam Key Type of elements.
+ * \tparam Compare Type of functions to compare elements.
+ * \tparam Allocator Type of allocators.
+ */
+template <typename Key, typename Compare, typename Allocator>
+struct serialization_traits<std::unordered_set<Key, Compare, Allocator>>
+    : public details::general_array_container_traits<
+          std::unordered_set<Key, Compare, Allocator>> {};
+
+/*!
+ * \brief Class to serialize std::unordered_multiset objects.
  *
  * \tparam T Type of elements.
  * \tparam Allocator Type of allocators.
  */
 template <typename T, typename Allocator>
-struct serialization_traits<std::vector<T, Allocator>>
+struct serialization_traits<std::unordered_multiset<T, Allocator>>
     : public details::general_array_container_traits<
-          std::vector<T, Allocator>> {};
-
-/*!
- * \brief Class to serialize std::vector objects with `unsigned char` elements.
- *
- * \tparam Allocator Type of allocators.
- */
-template <typename Allocator>
-struct serialization_traits<std::vector<unsigned char, Allocator>>
-    : public details::general_binary_container_traits<
-          std::vector<unsigned char, Allocator>> {};
+          std::unordered_multiset<T, Allocator>> {};
 
 }  // namespace msgpack_light::type_support

@@ -15,38 +15,42 @@
  */
 /*!
  * \file
- * \brief Definition of classes to support serialization of vectors.
+ * \brief Definition of classes to support serialization of std::forward_list
+ * objects.
  */
 #pragma once
 
-#include <vector>
+#include <forward_list>
+#include <iterator>
 
-#include "msgpack_light/serialization_buffer.h"
 #include "msgpack_light/type_support/details/general_array_container_traits.h"
-#include "msgpack_light/type_support/details/general_binary_container_traits.h"
 #include "msgpack_light/type_support/fwd.h"
 
 namespace msgpack_light::type_support {
 
 /*!
- * \brief Class to serialize std::vector objects.
+ * \brief Class to serialize std::forward_list objects.
  *
  * \tparam T Type of elements.
  * \tparam Allocator Type of allocators.
  */
 template <typename T, typename Allocator>
-struct serialization_traits<std::vector<T, Allocator>>
-    : public details::general_array_container_traits<
-          std::vector<T, Allocator>> {};
-
-/*!
- * \brief Class to serialize std::vector objects with `unsigned char` elements.
- *
- * \tparam Allocator Type of allocators.
- */
-template <typename Allocator>
-struct serialization_traits<std::vector<unsigned char, Allocator>>
-    : public details::general_binary_container_traits<
-          std::vector<unsigned char, Allocator>> {};
+struct serialization_traits<std::forward_list<T, Allocator>> {
+public:
+    /*!
+     * \brief Serialize a value.
+     *
+     * \param[out] buffer Buffer.
+     * \param[in] value Value.
+     */
+    static void serialize(serialization_buffer& buffer,
+        const std::forward_list<T, Allocator>& value) {
+        buffer.serialize_array_size(static_cast<std::size_t>(
+            std::distance(value.begin(), value.end())));
+        for (const auto& elem : value) {
+            buffer.serialize(elem);
+        }
+    }
+};
 
 }  // namespace msgpack_light::type_support

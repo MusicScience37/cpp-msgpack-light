@@ -24,7 +24,43 @@
 
 #include "msgpack_light/binary.h"
 #include "msgpack_light/serialize.h"
-#include "msgpack_light/type_support/vector.h"
+
+TEST_CASE("serialize vectors of int") {
+    using msgpack_light::binary;
+    using msgpack_light::serialize;
+
+    SECTION("serialize sample vectors") {
+        const std::vector<int> value = GENERATE(std::vector<int>(),
+            std::vector<int>{0x2A}, std::vector<int>{0x2A, 0x3B},
+            std::vector<int>{0x2A, 0x3B, 0x4C});
+
+        const binary serialized = serialize(value);
+
+        const msgpack::object_handle deserialized = msgpack::unpack(
+            // NOLINTNEXTLINE(cppcoreguidelines-pro-type-reinterpret-cast)
+            reinterpret_cast<const char*>(serialized.data()),
+            serialized.size());
+
+        CHECK(deserialized->as<std::vector<int>>() == value);
+    }
+
+    SECTION("serialize vectors of different sizes") {
+        const std::size_t size = GENERATE(
+            range(static_cast<std::size_t>(0), static_cast<std::size_t>(1000)));
+        INFO("size = " << size);
+
+        const auto value = std::vector<int>(size, 123);
+
+        const binary serialized = serialize(value);
+
+        const msgpack::object_handle deserialized = msgpack::unpack(
+            // NOLINTNEXTLINE(cppcoreguidelines-pro-type-reinterpret-cast)
+            reinterpret_cast<const char*>(serialized.data()),
+            serialized.size());
+
+        CHECK(deserialized->as<std::vector<int>>() == value);
+    }
+}
 
 TEST_CASE("serialize vectors of unsigned char") {
     using msgpack_light::binary;
