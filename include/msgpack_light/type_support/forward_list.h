@@ -20,10 +20,11 @@
  */
 #pragma once
 
+#include <cstddef>
 #include <forward_list>
 #include <iterator>
 
-#include "msgpack_light/type_support/details/general_array_container_traits.h"
+#include "msgpack_light/serialization_buffer.h"
 #include "msgpack_light/type_support/fwd.h"
 
 namespace msgpack_light::type_support {

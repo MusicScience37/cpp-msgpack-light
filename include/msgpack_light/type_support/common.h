@@ -19,9 +19,9 @@
  */
 #pragma once
 
-#include "msgpack_light/type_support/bool.h"
-#include "msgpack_light/type_support/float.h"
-#include "msgpack_light/type_support/integer.h"
-#include "msgpack_light/type_support/nullptr.h"
-#include "msgpack_light/type_support/string.h"
-#include "msgpack_light/type_support/vector.h"
+#include "msgpack_light/type_support/bool.h"     // IWYU pragma: export
+#include "msgpack_light/type_support/float.h"    // IWYU pragma: export
+#include "msgpack_light/type_support/integer.h"  // IWYU pragma: export
+#include "msgpack_light/type_support/nullptr.h"  // IWYU pragma: export
+#include "msgpack_light/type_support/string.h"   // IWYU pragma: export
+#include "msgpack_light/type_support/vector.h"   // IWYU pragma: export

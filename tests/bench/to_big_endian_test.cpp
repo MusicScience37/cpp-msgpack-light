@@ -25,7 +25,6 @@
 #include <vector>
 
 #include <celero/Celero.h>
-#include <celero/Utilities.h>
 
 class to_big_endian_fixture : public celero::TestFixture {
 public:

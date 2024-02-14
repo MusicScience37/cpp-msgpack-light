@@ -26,6 +26,7 @@ sphinx-autobuild = "^2021.3.14"
 clang-tidy-checker = "^0.4.0"
 lcov_cobertura = "^2.0.2"
 commitizen = "^3.14.1"
+tqdm = "^4.66.2"
 
 [build-system]
 requires = ["poetry-core"]

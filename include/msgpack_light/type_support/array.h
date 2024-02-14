@@ -20,6 +20,7 @@
 #pragma once
 
 #include <array>
+#include <cstddef>
 
 #include "msgpack_light/type_support/details/general_array_container_traits.h"
 #include "msgpack_light/type_support/fwd.h"

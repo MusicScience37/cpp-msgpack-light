@@ -21,7 +21,6 @@
 
 #include <vector>
 
-#include "msgpack_light/serialization_buffer.h"
 #include "msgpack_light/type_support/details/general_array_container_traits.h"
 #include "msgpack_light/type_support/details/general_binary_container_traits.h"
 #include "msgpack_light/type_support/fwd.h"

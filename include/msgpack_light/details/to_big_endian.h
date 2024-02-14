@@ -20,7 +20,7 @@
 #pragma once
 
 #include <array>
-#include <cstddef>
+#include <cstddef>  // IWYU pragma: keep
 #include <cstdint>
 #include <cstring>
 

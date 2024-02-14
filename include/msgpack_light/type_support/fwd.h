@@ -28,6 +28,6 @@ namespace msgpack_light::type_support {
  * \tparam SFINAE Template parameter to use for SFINAE.
  */
 template <typename T, typename SFINAE = void>
-struct serialization_traits;
+struct serialization_traits;  // IWYU pragma: keep
 
 }  // namespace msgpack_light::type_support

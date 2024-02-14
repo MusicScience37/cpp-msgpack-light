@@ -19,6 +19,7 @@
  */
 #pragma once
 
+#include <cstdint>
 #include <utility>
 
 #include "msgpack_light/serialization_buffer.h"

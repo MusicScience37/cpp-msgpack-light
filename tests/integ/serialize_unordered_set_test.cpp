@@ -17,14 +17,15 @@
  * \file
  * \brief Test to serialize std::unordered_set objects.
  */
+#include <unordered_set>
+
 #include <catch2/catch_test_macros.hpp>
 #include <catch2/generators/catch_generators.hpp>
-#include <catch2/generators/catch_generators_range.hpp>
 #include <msgpack.hpp>
 
 #include "msgpack_light/binary.h"
 #include "msgpack_light/serialize.h"
-#include "msgpack_light/type_support/unordered_set.h"
+#include "msgpack_light/type_support/unordered_set.h"  // IWYU pragma: keep
 
 TEST_CASE("serialize std::unordered_set objects of int") {
     using msgpack_light::binary;

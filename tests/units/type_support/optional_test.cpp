@@ -20,6 +20,7 @@
 #include "msgpack_light/type_support/optional.h"
 
 #include <optional>
+#include <tuple>
 
 #include <catch2/catch_test_macros.hpp>
 #include <catch2/generators/catch_generators.hpp>
@@ -27,7 +28,7 @@
 #include "msgpack_light/binary.h"
 #include "msgpack_light/memory_output_stream.h"
 #include "msgpack_light/serialization_buffer.h"
-#include "msgpack_light/type_support/common.h"
+#include "msgpack_light/type_support/common.h"  // IWYU pragma: keep
 
 TEST_CASE(
     "msgpack_light::type_support::serialization_traits<std::optional<int>>") {

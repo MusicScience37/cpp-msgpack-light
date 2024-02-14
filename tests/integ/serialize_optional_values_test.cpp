@@ -25,7 +25,7 @@
 
 #include "msgpack_light/binary.h"
 #include "msgpack_light/serialize.h"
-#include "msgpack_light/type_support/optional.h"
+#include "msgpack_light/type_support/optional.h"  // IWYU pragma: keep
 
 TEST_CASE("serialize optional values") {
     using msgpack_light::binary;

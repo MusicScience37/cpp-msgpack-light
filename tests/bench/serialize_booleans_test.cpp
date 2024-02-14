@@ -17,16 +17,15 @@
  * \file
  * \brief Benchmark of serialization of boolean values.
  */
-#include <string>
+#include <cstddef>
 #include <vector>
 
 #include <celero/Celero.h>
 #include <msgpack.hpp>
 
-#include "msgpack_light/binary.h"
 #include "msgpack_light/memory_output_stream.h"
-#include "msgpack_light/serialization_buffer_fwd.h"
-#include "msgpack_light/serialize.h"
+#include "msgpack_light/serialization_buffer.h"
+#include "msgpack_light/type_support/common.h"  // IWYU pragma: keep
 
 class serialize_booleans_fixture : public celero::TestFixture {
 public:

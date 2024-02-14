@@ -20,15 +20,16 @@
 #pragma once
 
 #include <array>
+#include <cstddef>  // IWYU pragma: keep
 #include <cstdint>
-#include <cstdlib>
+#include <cstring>
 #include <limits>
 #include <stdexcept>
 
 #include "msgpack_light/details/static_memory_buffer_size.h"
 #include "msgpack_light/details/to_big_endian.h"
 #include "msgpack_light/output_stream.h"
-#include "msgpack_light/serialization_buffer_fwd.h"
+#include "msgpack_light/serialization_buffer_fwd.h"  // IWYU pragma: keep
 #include "msgpack_light/type_support/fwd.h"
 
 namespace msgpack_light {
