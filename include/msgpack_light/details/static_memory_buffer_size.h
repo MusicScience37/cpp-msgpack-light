@@ -26,6 +26,6 @@ namespace msgpack_light::details {
 /*!
  * \brief Size of buffers on memory defined using static arrays.
  */
-constexpr std::size_t static_memory_buffer_size = 128U;
+constexpr std::size_t static_memory_buffer_size = 512U;
 
 }  // namespace msgpack_light::details

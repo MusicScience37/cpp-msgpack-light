@@ -26,6 +26,7 @@
 #include <limits>
 #include <stdexcept>
 
+#include "msgpack_light/details/mutable_static_binary_view.h"
 #include "msgpack_light/details/static_memory_buffer_size.h"
 #include "msgpack_light/details/to_big_endian.h"
 #include "msgpack_light/output_stream.h"
@@ -124,9 +125,7 @@ public:
     void serialize_uint16(std::uint16_t value) {
         constexpr auto prefix = static_cast<unsigned char>(0xCD);
         put(prefix);
-        std::array<unsigned char, 2U> buffer{};
-        details::to_big_endian(&value, &buffer);
-        write(buffer.data(), buffer.size());
+        write_in_big_endian(value);
     }
 
     /*!
@@ -137,9 +136,7 @@ public:
     void serialize_uint32(std::uint32_t value) {
         constexpr auto prefix = static_cast<unsigned char>(0xCE);
         put(prefix);
-        std::array<unsigned char, 4U> buffer{};
-        details::to_big_endian(&value, &buffer);
-        write(buffer.data(), buffer.size());
+        write_in_big_endian(value);
     }
 
     /*!
@@ -150,10 +147,7 @@ public:
     void serialize_uint64(std::uint64_t value) {
         constexpr auto prefix = static_cast<unsigned char>(0xCF);
         put(prefix);
-        // NOLINTNEXTLINE(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
-        std::array<unsigned char, 8U> buffer{};
-        details::to_big_endian(&value, &buffer);
-        write(buffer.data(), buffer.size());
+        write_in_big_endian(value);
     }
 
     /*!
@@ -175,9 +169,7 @@ public:
     void serialize_int16(std::int16_t value) {
         constexpr auto prefix = static_cast<unsigned char>(0xD1);
         put(prefix);
-        std::array<unsigned char, 2U> buffer{};
-        details::to_big_endian(&value, &buffer);
-        write(buffer.data(), buffer.size());
+        write_in_big_endian(value);
     }
 
     /*!
@@ -188,9 +180,7 @@ public:
     void serialize_int32(std::int32_t value) {
         constexpr auto prefix = static_cast<unsigned char>(0xD2);
         put(prefix);
-        std::array<unsigned char, 4U> buffer{};
-        details::to_big_endian(&value, &buffer);
-        write(buffer.data(), buffer.size());
+        write_in_big_endian(value);
     }
 
     /*!
@@ -201,10 +191,7 @@ public:
     void serialize_int64(std::int64_t value) {
         constexpr auto prefix = static_cast<unsigned char>(0xD3);
         put(prefix);
-        // NOLINTNEXTLINE(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
-        std::array<unsigned char, 8U> buffer{};
-        details::to_big_endian(&value, &buffer);
-        write(buffer.data(), buffer.size());
+        write_in_big_endian(value);
     }
 
     /*!
@@ -220,9 +207,7 @@ public:
 
         constexpr auto prefix = static_cast<unsigned char>(0xCA);
         put(prefix);
-        std::array<unsigned char, 4U> buffer{};
-        details::to_big_endian(&value, &buffer);
-        write(buffer.data(), buffer.size());
+        write_in_big_endian(value);
     }
 
     /*!
@@ -239,10 +224,7 @@ public:
 
         constexpr auto prefix = static_cast<unsigned char>(0xCB);
         put(prefix);
-        // NOLINTNEXTLINE(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
-        std::array<unsigned char, 8U> buffer{};
-        details::to_big_endian(&value, &buffer);
-        write(buffer.data(), buffer.size());
+        write_in_big_endian(value);
     }
 
     /*!
@@ -277,9 +259,7 @@ public:
     void serialize_str16_size(std::uint16_t size) {
         constexpr auto prefix = static_cast<unsigned char>(0xDA);
         put(prefix);
-        std::array<unsigned char, 2U> buffer{};
-        details::to_big_endian(&size, &buffer);
-        write(buffer.data(), buffer.size());
+        write_in_big_endian(size);
     }
 
     /*!
@@ -290,9 +270,7 @@ public:
     void serialize_str32_size(std::uint32_t size) {
         constexpr auto prefix = static_cast<unsigned char>(0xDB);
         put(prefix);
-        std::array<unsigned char, 4U> buffer{};
-        details::to_big_endian(&size, &buffer);
-        write(buffer.data(), buffer.size());
+        write_in_big_endian(size);
     }
 
     /*!
@@ -350,9 +328,7 @@ public:
     void serialize_bin16_size(std::uint16_t size) {
         constexpr auto prefix = static_cast<unsigned char>(0xC5);
         put(prefix);
-        std::array<unsigned char, 2U> buffer{};
-        details::to_big_endian(&size, &buffer);
-        write(buffer.data(), buffer.size());
+        write_in_big_endian(size);
     }
 
     /*!
@@ -363,9 +339,7 @@ public:
     void serialize_bin32_size(std::uint32_t size) {
         constexpr auto prefix = static_cast<unsigned char>(0xC6);
         put(prefix);
-        std::array<unsigned char, 4U> buffer{};
-        details::to_big_endian(&size, &buffer);
-        write(buffer.data(), buffer.size());
+        write_in_big_endian(size);
     }
 
     /*!
@@ -418,9 +392,7 @@ public:
     void serialize_array16_size(std::uint16_t size) {
         constexpr auto prefix = static_cast<unsigned char>(0xDC);
         put(prefix);
-        std::array<unsigned char, 2U> buffer{};
-        details::to_big_endian(&size, &buffer);
-        write(buffer.data(), buffer.size());
+        write_in_big_endian(size);
     }
 
     /*!
@@ -431,9 +403,7 @@ public:
     void serialize_array32_size(std::uint32_t size) {
         constexpr auto prefix = static_cast<unsigned char>(0xDD);
         put(prefix);
-        std::array<unsigned char, 4U> buffer{};
-        details::to_big_endian(&size, &buffer);
-        write(buffer.data(), buffer.size());
+        write_in_big_endian(size);
     }
 
     /*!
@@ -486,9 +456,7 @@ public:
     void serialize_map16_size(std::uint16_t size) {
         constexpr auto prefix = static_cast<unsigned char>(0xDE);
         put(prefix);
-        std::array<unsigned char, 2U> buffer{};
-        details::to_big_endian(&size, &buffer);
-        write(buffer.data(), buffer.size());
+        write_in_big_endian(size);
     }
 
     /*!
@@ -499,9 +467,7 @@ public:
     void serialize_map32_size(std::uint32_t size) {
         constexpr auto prefix = static_cast<unsigned char>(0xDF);
         put(prefix);
-        std::array<unsigned char, 4U> buffer{};
-        details::to_big_endian(&size, &buffer);
-        write(buffer.data(), buffer.size());
+        write_in_big_endian(size);
     }
 
     /*!
@@ -586,6 +552,47 @@ public:
     }
 
 private:
+    /*!
+     * \brief Prepare a buffer.
+     *
+     * \tparam N Number of bytes.
+     * \return Buffer.
+     */
+    template <std::size_t N>
+    [[nodiscard]] inline details::mutable_static_binary_view<N>
+    prepare_buffer() {
+        static_assert(N <= buffer_size);
+
+        if (buffer_size - current_position_in_buffer_ < N) {
+            flush();
+        }
+
+        return details::mutable_static_binary_view<N>(
+            buffer_.data() + current_position_in_buffer_);
+    }
+
+    /*!
+     * \brief Set the buffer returned by prepare_buffer function to be written.
+     *
+     * \tparam N Number of bytes.
+     */
+    template <std::size_t N>
+    inline void set_buffer_written() noexcept {
+        current_position_in_buffer_ += N;
+    }
+
+    /*!
+     * \brief Write a value in big endian.
+     *
+     * \tparam T Type of the value.
+     * \param[in] value Value.
+     */
+    template <typename T>
+    inline void write_in_big_endian(T value) {
+        details::to_big_endian(&value, prepare_buffer<sizeof(T)>());
+        set_buffer_written<sizeof(T)>();
+    }
+
     //! Stream to write output to.
     output_stream& stream_;
 
