@@ -23,6 +23,7 @@ Checks: >
     -modernize-return-braced-init-list,
     -modernize-use-trailing-return-type,
   hicpp-*,
+    -hicpp-signed-bitwise,
   cert-*,
     -cert-err58-cpp,
   bugprone-*,
