@@ -23,7 +23,6 @@
 
 #include "msgpack_light/binary.h"
 #include "msgpack_light/memory_output_stream.h"
-#include "msgpack_light/serialization_buffer_fwd.h"
 
 TEST_CASE("msgpack_light::type_support::serialization_traits<std::nullptr_t>") {
     using msgpack_light::binary;

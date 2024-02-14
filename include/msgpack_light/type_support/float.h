@@ -20,8 +20,6 @@
  */
 #pragma once
 
-#include <type_traits>
-
 #include "msgpack_light/serialization_buffer.h"
 #include "msgpack_light/type_support/fwd.h"
 

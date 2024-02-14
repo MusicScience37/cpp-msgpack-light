@@ -23,7 +23,7 @@
 #include "msgpack_light/memory_output_stream.h"
 #include "msgpack_light/output_stream.h"
 #include "msgpack_light/serialization_buffer.h"
-#include "msgpack_light/type_support/common.h"
+#include "msgpack_light/type_support/common.h"  // IWYU pragma: export
 
 namespace msgpack_light {
 

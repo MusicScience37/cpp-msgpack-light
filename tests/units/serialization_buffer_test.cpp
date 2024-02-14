@@ -20,7 +20,10 @@
 #include "msgpack_light/serialization_buffer.h"
 
 #include <cstdint>
+#include <tuple>
+#include <vector>
 
+#include <catch2/catch_message.hpp>
 #include <catch2/catch_test_macros.hpp>
 #include <catch2/generators/catch_generators.hpp>
 

@@ -19,6 +19,7 @@
  */
 #pragma once
 
+#include <cstddef>
 #include <tuple>
 
 #include "msgpack_light/serialization_buffer.h"
