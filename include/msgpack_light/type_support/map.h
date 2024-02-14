@@ -39,4 +39,17 @@ struct serialization_traits<std::map<Key, Value, Compare, Allocator>>
     : public details::general_map_container_traits<
           std::map<Key, Value, Compare, Allocator>> {};
 
+/*!
+ * \brief Class to serialize std::multimap objects.
+ *
+ * \tparam Key Type of elements.
+ * \tparam Value Type of mapped values.
+ * \tparam Compare Type of functions to compare elements.
+ * \tparam Allocator Type of allocators.
+ */
+template <typename Key, typename Value, typename Compare, typename Allocator>
+struct serialization_traits<std::multimap<Key, Value, Compare, Allocator>>
+    : public details::general_map_container_traits<
+          std::multimap<Key, Value, Compare, Allocator>> {};
+
 }  // namespace msgpack_light::type_support

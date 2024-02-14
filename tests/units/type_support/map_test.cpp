@@ -65,3 +65,40 @@ TEST_CASE(
         CHECK(stream.as_binary() == expected_binary);
     }
 }
+
+TEST_CASE(
+    "msgpack_light::type_support::serialization_traits<std::multimap<int, "
+    "std::string>>") {
+    using msgpack_light::binary;
+    using msgpack_light::memory_output_stream;
+    using msgpack_light::serialization_buffer;
+
+    SECTION("serialize") {
+        std::multimap<int, std::string> value;
+        binary expected_binary;
+        std::tie(value, expected_binary) =
+            GENERATE(table<std::multimap<int, std::string>, binary>(
+                {{std::multimap<int, std::string>{}, binary("80")},
+                    {std::multimap<int, std::string>{{1, "a"}},
+                        binary("81"
+                               "01A161")},
+                    {std::multimap<int, std::string>{{1, "a"}, {2, "b"}},
+                        binary("82"
+                               "01A161"
+                               "02A162")},
+                    {std::multimap<int, std::string>{
+                         {1, "a"}, {2, "b"}, {3, "c"}},
+                        binary("83"
+                               "01A161"
+                               "02A162"
+                               "03A163")}}));
+
+        memory_output_stream stream;
+        serialization_buffer buffer(stream);
+
+        buffer.serialize(value);
+
+        buffer.flush();
+        CHECK(stream.as_binary() == expected_binary);
+    }
+}

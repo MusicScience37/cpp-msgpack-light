@@ -43,4 +43,20 @@ struct serialization_traits<
     : public details::general_map_container_traits<
           std::unordered_map<Key, Value, Hash, KeyEqual, Allocator>> {};
 
+/*!
+ * \brief Class to serialize std::unordered_multimap objects.
+ *
+ * \tparam Key Type of elements.
+ * \tparam Value Type of unordered_mapped values.
+ * \tparam Hash Type of the hash function.
+ * \tparam KeyEqual Type of the function to compare keys.
+ * \tparam Allocator Type of allocators.
+ */
+template <typename Key, typename Value, typename Hash, typename KeyEqual,
+    typename Allocator>
+struct serialization_traits<
+    std::unordered_multimap<Key, Value, Hash, KeyEqual, Allocator>>
+    : public details::general_map_container_traits<
+          std::unordered_multimap<Key, Value, Hash, KeyEqual, Allocator>> {};
+
 }  // namespace msgpack_light::type_support

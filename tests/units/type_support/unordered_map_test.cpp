@@ -57,3 +57,30 @@ TEST_CASE(
         CHECK(stream.as_binary() == expected_binary);
     }
 }
+
+TEST_CASE(
+    "msgpack_light::type_support::serialization_traits<std::unordered_multimap<"
+    "int, std::string>>") {
+    using msgpack_light::binary;
+    using msgpack_light::memory_output_stream;
+    using msgpack_light::serialization_buffer;
+
+    SECTION("serialize") {
+        std::unordered_multimap<int, std::string> value;
+        binary expected_binary;
+        std::tie(value, expected_binary) =
+            GENERATE(table<std::unordered_multimap<int, std::string>, binary>(
+                {{std::unordered_multimap<int, std::string>{}, binary("80")},
+                    {std::unordered_multimap<int, std::string>{{1, "a"}},
+                        binary("81"
+                               "01A161")}}));
+
+        memory_output_stream stream;
+        serialization_buffer buffer(stream);
+
+        buffer.serialize(value);
+
+        buffer.flush();
+        CHECK(stream.as_binary() == expected_binary);
+    }
+}
