@@ -19,7 +19,7 @@
  */
 #include <cstddef>
 #include <string>
-#include <tuple>
+#include <unordered_map>
 
 #include <catch2/catch_message.hpp>
 #include <catch2/catch_test_macros.hpp>
@@ -28,10 +28,8 @@
 #include <msgpack.hpp>
 
 #include "msgpack_light/binary.h"
-#include "msgpack_light/memory_output_stream.h"
-#include "msgpack_light/serialization_buffer.h"
 #include "msgpack_light/serialize.h"
-#include "msgpack_light/type_support/unordered_map.h"
+#include "msgpack_light/type_support/unordered_map.h"  // IWYU pragma: keep
 
 TEST_CASE("serialize std::unordered_map<int, std::string>") {
     using msgpack_light::binary;

@@ -18,8 +18,9 @@
  * \brief Benchmark of serialization of arrays.
  */
 #include <cstddef>
-#include <cstdint>
 #include <random>
+#include <unordered_map>
+#include <utility>
 #include <vector>
 
 #include <celero/Celero.h>
@@ -27,8 +28,8 @@
 
 #include "msgpack_light/memory_output_stream.h"
 #include "msgpack_light/serialization_buffer.h"
-#include "msgpack_light/type_support/common.h"  // IWYU pragma: keep
-#include "msgpack_light/type_support/unordered_map.h"
+#include "msgpack_light/type_support/common.h"         // IWYU pragma: keep
+#include "msgpack_light/type_support/unordered_map.h"  // IWYU pragma: keep
 
 class serialize_maps_fixture : public celero::TestFixture {
 public:

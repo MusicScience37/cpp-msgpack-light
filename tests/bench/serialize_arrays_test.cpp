@@ -18,8 +18,8 @@
  * \brief Benchmark of serialization of arrays.
  */
 #include <cstddef>
-#include <cstdint>
 #include <random>
+#include <utility>
 #include <vector>
 
 #include <celero/Celero.h>
