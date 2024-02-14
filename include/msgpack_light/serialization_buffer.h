@@ -467,6 +467,74 @@ public:
     }
 
     /*!
+     * \brief Serialize a size of fixmap format.
+     *
+     * \warning This function assumes that the size is in the range of 0 to 15.
+     *
+     * \param[in] size Size.
+     */
+    void serialize_fixmap_size(std::uint8_t size) {
+        constexpr auto prefix = static_cast<unsigned char>(0x80);
+        put(prefix | size);
+    }
+
+    /*!
+     * \brief Serialize a size of map 16 format.
+     *
+     * \param[in] size Size.
+     */
+    void serialize_map16_size(std::uint16_t size) {
+        constexpr auto prefix = static_cast<unsigned char>(0xDE);
+        put(prefix);
+        std::array<unsigned char, 2U> buffer{};
+        details::to_big_endian(&size, &buffer);
+        write(buffer.data(), buffer.size());
+    }
+
+    /*!
+     * \brief Serialize a size of map 32 format.
+     *
+     * \param[in] size Size.
+     */
+    void serialize_map32_size(std::uint32_t size) {
+        constexpr auto prefix = static_cast<unsigned char>(0xDF);
+        put(prefix);
+        std::array<unsigned char, 4U> buffer{};
+        details::to_big_endian(&size, &buffer);
+        write(buffer.data(), buffer.size());
+    }
+
+    /*!
+     * \brief Serialize a size of a map.
+     *
+     * \param[in] size Size.
+     */
+    void serialize_map_size(std::size_t size) {
+        constexpr auto max_fixmap_size = static_cast<std::size_t>(15);
+        constexpr auto max_map16_size = static_cast<std::size_t>(0xFFFF);
+
+        if (size <= max_fixmap_size) {
+            serialize_fixmap_size(static_cast<std::uint8_t>(size));
+            return;
+        }
+
+        if (size <= max_map16_size) {
+            serialize_map16_size(static_cast<std::uint16_t>(size));
+            return;
+        }
+
+        if constexpr (sizeof(std::size_t) > 4U) {
+            constexpr auto max_map32_size =
+                static_cast<std::size_t>(0xFFFFFFFF);
+            if (size > max_map32_size) {
+                throw std::runtime_error("Size is too large.");
+            }
+        }
+
+        serialize_map32_size(static_cast<std::uint32_t>(size));
+    }
+
+    /*!
      * \brief Serialize data.
      *
      * \tparam T Type of data.

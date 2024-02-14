@@ -15,43 +15,48 @@
  */
 /*!
  * \file
- * \brief Definition of classes to support serialization of std::unordered_set
+ * \brief Definition of classes to support serialization of std::unordered_map
  * objects.
  */
 #pragma once
 
-#include <unordered_set>
+#include <unordered_map>
 
-#include "msgpack_light/type_support/details/general_array_container_traits.h"
+#include "msgpack_light/type_support/details/general_map_container_traits.h"
 #include "msgpack_light/type_support/fwd.h"
 
 namespace msgpack_light::type_support {
 
 /*!
- * \brief Class to serialize std::unordered_set objects.
+ * \brief Class to serialize std::unordered_map objects.
  *
  * \tparam Key Type of elements.
+ * \tparam Value Type of unordered_mapped values.
  * \tparam Hash Type of the hash function.
  * \tparam KeyEqual Type of the function to compare keys.
  * \tparam Allocator Type of allocators.
  */
-template <typename Key, typename Hash, typename KeyEqual, typename Allocator>
-struct serialization_traits<std::unordered_set<Key, Hash, KeyEqual, Allocator>>
-    : public details::general_array_container_traits<
-          std::unordered_set<Key, Hash, KeyEqual, Allocator>> {};
+template <typename Key, typename Value, typename Hash, typename KeyEqual,
+    typename Allocator>
+struct serialization_traits<
+    std::unordered_map<Key, Value, Hash, KeyEqual, Allocator>>
+    : public details::general_map_container_traits<
+          std::unordered_map<Key, Value, Hash, KeyEqual, Allocator>> {};
 
 /*!
- * \brief Class to serialize std::unordered_multiset objects.
+ * \brief Class to serialize std::unordered_multimap objects.
  *
  * \tparam Key Type of elements.
+ * \tparam Value Type of unordered_mapped values.
  * \tparam Hash Type of the hash function.
  * \tparam KeyEqual Type of the function to compare keys.
  * \tparam Allocator Type of allocators.
  */
-template <typename Key, typename Hash, typename KeyEqual, typename Allocator>
+template <typename Key, typename Value, typename Hash, typename KeyEqual,
+    typename Allocator>
 struct serialization_traits<
-    std::unordered_multiset<Key, Hash, KeyEqual, Allocator>>
-    : public details::general_array_container_traits<
-          std::unordered_multiset<Key, Hash, KeyEqual, Allocator>> {};
+    std::unordered_multimap<Key, Value, Hash, KeyEqual, Allocator>>
+    : public details::general_map_container_traits<
+          std::unordered_multimap<Key, Value, Hash, KeyEqual, Allocator>> {};
 
 }  // namespace msgpack_light::type_support

@@ -15,39 +15,41 @@
  */
 /*!
  * \file
- * \brief Definition of classes to support serialization of std::set objects.
+ * \brief Definition of classes to support serialization of std::map objects.
  */
 #pragma once
 
-#include <set>
+#include <map>
 
-#include "msgpack_light/type_support/details/general_array_container_traits.h"
+#include "msgpack_light/type_support/details/general_map_container_traits.h"
 #include "msgpack_light/type_support/fwd.h"
 
 namespace msgpack_light::type_support {
 
 /*!
- * \brief Class to serialize std::set objects.
+ * \brief Class to serialize std::map objects.
  *
  * \tparam Key Type of elements.
+ * \tparam Value Type of mapped values.
  * \tparam Compare Type of functions to compare elements.
  * \tparam Allocator Type of allocators.
  */
-template <typename Key, typename Compare, typename Allocator>
-struct serialization_traits<std::set<Key, Compare, Allocator>>
-    : public details::general_array_container_traits<
-          std::set<Key, Compare, Allocator>> {};
+template <typename Key, typename Value, typename Compare, typename Allocator>
+struct serialization_traits<std::map<Key, Value, Compare, Allocator>>
+    : public details::general_map_container_traits<
+          std::map<Key, Value, Compare, Allocator>> {};
 
 /*!
- * \brief Class to serialize std::multiset objects.
+ * \brief Class to serialize std::multimap objects.
  *
  * \tparam Key Type of elements.
+ * \tparam Value Type of mapped values.
  * \tparam Compare Type of functions to compare elements.
  * \tparam Allocator Type of allocators.
  */
-template <typename Key, typename Compare, typename Allocator>
-struct serialization_traits<std::multiset<Key, Compare, Allocator>>
-    : public details::general_array_container_traits<
-          std::multiset<Key, Compare, Allocator>> {};
+template <typename Key, typename Value, typename Compare, typename Allocator>
+struct serialization_traits<std::multimap<Key, Value, Compare, Allocator>>
+    : public details::general_map_container_traits<
+          std::multimap<Key, Value, Compare, Allocator>> {};
 
 }  // namespace msgpack_light::type_support

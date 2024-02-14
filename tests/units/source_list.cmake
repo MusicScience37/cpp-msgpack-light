@@ -10,12 +10,14 @@ set(SOURCE_FILES
     type_support/forward_list_test.cpp
     type_support/integer_test.cpp
     type_support/list_test.cpp
+    type_support/map_test.cpp
     type_support/nullptr_test.cpp
     type_support/optional_test.cpp
     type_support/pair_test.cpp
     type_support/set_test.cpp
     type_support/string_test.cpp
     type_support/tuple_test.cpp
+    type_support/unordered_map_test.cpp
     type_support/unordered_set_test.cpp
     type_support/vector_test.cpp
 )
