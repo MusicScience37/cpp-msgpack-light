@@ -17,6 +17,7 @@ set(SOURCE_FILES
     type_support/set_test.cpp
     type_support/string_test.cpp
     type_support/tuple_test.cpp
+    type_support/unordered_map_test.cpp
     type_support/unordered_set_test.cpp
     type_support/vector_test.cpp
 )

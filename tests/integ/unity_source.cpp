@@ -4,5 +4,6 @@
 #include "serialize_maps_test.cpp"      // NOLINT(bugprone-suspicious-include)
 #include "serialize_optional_values_test.cpp"  // NOLINT(bugprone-suspicious-include)
 #include "serialize_strings_test.cpp"  // NOLINT(bugprone-suspicious-include)
+#include "serialize_unordered_map_test.cpp"  // NOLINT(bugprone-suspicious-include)
 #include "serialize_unordered_set_test.cpp"  // NOLINT(bugprone-suspicious-include)
 #include "serialize_vectors_test.cpp"  // NOLINT(bugprone-suspicious-include)
