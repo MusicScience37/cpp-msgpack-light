@@ -24,7 +24,6 @@
 
 #include "msgpack_light/binary.h"
 #include "msgpack_light/serialize.h"
-#include "msgpack_light/type_support/vector.h"
 
 TEST_CASE("serialize vectors of int") {
     using msgpack_light::binary;

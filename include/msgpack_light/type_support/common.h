@@ -24,3 +24,4 @@
 #include "msgpack_light/type_support/integer.h"
 #include "msgpack_light/type_support/nullptr.h"
 #include "msgpack_light/type_support/string.h"
+#include "msgpack_light/type_support/vector.h"
