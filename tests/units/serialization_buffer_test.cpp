@@ -571,6 +571,60 @@ TEST_CASE("msgpack_light::serialization_buffer") {
         }
     }
 
+    SECTION("serialize size of fixmap") {
+        std::uint8_t size{};
+        binary expected_binary;
+        std::tie(size, expected_binary) = GENERATE(table<std::uint8_t, binary>(
+            {{static_cast<std::uint8_t>(0x00U), binary("80")},
+                {static_cast<std::uint8_t>(0x07U), binary("87")},
+                {static_cast<std::uint8_t>(0x0FU), binary("8F")}}));
+
+        memory_output_stream stream;
+        serialization_buffer buffer(stream);
+
+        buffer.serialize_fixmap_size(size);
+
+        buffer.flush();
+        CHECK(stream.as_binary() == expected_binary);
+    }
+
+    SECTION("serialize size of map 16") {
+        std::uint16_t size{};
+        binary expected_binary;
+        std::tie(size, expected_binary) = GENERATE(table<std::uint16_t, binary>(
+            {{static_cast<std::uint16_t>(0x0010U), binary("DE0010")},
+                {static_cast<std::uint16_t>(0x1324), binary("DE1324")},
+                // cspell: ignore DEFFFF
+                {static_cast<std::uint16_t>(0xFFFFU), binary("DEFFFF")}}));
+
+        memory_output_stream stream;
+        serialization_buffer buffer(stream);
+
+        buffer.serialize_map16_size(size);
+
+        buffer.flush();
+        CHECK(stream.as_binary() == expected_binary);
+    }
+
+    SECTION("serialize size of map 32") {
+        std::uint32_t size{};
+        binary expected_binary;
+        std::tie(size, expected_binary) = GENERATE(table<std::uint32_t, binary>(
+            {{static_cast<std::uint32_t>(0x00010000U), binary("DF00010000")},
+                {static_cast<std::uint32_t>(0x12345678), binary("DF12345678")},
+                // cspell: ignore DFFFFFFFFF
+                {static_cast<std::uint32_t>(0xFFFFFFFFU),
+                    binary("DFFFFFFFFF")}}));
+
+        memory_output_stream stream;
+        serialization_buffer buffer(stream);
+
+        buffer.serialize_map32_size(size);
+
+        buffer.flush();
+        CHECK(stream.as_binary() == expected_binary);
+    }
+
     SECTION("write data") {
         const std::size_t data_size =
             GENERATE(static_cast<std::size_t>(0), static_cast<std::size_t>(1),
