@@ -7,6 +7,7 @@ set(SOURCE_FILES
     type_support/bool_test.cpp
     type_support/deque_test.cpp
     type_support/float_test.cpp
+    type_support/forward_list_test.cpp
     type_support/integer_test.cpp
     type_support/list_test.cpp
     type_support/nullptr_test.cpp
