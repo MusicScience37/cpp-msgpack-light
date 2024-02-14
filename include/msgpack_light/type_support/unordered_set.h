@@ -31,23 +31,27 @@ namespace msgpack_light::type_support {
  * \brief Class to serialize std::unordered_set objects.
  *
  * \tparam Key Type of elements.
- * \tparam Compare Type of functions to compare elements.
+ * \tparam Hash Type of the hash function.
+ * \tparam KeyEqual Type of the function to compare keys.
  * \tparam Allocator Type of allocators.
  */
-template <typename Key, typename Compare, typename Allocator>
-struct serialization_traits<std::unordered_set<Key, Compare, Allocator>>
+template <typename Key, typename Hash, typename KeyEqual, typename Allocator>
+struct serialization_traits<std::unordered_set<Key, Hash, KeyEqual, Allocator>>
     : public details::general_array_container_traits<
-          std::unordered_set<Key, Compare, Allocator>> {};
+          std::unordered_set<Key, Hash, KeyEqual, Allocator>> {};
 
 /*!
  * \brief Class to serialize std::unordered_multiset objects.
  *
- * \tparam T Type of elements.
+ * \tparam Key Type of elements.
+ * \tparam Hash Type of the hash function.
+ * \tparam KeyEqual Type of the function to compare keys.
  * \tparam Allocator Type of allocators.
  */
-template <typename T, typename Allocator>
-struct serialization_traits<std::unordered_multiset<T, Allocator>>
+template <typename Key, typename Hash, typename KeyEqual, typename Allocator>
+struct serialization_traits<
+    std::unordered_multiset<Key, Hash, KeyEqual, Allocator>>
     : public details::general_array_container_traits<
-          std::unordered_multiset<T, Allocator>> {};
+          std::unordered_multiset<Key, Hash, KeyEqual, Allocator>> {};
 
 }  // namespace msgpack_light::type_support

@@ -625,6 +625,30 @@ TEST_CASE("msgpack_light::serialization_buffer") {
         CHECK(stream.as_binary() == expected_binary);
     }
 
+    SECTION("serialize sizes of maps") {
+        std::size_t size{};
+        binary expected_binary;
+        std::tie(size, expected_binary) = GENERATE(table<std::size_t, binary>(
+            {{static_cast<std::size_t>(0x00U), binary("80")},
+                {static_cast<std::size_t>(0x07U), binary("87")},
+                {static_cast<std::size_t>(0x0FU), binary("8F")},
+                {static_cast<std::size_t>(0x0010U), binary("DE0010")},
+                {static_cast<std::size_t>(0x1324), binary("DE1324")},
+                {static_cast<std::size_t>(0xFFFFU), binary("DEFFFF")},
+                {static_cast<std::size_t>(0x00010000U), binary("DF00010000")},
+                {static_cast<std::size_t>(0x12345678), binary("DF12345678")},
+                {static_cast<std::size_t>(0xFFFFFFFFU),
+                    binary("DFFFFFFFFF")}}));
+
+        memory_output_stream stream;
+        serialization_buffer buffer(stream);
+
+        buffer.serialize_map_size(size);
+
+        buffer.flush();
+        CHECK(stream.as_binary() == expected_binary);
+    }
+
     SECTION("write data") {
         const std::size_t data_size =
             GENERATE(static_cast<std::size_t>(0), static_cast<std::size_t>(1),

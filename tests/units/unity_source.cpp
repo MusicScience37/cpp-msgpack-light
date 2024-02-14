@@ -9,6 +9,7 @@
 #include "type_support/forward_list_test.cpp"  // NOLINT(bugprone-suspicious-include)
 #include "type_support/integer_test.cpp"  // NOLINT(bugprone-suspicious-include)
 #include "type_support/list_test.cpp"     // NOLINT(bugprone-suspicious-include)
+#include "type_support/map_test.cpp"      // NOLINT(bugprone-suspicious-include)
 #include "type_support/nullptr_test.cpp"  // NOLINT(bugprone-suspicious-include)
 #include "type_support/optional_test.cpp"  // NOLINT(bugprone-suspicious-include)
 #include "type_support/pair_test.cpp"    // NOLINT(bugprone-suspicious-include)
