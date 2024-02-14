@@ -141,7 +141,8 @@ struct serialization_traits<T,
      * \param[in] value Value.
      */
     static void serialize(serialization_buffer& buffer, T value) {
-        if (value <= details::max_positive_fixint<T>) {
+        constexpr T positive_fixint_mask = ~details::max_positive_fixint<T>;
+        if ((value & positive_fixint_mask) == static_cast<T>(0)) {
             buffer.serialize_positive_fixint(static_cast<std::uint8_t>(value));
             return;
         }
@@ -150,7 +151,8 @@ struct serialization_traits<T,
             buffer.serialize_uint8(static_cast<std::uint8_t>(value));
             return;
         } else {
-            if (value <= details::max_uint8<T>) {
+            constexpr T uint8_mask = ~details::max_uint8<T>;
+            if ((value & uint8_mask) == static_cast<T>(0)) {
                 buffer.serialize_uint8(static_cast<std::uint8_t>(value));
                 return;
             }
@@ -160,7 +162,8 @@ struct serialization_traits<T,
             buffer.serialize_uint16(static_cast<std::uint16_t>(value));
             return;
         } else if constexpr (sizeof(T) > 2U) {
-            if (value <= details::max_uint16<T>) {
+            constexpr T uint16_mask = ~details::max_uint16<T>;
+            if ((value & uint16_mask) == static_cast<T>(0)) {
                 buffer.serialize_uint16(static_cast<std::uint16_t>(value));
                 return;
             }
@@ -170,7 +173,8 @@ struct serialization_traits<T,
             buffer.serialize_uint32(static_cast<std::uint32_t>(value));
             return;
         } else if constexpr (sizeof(T) > 4U) {
-            if (value <= details::max_uint32<T>) {
+            constexpr T uint32_mask = ~details::max_uint32<T>;
+            if ((value & uint32_mask) == static_cast<T>(0)) {
                 buffer.serialize_uint32(static_cast<std::uint32_t>(value));
                 return;
             }
@@ -217,12 +221,14 @@ private:
             buffer.serialize_positive_fixint(static_cast<std::uint8_t>(value));
             return;
         } else {
-            if (value <= details::max_positive_fixint<T>) {
+            constexpr T positive_fixint_mask = ~details::max_positive_fixint<T>;
+            if ((value & positive_fixint_mask) == static_cast<T>(0)) {
                 buffer.serialize_positive_fixint(
                     static_cast<std::uint8_t>(value));
                 return;
             }
-            if (value <= details::max_uint8<T>) {
+            constexpr T uint8_mask = ~details::max_uint8<T>;
+            if ((value & uint8_mask) == static_cast<T>(0)) {
                 buffer.serialize_uint8(static_cast<std::uint8_t>(value));
                 return;
             }
@@ -232,7 +238,8 @@ private:
             buffer.serialize_uint16(static_cast<std::uint16_t>(value));
             return;
         } else if constexpr (sizeof(T) > 2U) {
-            if (value <= details::max_uint16<T>) {
+            constexpr T uint16_mask = ~details::max_uint16<T>;
+            if ((value & uint16_mask) == static_cast<T>(0)) {
                 buffer.serialize_uint16(static_cast<std::uint16_t>(value));
                 return;
             }
@@ -242,7 +249,8 @@ private:
             buffer.serialize_uint32(static_cast<std::uint32_t>(value));
             return;
         } else if constexpr (sizeof(T) > 4U) {
-            if (value <= details::max_uint32<T>) {
+            constexpr T uint32_mask = ~details::max_uint32<T>;
+            if ((value & uint32_mask) == static_cast<T>(0)) {
                 buffer.serialize_uint32(static_cast<std::uint32_t>(value));
                 return;
             }
@@ -258,7 +266,8 @@ private:
      */
     static void serialize_negative_integer(
         serialization_buffer& buffer, T value) {
-        if (value >= details::min_negative_fixint<T>) {
+        constexpr T negative_fixint_mask = details::min_negative_fixint<T>;
+        if ((value & negative_fixint_mask) == negative_fixint_mask) {
             buffer.serialize_negative_fixint(static_cast<std::int8_t>(value));
             return;
         }
@@ -267,7 +276,8 @@ private:
             buffer.serialize_int8(static_cast<std::int8_t>(value));
             return;
         } else {
-            if (value >= details::min_int8<T>) {
+            constexpr T int8_mask = details::min_int8<T>;
+            if ((value & int8_mask) == int8_mask) {
                 buffer.serialize_int8(static_cast<std::int8_t>(value));
                 return;
             }
@@ -277,7 +287,8 @@ private:
             buffer.serialize_int16(static_cast<std::int16_t>(value));
             return;
         } else if constexpr (sizeof(T) > 2U) {
-            if (value >= details::min_int16<T>) {
+            constexpr T int16_mask = details::min_int16<T>;
+            if ((value & int16_mask) == int16_mask) {
                 buffer.serialize_int16(static_cast<std::int16_t>(value));
                 return;
             }
@@ -287,7 +298,8 @@ private:
             buffer.serialize_int32(static_cast<std::int32_t>(value));
             return;
         } else if constexpr (sizeof(T) > 4U) {
-            if (value >= details::min_int32<T>) {
+            constexpr T int32_mask = details::min_int32<T>;
+            if ((value & int32_mask) == int32_mask) {
                 buffer.serialize_int32(static_cast<std::int32_t>(value));
                 return;
             }
