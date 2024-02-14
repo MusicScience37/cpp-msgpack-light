@@ -12,4 +12,5 @@
 #include "type_support/optional_test.cpp"  // NOLINT(bugprone-suspicious-include)
 #include "type_support/set_test.cpp"     // NOLINT(bugprone-suspicious-include)
 #include "type_support/string_test.cpp"  // NOLINT(bugprone-suspicious-include)
+#include "type_support/unordered_set_test.cpp"  // NOLINT(bugprone-suspicious-include)
 #include "type_support/vector_test.cpp"  // NOLINT(bugprone-suspicious-include)

@@ -4,5 +4,6 @@ set(SOURCE_FILES
     serialize_integers_test.cpp
     serialize_optional_values_test.cpp
     serialize_strings_test.cpp
+    serialize_unordered_set_test.cpp
     serialize_vectors_test.cpp
 )
