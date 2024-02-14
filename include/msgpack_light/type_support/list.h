@@ -15,11 +15,11 @@
  */
 /*!
  * \file
- * \brief Definition of classes to support serialization of std::deque objects.
+ * \brief Definition of classes to support serialization of std::list objects.
  */
 #pragma once
 
-#include <deque>
+#include <list>
 
 #include "msgpack_light/type_support/details/general_array_container_traits.h"
 #include "msgpack_light/type_support/fwd.h"
@@ -27,14 +27,14 @@
 namespace msgpack_light::type_support {
 
 /*!
- * \brief Class to serialize std::deque objects.
+ * \brief Class to serialize std::list objects.
  *
  * \tparam T Type of elements.
  * \tparam Allocator Type of allocators.
  */
 template <typename T, typename Allocator>
-struct serialization_traits<std::deque<T, Allocator>>
-    : public details::general_array_container_traits<std::deque<T, Allocator>> {
+struct serialization_traits<std::list<T, Allocator>>
+    : public details::general_array_container_traits<std::list<T, Allocator>> {
 };
 
 }  // namespace msgpack_light::type_support
