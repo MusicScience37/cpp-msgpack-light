@@ -649,6 +649,16 @@ TEST_CASE("msgpack_light::serialization_buffer") {
         CHECK(stream.as_binary() == expected_binary);
     }
 
+    if constexpr (sizeof(std::size_t) > 4U) {
+        SECTION("try to serialize too large size of map") {
+            memory_output_stream stream;
+            serialization_buffer buffer(stream);
+
+            constexpr auto size = static_cast<std::size_t>(0x100000000U);
+            CHECK_THROWS(buffer.serialize_map_size(size));
+        }
+    }
+
     SECTION("write data") {
         const std::size_t data_size =
             GENERATE(static_cast<std::size_t>(0), static_cast<std::size_t>(1),
