@@ -38,4 +38,15 @@ struct serialization_traits<std::set<Key, Compare, Allocator>>
     : public details::general_array_container_traits<
           std::set<Key, Compare, Allocator>> {};
 
+/*!
+ * \brief Class to serialize std::multiset objects.
+ *
+ * \tparam T Type of elements.
+ * \tparam Allocator Type of allocators.
+ */
+template <typename T, typename Allocator>
+struct serialization_traits<std::multiset<T, Allocator>>
+    : public details::general_array_container_traits<
+          std::multiset<T, Allocator>> {};
+
 }  // namespace msgpack_light::type_support

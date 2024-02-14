@@ -50,3 +50,29 @@ TEST_CASE("msgpack_light::type_support::serialization_traits<std::set<int>>") {
         CHECK(stream.as_binary() == expected_binary);
     }
 }
+
+TEST_CASE(
+    "msgpack_light::type_support::serialization_traits<std::multiset<int>>") {
+    using msgpack_light::binary;
+    using msgpack_light::memory_output_stream;
+    using msgpack_light::serialization_buffer;
+
+    SECTION("serialize") {
+        std::multiset<int> value;
+        binary expected_binary;
+        std::tie(value, expected_binary) =
+            GENERATE(table<std::multiset<int>, binary>({{std::multiset<int>(),
+                                                            binary("90")},
+                {std::multiset<int>{0x2A}, binary("912A")},
+                {std::multiset<int>{0x2A, 0x3B}, binary("922A3B")},
+                {std::multiset<int>{0x2A, 0x3B, 0x4C}, binary("932A3B4C")}}));
+
+        memory_output_stream stream;
+        serialization_buffer buffer(stream);
+
+        buffer.serialize(value);
+
+        buffer.flush();
+        CHECK(stream.as_binary() == expected_binary);
+    }
+}
