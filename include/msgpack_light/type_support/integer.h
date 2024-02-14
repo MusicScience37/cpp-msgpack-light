@@ -131,9 +131,7 @@ constexpr auto min_int32 =
  */
 template <typename T>
 struct serialization_traits<T,
-    std::enable_if_t<details::is_unsigned_integer_v<T> &&
-        // NOLINTNEXTLINE(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
-        sizeof(T) <= 8U>> {
+    std::enable_if_t<details::is_unsigned_integer_v<T> && sizeof(T) == 1U>> {
     /*!
      * \brief Serialize a value.
      *
@@ -147,39 +145,124 @@ struct serialization_traits<T,
             return;
         }
 
-        if constexpr (sizeof(T) == 1U) {
+        buffer.serialize_uint8(static_cast<std::uint8_t>(value));
+    }
+};
+
+/*!
+ * \brief Class to serialize unsigned integers.
+ *
+ * \tparam T Type of the unsigned integer.
+ */
+template <typename T>
+struct serialization_traits<T,
+    std::enable_if_t<details::is_unsigned_integer_v<T> && sizeof(T) == 2U>> {
+    /*!
+     * \brief Serialize a value.
+     *
+     * \param[out] buffer Buffer.
+     * \param[in] value Value.
+     */
+    static void serialize(serialization_buffer& buffer, T value) {
+        constexpr T uint8_mask = ~details::max_uint8<T>;
+        if ((value & uint8_mask) == static_cast<T>(0)) {
+            constexpr T positive_fixint_mask = ~details::max_positive_fixint<T>;
+            if ((value & positive_fixint_mask) == static_cast<T>(0)) {
+                buffer.serialize_positive_fixint(
+                    static_cast<std::uint8_t>(value));
+                return;
+            }
+
             buffer.serialize_uint8(static_cast<std::uint8_t>(value));
             return;
-        } else {
+        }
+
+        buffer.serialize_uint16(static_cast<std::uint16_t>(value));
+    }
+};
+
+/*!
+ * \brief Class to serialize unsigned integers.
+ *
+ * \tparam T Type of the unsigned integer.
+ */
+template <typename T>
+struct serialization_traits<T,
+    std::enable_if_t<details::is_unsigned_integer_v<T> && sizeof(T) == 4U>> {
+    /*!
+     * \brief Serialize a value.
+     *
+     * \param[out] buffer Buffer.
+     * \param[in] value Value.
+     */
+    static void serialize(serialization_buffer& buffer, T value) {
+        constexpr T uint8_mask = ~details::max_uint8<T>;
+        if ((value & uint8_mask) == static_cast<T>(0)) {
+            constexpr T positive_fixint_mask = ~details::max_positive_fixint<T>;
+            if ((value & positive_fixint_mask) == static_cast<T>(0)) {
+                buffer.serialize_positive_fixint(
+                    static_cast<std::uint8_t>(value));
+                return;
+            }
+
+            buffer.serialize_uint8(static_cast<std::uint8_t>(value));
+            return;
+        }
+
+        constexpr T uint16_mask = ~details::max_uint16<T>;
+        if ((value & uint16_mask) == static_cast<T>(0)) {
+            buffer.serialize_uint16(static_cast<std::uint16_t>(value));
+            return;
+        }
+
+        buffer.serialize_uint32(static_cast<std::uint32_t>(value));
+    }
+};
+
+/*!
+ * \brief Class to serialize unsigned integers.
+ *
+ * \tparam T Type of the unsigned integer.
+ */
+template <typename T>
+struct serialization_traits<T,
+    std::enable_if_t<details::is_unsigned_integer_v<T> &&
+        // NOLINTNEXTLINE(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
+        sizeof(T) == 8U>> {
+    /*!
+     * \brief Serialize a value.
+     *
+     * \param[out] buffer Buffer.
+     * \param[in] value Value.
+     */
+    static void serialize(serialization_buffer& buffer, T value) {
+        constexpr T uint16_mask = ~details::max_uint16<T>;
+        if ((value & uint16_mask) == static_cast<T>(0)) {
             constexpr T uint8_mask = ~details::max_uint8<T>;
             if ((value & uint8_mask) == static_cast<T>(0)) {
+                constexpr T positive_fixint_mask =
+                    ~details::max_positive_fixint<T>;
+                if ((value & positive_fixint_mask) == static_cast<T>(0)) {
+                    buffer.serialize_positive_fixint(
+                        static_cast<std::uint8_t>(value));
+                    return;
+                }
+
                 buffer.serialize_uint8(static_cast<std::uint8_t>(value));
                 return;
             }
-        }
 
-        if constexpr (sizeof(T) == 2U) {
             buffer.serialize_uint16(static_cast<std::uint16_t>(value));
             return;
-        } else if constexpr (sizeof(T) > 2U) {
-            constexpr T uint16_mask = ~details::max_uint16<T>;
-            if ((value & uint16_mask) == static_cast<T>(0)) {
-                buffer.serialize_uint16(static_cast<std::uint16_t>(value));
-                return;
-            }
         }
 
-        if constexpr (sizeof(T) == 4U) {
+        constexpr T uint32_mask = ~details::max_uint32<T>;
+        if ((value & uint32_mask) == static_cast<T>(0)) {
             buffer.serialize_uint32(static_cast<std::uint32_t>(value));
             return;
-        } else if constexpr (sizeof(T) > 4U) {
-            constexpr T uint32_mask = ~details::max_uint32<T>;
-            if ((value & uint32_mask) == static_cast<T>(0)) {
-                buffer.serialize_uint32(static_cast<std::uint32_t>(value));
-                return;
-            }
-            buffer.serialize_uint64(static_cast<std::uint64_t>(value));
         }
+
+        buffer.serialize_uint64(static_cast<std::uint64_t>(value));
     }
 };
 
@@ -190,9 +273,7 @@ struct serialization_traits<T,
  */
 template <typename T>
 struct serialization_traits<T,
-    std::enable_if_t<details::is_signed_integer_v<T> &&
-        // NOLINTNEXTLINE(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
-        sizeof(T) <= 8U>> {
+    std::enable_if_t<details::is_signed_integer_v<T> && sizeof(T) == 1U>> {
 public:
     /*!
      * \brief Serialize a value.
@@ -217,45 +298,7 @@ private:
      */
     static void serialize_positive_integer(
         serialization_buffer& buffer, T value) {
-        if constexpr (sizeof(T) == 1U) {
-            buffer.serialize_positive_fixint(static_cast<std::uint8_t>(value));
-            return;
-        } else {
-            constexpr T positive_fixint_mask = ~details::max_positive_fixint<T>;
-            if ((value & positive_fixint_mask) == static_cast<T>(0)) {
-                buffer.serialize_positive_fixint(
-                    static_cast<std::uint8_t>(value));
-                return;
-            }
-            constexpr T uint8_mask = ~details::max_uint8<T>;
-            if ((value & uint8_mask) == static_cast<T>(0)) {
-                buffer.serialize_uint8(static_cast<std::uint8_t>(value));
-                return;
-            }
-        }
-
-        if constexpr (sizeof(T) == 2U) {
-            buffer.serialize_uint16(static_cast<std::uint16_t>(value));
-            return;
-        } else if constexpr (sizeof(T) > 2U) {
-            constexpr T uint16_mask = ~details::max_uint16<T>;
-            if ((value & uint16_mask) == static_cast<T>(0)) {
-                buffer.serialize_uint16(static_cast<std::uint16_t>(value));
-                return;
-            }
-        }
-
-        if constexpr (sizeof(T) == 4U) {
-            buffer.serialize_uint32(static_cast<std::uint32_t>(value));
-            return;
-        } else if constexpr (sizeof(T) > 4U) {
-            constexpr T uint32_mask = ~details::max_uint32<T>;
-            if ((value & uint32_mask) == static_cast<T>(0)) {
-                buffer.serialize_uint32(static_cast<std::uint32_t>(value));
-                return;
-            }
-            buffer.serialize_uint64(static_cast<std::uint64_t>(value));
-        }
+        buffer.serialize_positive_fixint(static_cast<std::uint8_t>(value));
     }
 
     /*!
@@ -272,40 +315,265 @@ private:
             return;
         }
 
-        if constexpr (sizeof(T) == 1U) {
+        buffer.serialize_int8(static_cast<std::int8_t>(value));
+    }
+};
+
+/*!
+ * \brief Class to serialize signed integers.
+ *
+ * \tparam T Type of the signed integer.
+ */
+template <typename T>
+struct serialization_traits<T,
+    std::enable_if_t<details::is_signed_integer_v<T> && sizeof(T) == 2U>> {
+public:
+    /*!
+     * \brief Serialize a value.
+     *
+     * \param[out] buffer Buffer.
+     * \param[in] value Value.
+     */
+    static void serialize(serialization_buffer& buffer, T value) {
+        if (value >= static_cast<T>(0)) {
+            serialize_positive_integer(buffer, value);
+        } else {
+            serialize_negative_integer(buffer, value);
+        }
+    }
+
+private:
+    /*!
+     * \brief Serialize a positive integers.
+     *
+     * \param[out] buffer Buffer.
+     * \param[in] value Value.
+     */
+    static void serialize_positive_integer(
+        serialization_buffer& buffer, T value) {
+        constexpr T uint8_mask = ~details::max_uint8<T>;
+        if ((value & uint8_mask) == static_cast<T>(0)) {
+            constexpr T positive_fixint_mask = ~details::max_positive_fixint<T>;
+            if ((value & positive_fixint_mask) == static_cast<T>(0)) {
+                buffer.serialize_positive_fixint(
+                    static_cast<std::uint8_t>(value));
+                return;
+            }
+
+            buffer.serialize_uint8(static_cast<std::uint8_t>(value));
+            return;
+        }
+
+        buffer.serialize_uint16(static_cast<std::uint16_t>(value));
+    }
+
+    /*!
+     * \brief Serialize a negative integers.
+     *
+     * \param[out] buffer Buffer.
+     * \param[in] value Value.
+     */
+    static void serialize_negative_integer(
+        serialization_buffer& buffer, T value) {
+        constexpr T int8_mask = details::min_int8<T>;
+        if ((value & int8_mask) == int8_mask) {
+            constexpr T negative_fixint_mask = details::min_negative_fixint<T>;
+            if ((value & negative_fixint_mask) == negative_fixint_mask) {
+                buffer.serialize_negative_fixint(
+                    static_cast<std::int8_t>(value));
+                return;
+            }
+
             buffer.serialize_int8(static_cast<std::int8_t>(value));
             return;
+        }
+
+        buffer.serialize_int16(static_cast<std::int16_t>(value));
+    }
+};
+
+/*!
+ * \brief Class to serialize signed integers.
+ *
+ * \tparam T Type of the signed integer.
+ */
+template <typename T>
+struct serialization_traits<T,
+    std::enable_if_t<details::is_signed_integer_v<T> && sizeof(T) == 4U>> {
+public:
+    /*!
+     * \brief Serialize a value.
+     *
+     * \param[out] buffer Buffer.
+     * \param[in] value Value.
+     */
+    static void serialize(serialization_buffer& buffer, T value) {
+        if (value >= static_cast<T>(0)) {
+            serialize_positive_integer(buffer, value);
         } else {
+            serialize_negative_integer(buffer, value);
+        }
+    }
+
+private:
+    /*!
+     * \brief Serialize a positive integers.
+     *
+     * \param[out] buffer Buffer.
+     * \param[in] value Value.
+     */
+    static void serialize_positive_integer(
+        serialization_buffer& buffer, T value) {
+        constexpr T uint8_mask = ~details::max_uint8<T>;
+        if ((value & uint8_mask) == static_cast<T>(0)) {
+            constexpr T positive_fixint_mask = ~details::max_positive_fixint<T>;
+            if ((value & positive_fixint_mask) == static_cast<T>(0)) {
+                buffer.serialize_positive_fixint(
+                    static_cast<std::uint8_t>(value));
+                return;
+            }
+
+            buffer.serialize_uint8(static_cast<std::uint8_t>(value));
+            return;
+        }
+
+        constexpr T uint16_mask = ~details::max_uint16<T>;
+        if ((value & uint16_mask) == static_cast<T>(0)) {
+            buffer.serialize_uint16(static_cast<std::uint16_t>(value));
+            return;
+        }
+
+        buffer.serialize_uint32(static_cast<std::uint32_t>(value));
+    }
+
+    /*!
+     * \brief Serialize a negative integers.
+     *
+     * \param[out] buffer Buffer.
+     * \param[in] value Value.
+     */
+    static void serialize_negative_integer(
+        serialization_buffer& buffer, T value) {
+        constexpr T int8_mask = details::min_int8<T>;
+        if ((value & int8_mask) == int8_mask) {
+            constexpr T negative_fixint_mask = details::min_negative_fixint<T>;
+            if ((value & negative_fixint_mask) == negative_fixint_mask) {
+                buffer.serialize_negative_fixint(
+                    static_cast<std::int8_t>(value));
+                return;
+            }
+
+            buffer.serialize_int8(static_cast<std::int8_t>(value));
+            return;
+        }
+
+        constexpr T int16_mask = details::min_int16<T>;
+        if ((value & int16_mask) == int16_mask) {
+            buffer.serialize_int16(static_cast<std::int16_t>(value));
+            return;
+        }
+
+        buffer.serialize_int32(static_cast<std::int32_t>(value));
+    }
+};
+
+/*!
+ * \brief Class to serialize signed integers.
+ *
+ * \tparam T Type of the signed integer.
+ */
+template <typename T>
+struct serialization_traits<T,
+    std::enable_if_t<details::is_signed_integer_v<T> &&
+        // NOLINTNEXTLINE(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
+        sizeof(T) == 8U>> {
+public:
+    /*!
+     * \brief Serialize a value.
+     *
+     * \param[out] buffer Buffer.
+     * \param[in] value Value.
+     */
+    static void serialize(serialization_buffer& buffer, T value) {
+        if (value >= static_cast<T>(0)) {
+            serialize_positive_integer(buffer, value);
+        } else {
+            serialize_negative_integer(buffer, value);
+        }
+    }
+
+private:
+    /*!
+     * \brief Serialize a positive integers.
+     *
+     * \param[out] buffer Buffer.
+     * \param[in] value Value.
+     */
+    static void serialize_positive_integer(
+        serialization_buffer& buffer, T value) {
+        constexpr T uint16_mask = ~details::max_uint16<T>;
+        if ((value & uint16_mask) == static_cast<T>(0)) {
+            constexpr T uint8_mask = ~details::max_uint8<T>;
+            if ((value & uint8_mask) == static_cast<T>(0)) {
+                constexpr T positive_fixint_mask =
+                    ~details::max_positive_fixint<T>;
+                if ((value & positive_fixint_mask) == static_cast<T>(0)) {
+                    buffer.serialize_positive_fixint(
+                        static_cast<std::uint8_t>(value));
+                    return;
+                }
+
+                buffer.serialize_uint8(static_cast<std::uint8_t>(value));
+                return;
+            }
+
+            buffer.serialize_uint16(static_cast<std::uint16_t>(value));
+            return;
+        }
+
+        constexpr T uint32_mask = ~details::max_uint32<T>;
+        if ((value & uint32_mask) == static_cast<T>(0)) {
+            buffer.serialize_uint32(static_cast<std::uint32_t>(value));
+            return;
+        }
+        buffer.serialize_uint64(static_cast<std::uint64_t>(value));
+    }
+
+    /*!
+     * \brief Serialize a negative integers.
+     *
+     * \param[out] buffer Buffer.
+     * \param[in] value Value.
+     */
+    static void serialize_negative_integer(
+        serialization_buffer& buffer, T value) {
+        constexpr T int16_mask = details::min_int16<T>;
+        if ((value & int16_mask) == int16_mask) {
             constexpr T int8_mask = details::min_int8<T>;
             if ((value & int8_mask) == int8_mask) {
+                constexpr T negative_fixint_mask =
+                    details::min_negative_fixint<T>;
+                if ((value & negative_fixint_mask) == negative_fixint_mask) {
+                    buffer.serialize_negative_fixint(
+                        static_cast<std::int8_t>(value));
+                    return;
+                }
+
                 buffer.serialize_int8(static_cast<std::int8_t>(value));
                 return;
             }
-        }
 
-        if constexpr (sizeof(T) == 2U) {
             buffer.serialize_int16(static_cast<std::int16_t>(value));
             return;
-        } else if constexpr (sizeof(T) > 2U) {
-            constexpr T int16_mask = details::min_int16<T>;
-            if ((value & int16_mask) == int16_mask) {
-                buffer.serialize_int16(static_cast<std::int16_t>(value));
-                return;
-            }
         }
 
-        if constexpr (sizeof(T) == 4U) {
+        constexpr T int32_mask = details::min_int32<T>;
+        if ((value & int32_mask) == int32_mask) {
             buffer.serialize_int32(static_cast<std::int32_t>(value));
             return;
-        } else if constexpr (sizeof(T) > 4U) {
-            constexpr T int32_mask = details::min_int32<T>;
-            if ((value & int32_mask) == int32_mask) {
-                buffer.serialize_int32(static_cast<std::int32_t>(value));
-                return;
-            }
-
-            buffer.serialize_int64(static_cast<std::int64_t>(value));
         }
+
+        buffer.serialize_int64(static_cast<std::int64_t>(value));
     }
 };
 
