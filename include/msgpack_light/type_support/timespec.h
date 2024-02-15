@@ -29,7 +29,7 @@
 namespace msgpack_light::type_support {
 
 /*!
- * \brief Class to serialize std::timespec objects
+ * \brief Class to serialize std::timespec objects.
  */
 template <>
 struct serialization_traits<std::timespec> {

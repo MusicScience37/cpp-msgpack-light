@@ -1,5 +1,6 @@
 set(SOURCE_FILES
     serialize_booleans_test.cpp
+    serialize_chrono_time_point_test.cpp
     serialize_ext_test.cpp
     serialize_floating_point_numbers_test.cpp
     serialize_integers_test.cpp

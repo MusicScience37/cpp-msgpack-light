@@ -1,5 +1,6 @@
 #include "serialize_booleans_test.cpp"  // NOLINT(bugprone-suspicious-include)
-#include "serialize_ext_test.cpp"       // NOLINT(bugprone-suspicious-include)
+#include "serialize_chrono_time_point_test.cpp"  // NOLINT(bugprone-suspicious-include)
+#include "serialize_ext_test.cpp"  // NOLINT(bugprone-suspicious-include)
 #include "serialize_floating_point_numbers_test.cpp"  // NOLINT(bugprone-suspicious-include)
 #include "serialize_integers_test.cpp"  // NOLINT(bugprone-suspicious-include)
 #include "serialize_maps_test.cpp"      // NOLINT(bugprone-suspicious-include)

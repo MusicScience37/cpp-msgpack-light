@@ -29,7 +29,7 @@
 #include "msgpack_light/serialize.h"
 #include "msgpack_light/type_support/timespec.h"
 
-TEST_CASE("msgpack_light::type_support::serialization_traits<std::timespec>") {
+TEST_CASE("serialize std::timespec objects") {
     using msgpack_light::binary;
     using msgpack_light::serialize;
 
