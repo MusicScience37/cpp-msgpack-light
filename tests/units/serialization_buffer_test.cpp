@@ -659,6 +659,183 @@ TEST_CASE("msgpack_light::serialization_buffer") {
         }
     }
 
+    SECTION("serialize header of fixext1") {
+        constexpr auto ext_type = static_cast<std::int8_t>(0x89);
+        const auto expected_binary = binary("D489");
+
+        memory_output_stream stream;
+        serialization_buffer buffer(stream);
+
+        buffer.serialize_fixext1_header(ext_type);
+
+        buffer.flush();
+        CHECK(stream.as_binary() == expected_binary);
+    }
+
+    SECTION("serialize header of fixext2") {
+        constexpr auto ext_type = static_cast<std::int8_t>(0x89);
+        const auto expected_binary = binary("D589");
+
+        memory_output_stream stream;
+        serialization_buffer buffer(stream);
+
+        buffer.serialize_fixext2_header(ext_type);
+
+        buffer.flush();
+        CHECK(stream.as_binary() == expected_binary);
+    }
+
+    SECTION("serialize header of fixext4") {
+        constexpr auto ext_type = static_cast<std::int8_t>(0x89);
+        const auto expected_binary = binary("D689");
+
+        memory_output_stream stream;
+        serialization_buffer buffer(stream);
+
+        buffer.serialize_fixext4_header(ext_type);
+
+        buffer.flush();
+        CHECK(stream.as_binary() == expected_binary);
+    }
+
+    SECTION("serialize header of fixext8") {
+        constexpr auto ext_type = static_cast<std::int8_t>(0x89);
+        const auto expected_binary = binary("D789");
+
+        memory_output_stream stream;
+        serialization_buffer buffer(stream);
+
+        buffer.serialize_fixext8_header(ext_type);
+
+        buffer.flush();
+        CHECK(stream.as_binary() == expected_binary);
+    }
+
+    SECTION("serialize header of fixext16") {
+        constexpr auto ext_type = static_cast<std::int8_t>(0x89);
+        const auto expected_binary = binary("D889");
+
+        memory_output_stream stream;
+        serialization_buffer buffer(stream);
+
+        buffer.serialize_fixext16_header(ext_type);
+
+        buffer.flush();
+        CHECK(stream.as_binary() == expected_binary);
+    }
+
+    SECTION("serialize header of ext 8") {
+        constexpr auto ext_type = static_cast<std::int8_t>(0x89);
+        std::uint8_t data_size{};
+        binary expected_binary;
+        std::tie(data_size, expected_binary) =
+            GENERATE(table<std::uint8_t, binary>(
+                {{static_cast<std::uint8_t>(0), binary("C70089")},
+                    {static_cast<std::uint8_t>(3), binary("C70389")},
+                    {static_cast<std::uint8_t>(0x67U), binary("C76789")},
+                    {static_cast<std::uint8_t>(0xFFU), binary("C7FF89")}}));
+
+        memory_output_stream stream;
+        serialization_buffer buffer(stream);
+
+        buffer.serialize_ext8_header(ext_type, data_size);
+
+        buffer.flush();
+        CHECK(stream.as_binary() == expected_binary);
+    }
+
+    SECTION("serialize header of ext 16") {
+        constexpr auto ext_type = static_cast<std::int8_t>(0x89);
+        std::uint16_t data_size{};
+        binary expected_binary;
+        std::tie(data_size, expected_binary) = GENERATE(
+            table<std::uint16_t, binary>({{static_cast<std::uint16_t>(0x0100U),
+                                              binary("C8010089")},
+                {static_cast<std::uint16_t>(0x7164), binary("C8716489")},
+                {static_cast<std::uint16_t>(0xFFFFU), binary("C8FFFF89")}}));
+
+        memory_output_stream stream;
+        serialization_buffer buffer(stream);
+
+        buffer.serialize_ext16_header(ext_type, data_size);
+
+        buffer.flush();
+        CHECK(stream.as_binary() == expected_binary);
+    }
+
+    SECTION("serialize header of ext 32") {
+        constexpr auto ext_type = static_cast<std::int8_t>(0x89);
+        std::uint32_t data_size{};
+        binary expected_binary;
+        std::tie(data_size, expected_binary) =
+            GENERATE(table<std::uint32_t, binary>(
+                {{static_cast<std::uint32_t>(0x00010000U),
+                     binary("C90001000089")},
+                    {static_cast<std::uint32_t>(0x71647624),
+                        binary("C97164762489")},
+                    {static_cast<std::uint32_t>(0xFFFFFFFFU),
+                        binary("C9FFFFFFFF89")}}));
+
+        memory_output_stream stream;
+        serialization_buffer buffer(stream);
+
+        buffer.serialize_ext32_header(ext_type, data_size);
+
+        buffer.flush();
+        CHECK(stream.as_binary() == expected_binary);
+    }
+
+    SECTION("serialize header of ext") {
+        constexpr auto ext_type = static_cast<std::int8_t>(0x89);
+        std::size_t data_size{};
+        binary expected_binary;
+        std::tie(data_size, expected_binary) =
+            GENERATE(table<std::size_t, binary>({{static_cast<std::size_t>(0),
+                                                     binary("C70089")},  // ext8
+                {static_cast<std::size_t>(1), binary("D489")},        // fixext1
+                {static_cast<std::size_t>(2), binary("D589")},        // fixext2
+                {static_cast<std::size_t>(3), binary("C70389")},      // ext8
+                {static_cast<std::size_t>(4), binary("D689")},        // fixext4
+                {static_cast<std::size_t>(5), binary("C70589")},      // ext8
+                {static_cast<std::size_t>(6), binary("C70689")},      // ext8
+                {static_cast<std::size_t>(7), binary("C70789")},      // ext8
+                {static_cast<std::size_t>(8), binary("D789")},        // fixext8
+                {static_cast<std::size_t>(9), binary("C70989")},      // ext8
+                {static_cast<std::size_t>(15), binary("C70F89")},     // ext8
+                {static_cast<std::size_t>(16), binary("D889")},       // fixext8
+                {static_cast<std::size_t>(17), binary("C71189")},     // ext8
+                {static_cast<std::size_t>(0x67U), binary("C76789")},  // ext8
+                {static_cast<std::size_t>(0xFFU), binary("C7FF89")},  // ext8
+                // ext 16
+                {static_cast<std::size_t>(0x0100U), binary("C8010089")},
+                {static_cast<std::size_t>(0x7164), binary("C8716489")},
+                {static_cast<std::size_t>(0xFFFFU), binary("C8FFFF89")},
+                // ext 32
+                {static_cast<std::size_t>(0x00010000U), binary("C90001000089")},
+                {static_cast<std::size_t>(0x71647624), binary("C97164762489")},
+                {static_cast<std::size_t>(0xFFFFFFFFU),
+                    binary("C9FFFFFFFF89")}}));
+
+        memory_output_stream stream;
+        serialization_buffer buffer(stream);
+
+        buffer.serialize_ext_header(ext_type, data_size);
+
+        buffer.flush();
+        CHECK(stream.as_binary() == expected_binary);
+    }
+
+    if constexpr (sizeof(std::size_t) > 4U) {
+        SECTION("try to serialize too large size of ext") {
+            memory_output_stream stream;
+            serialization_buffer buffer(stream);
+
+            constexpr auto ext_type = static_cast<std::int8_t>(0x89);
+            constexpr auto data_size = static_cast<std::size_t>(0x100000000U);
+            CHECK_THROWS(buffer.serialize_ext_header(ext_type, data_size));
+        }
+    }
+
     SECTION("write data") {
         const std::size_t data_size =
             GENERATE(static_cast<std::size_t>(0), static_cast<std::size_t>(1),

@@ -501,6 +501,181 @@ public:
     }
 
     /*!
+     * \brief Serialize the size and type of an extension value in fixext 1
+     * format.
+     *
+     * \note Serialize data of the value after call of this function.
+     *
+     * \param[in] ext_type Extension type.
+     */
+    void serialize_fixext1_header(std::int8_t ext_type) {
+        constexpr auto prefix = static_cast<unsigned char>(0xD4);
+        put(prefix);
+        put(static_cast<unsigned char>(ext_type));
+    }
+
+    /*!
+     * \brief Serialize the size and type of an extension value in fixext 2
+     * format.
+     *
+     * \note Serialize data of the value after call of this function.
+     *
+     * \param[in] ext_type Extension type.
+     */
+    void serialize_fixext2_header(std::int8_t ext_type) {
+        constexpr auto prefix = static_cast<unsigned char>(0xD5);
+        put(prefix);
+        put(static_cast<unsigned char>(ext_type));
+    }
+
+    /*!
+     * \brief Serialize the size and type of an extension value in fixext 4
+     * format.
+     *
+     * \note Serialize data of the value after call of this function.
+     *
+     * \param[in] ext_type Extension type.
+     */
+    void serialize_fixext4_header(std::int8_t ext_type) {
+        constexpr auto prefix = static_cast<unsigned char>(0xD6);
+        put(prefix);
+        put(static_cast<unsigned char>(ext_type));
+    }
+
+    /*!
+     * \brief Serialize the size and type of an extension value in fixext 8
+     * format.
+     *
+     * \note Serialize data of the value after call of this function.
+     *
+     * \param[in] ext_type Extension type.
+     */
+    void serialize_fixext8_header(std::int8_t ext_type) {
+        constexpr auto prefix = static_cast<unsigned char>(0xD7);
+        put(prefix);
+        put(static_cast<unsigned char>(ext_type));
+    }
+
+    /*!
+     * \brief Serialize the size and type of an extension value in fixext 16
+     * format.
+     *
+     * \note Serialize data of the value after call of this function.
+     *
+     * \param[in] ext_type Extension type.
+     */
+    void serialize_fixext16_header(std::int8_t ext_type) {
+        constexpr auto prefix = static_cast<unsigned char>(0xD8);
+        put(prefix);
+        put(static_cast<unsigned char>(ext_type));
+    }
+
+    /*!
+     * \brief Serialize the size and type of an extension value in ext 8 format.
+     *
+     * \note Serialize data of the value after call of this function.
+     *
+     * \param[in] ext_type Extension type.
+     * \param[in] data_size Size of the data.
+     */
+    void serialize_ext8_header(std::int8_t ext_type, std::uint8_t data_size) {
+        constexpr auto prefix = static_cast<unsigned char>(0xC7);
+        put(prefix);
+        put(static_cast<unsigned char>(data_size));
+        put(static_cast<unsigned char>(ext_type));
+    }
+
+    /*!
+     * \brief Serialize the size and type of an extension value in ext 16
+     * format.
+     *
+     * \note Serialize data of the value after call of this function.
+     *
+     * \param[in] ext_type Extension type.
+     * \param[in] data_size Size of the data.
+     */
+    void serialize_ext16_header(std::int8_t ext_type, std::uint16_t data_size) {
+        constexpr auto prefix = static_cast<unsigned char>(0xC8);
+        put(prefix);
+        write_in_big_endian(data_size);
+        put(static_cast<unsigned char>(ext_type));
+    }
+
+    /*!
+     * \brief Serialize the size and type of an extension value in ext 32
+     * format.
+     *
+     * \note Serialize data of the value after call of this function.
+     *
+     * \param[in] ext_type Extension type.
+     * \param[in] data_size Size of the data.
+     */
+    void serialize_ext32_header(std::int8_t ext_type, std::uint32_t data_size) {
+        constexpr auto prefix = static_cast<unsigned char>(0xC9);
+        put(prefix);
+        write_in_big_endian(data_size);
+        put(static_cast<unsigned char>(ext_type));
+    }
+
+    /*!
+     * \brief Serialize the size and type of an extension value.
+     *
+     * \note Serialize data of the value after call of this function.
+     *
+     * \param[in] ext_type Extension type.
+     * \param[in] data_size Size of the data.
+     */
+    void serialize_ext_header(std::int8_t ext_type, std::size_t data_size) {
+        constexpr auto ext8_data_size_mask = ~static_cast<std::size_t>(0xFF);
+        if ((data_size & ext8_data_size_mask) == static_cast<std::size_t>(0)) {
+            constexpr auto fixext1_data_size = static_cast<std::size_t>(1);
+            constexpr auto fixext2_data_size = static_cast<std::size_t>(2);
+            constexpr auto fixext4_data_size = static_cast<std::size_t>(4);
+            constexpr auto fixext8_data_size = static_cast<std::size_t>(8);
+            constexpr auto fixext16_data_size = static_cast<std::size_t>(16);
+            switch (data_size) {
+            case fixext1_data_size:
+                serialize_fixext1_header(ext_type);
+                return;
+            case fixext2_data_size:
+                serialize_fixext2_header(ext_type);
+                return;
+            case fixext4_data_size:
+                serialize_fixext4_header(ext_type);
+                return;
+            case fixext8_data_size:
+                serialize_fixext8_header(ext_type);
+                return;
+            case fixext16_data_size:
+                serialize_fixext16_header(ext_type);
+                return;
+            default:
+                serialize_ext8_header(
+                    ext_type, static_cast<std::uint8_t>(data_size));
+                return;
+            }
+        }
+
+        constexpr auto ext16_data_size_mask = ~static_cast<std::size_t>(0xFFFF);
+        if ((data_size & ext16_data_size_mask) == static_cast<std::size_t>(0)) {
+            serialize_ext16_header(
+                ext_type, static_cast<std::uint16_t>(data_size));
+            return;
+        }
+
+        if constexpr (sizeof(std::size_t) > 4U) {
+            constexpr auto ext32_data_size_mask =
+                ~static_cast<std::size_t>(0xFFFFFFFF);
+            if ((data_size & ext32_data_size_mask) !=
+                static_cast<std::size_t>(0)) {
+                throw std::runtime_error("Size is too large.");
+            }
+        }
+
+        serialize_ext32_header(ext_type, static_cast<std::uint32_t>(data_size));
+    }
+
+    /*!
      * \brief Serialize data.
      *
      * \tparam T Type of data.
@@ -551,6 +726,18 @@ public:
         ++current_position_in_buffer_;
     }
 
+    /*!
+     * \brief Write a value in big endian.
+     *
+     * \tparam T Type of the value.
+     * \param[in] value Value.
+     */
+    template <typename T>
+    inline void write_in_big_endian(T value) {
+        details::to_big_endian(&value, prepare_buffer<sizeof(T)>());
+        set_buffer_written<sizeof(T)>();
+    }
+
 private:
     /*!
      * \brief Prepare a buffer.
@@ -579,18 +766,6 @@ private:
     template <std::size_t N>
     inline void set_buffer_written() noexcept {
         current_position_in_buffer_ += N;
-    }
-
-    /*!
-     * \brief Write a value in big endian.
-     *
-     * \tparam T Type of the value.
-     * \param[in] value Value.
-     */
-    template <typename T>
-    inline void write_in_big_endian(T value) {
-        details::to_big_endian(&value, prepare_buffer<sizeof(T)>());
-        set_buffer_written<sizeof(T)>();
     }
 
     //! Stream to write output to.

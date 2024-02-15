@@ -43,6 +43,7 @@
     "enduml",
     "fcoverage",
     "fixarray",
+    "fixext",
     "fixint",
     "fixmap",
     "fixstr",
