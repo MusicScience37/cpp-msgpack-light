@@ -9,6 +9,7 @@ Checks: >
     -cppcoreguidelines-avoid-non-const-global-variables,
     -cppcoreguidelines-pro-bounds-pointer-arithmetic,
     -cppcoreguidelines-avoid-const-or-ref-data-members,
+    -cppcoreguidelines-pro-type-union-access,
   google-*,
     -google-runtime-references,
     -google-readability-todo,
@@ -47,6 +48,7 @@ Checks: >
 # - bugprone-unchecked-optional-access has a bug as in https://github.com/clangd/clangd/issues/1700.
 # - cppcoreguidelines-pro-bounds-pointer-arithmetic forces to use an external library.
 # - modernize-use-trailing-return-type make some tools not working.
+# - cppcoreguidelines-pro-type-union-access produces warnings in msgpack library.
 
 CheckOptions:
   # Naming Conventions

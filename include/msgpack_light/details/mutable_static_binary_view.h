@@ -19,7 +19,6 @@
  */
 #pragma once
 
-#include <array>
 #include <cstddef>
 
 namespace msgpack_light::details {
