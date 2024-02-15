@@ -20,14 +20,11 @@
 #include <ctime>
 
 #include <catch2/catch_test_macros.hpp>
-#include <catch2/generators/catch_generators.hpp>
 #include <msgpack.hpp>
 
 #include "msgpack_light/binary.h"
-#include "msgpack_light/memory_output_stream.h"
-#include "msgpack_light/serialization_buffer.h"
 #include "msgpack_light/serialize.h"
-#include "msgpack_light/type_support/timespec.h"
+#include "msgpack_light/type_support/timespec.h"  // IWYU pragma: keep
 
 TEST_CASE("serialize std::timespec objects") {
     using msgpack_light::binary;

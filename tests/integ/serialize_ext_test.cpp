@@ -18,10 +18,8 @@
  * \brief Test to serialize values in ext format.
  */
 #include <cstddef>
-#include <map>
-#include <string>
+#include <vector>
 
-#include <catch2/catch_message.hpp>
 #include <catch2/catch_test_macros.hpp>
 #include <catch2/generators/catch_generators.hpp>
 #include <catch2/generators/catch_generators_adapters.hpp>
@@ -31,8 +29,7 @@
 
 #include "msgpack_light/binary.h"
 #include "msgpack_light/memory_output_stream.h"
-#include "msgpack_light/serialization_buffer_fwd.h"
-#include "msgpack_light/serialize.h"
+#include "msgpack_light/serialization_buffer.h"
 
 TEST_CASE("serialize values in ext format") {
     using msgpack_light::binary;

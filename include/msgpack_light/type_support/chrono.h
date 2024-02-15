@@ -20,7 +20,6 @@
 #pragma once
 
 #include <chrono>
-#include <cstdint>
 #include <ctime>
 
 #include "msgpack_light/serialization_buffer.h"

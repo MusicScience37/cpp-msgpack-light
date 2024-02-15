@@ -23,7 +23,6 @@
 #include <ctime>
 
 #include <catch2/catch_test_macros.hpp>
-#include <catch2/generators/catch_generators.hpp>
 
 #include "msgpack_light/binary.h"
 #include "msgpack_light/memory_output_stream.h"
