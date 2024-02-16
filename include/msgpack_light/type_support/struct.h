@@ -19,10 +19,10 @@
  */
 #pragma once
 
-#include "msgpack_light/details/concatenate_macro.h"
-#include "msgpack_light/details/count_arguments_macro.h"
-#include "msgpack_light/details/invoke_macro.h"
-#include "msgpack_light/type_support/details/struct_impl.h"
+#include "msgpack_light/details/concatenate_macro.h"      // IWYU pragma: export
+#include "msgpack_light/details/count_arguments_macro.h"  // IWYU pragma: export
+#include "msgpack_light/details/invoke_macro.h"           // IWYU pragma: export
+#include "msgpack_light/type_support/details/struct_impl.h"  // IWYU pragma: export
 
 /*!
  * \brief Macro to generate class to support serialization of struct into maps.
