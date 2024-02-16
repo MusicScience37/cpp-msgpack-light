@@ -31,9 +31,20 @@ namespace msgpack_light_test {
 
 {% for i in range(1, max_params + 1) %}
     /*!
-    * \brief Example of struct with {{i}} parameter serialized into maps.
-    */
+     * \brief Example of struct with {{i}} parameter serialized into maps.
+     */
     struct map_example_struct{{i}} {
+        {% for j in range(1, i + 1) -%}
+            int param{{j}};
+        {% endfor %}
+    };
+{% endfor %}
+
+{% for i in range(1, max_params + 1) %}
+    /*!
+     * \brief Example of struct with {{i}} parameter serialized into arrays.
+     */
+    struct array_example_struct{{i}} {
         {% for j in range(1, i + 1) -%}
             int param{{j}};
         {% endfor %}
@@ -44,6 +55,15 @@ namespace msgpack_light_test {
 
 {% for i in range(1, max_params + 1) -%}
     MSGPACK_LIGHT_STRUCT_MAP(msgpack_light_test::map_example_struct{{i}},
+        {% for j in range(1, i) -%}
+            param{{j}},
+        {% endfor -%}
+        param{{i}}
+    );
+{% endfor -%}
+
+{% for i in range(1, max_params + 1) -%}
+    MSGPACK_LIGHT_STRUCT_ARRAY(msgpack_light_test::array_example_struct{{i}},
         {% for j in range(1, i) -%}
             param{{j}},
         {% endfor -%}

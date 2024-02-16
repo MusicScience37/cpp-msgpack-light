@@ -143,6 +143,121 @@ struct map_example_struct10 {
     int param10;
 };
 
+/*!
+ * \brief Example of struct with 1 parameter serialized into arrays.
+ */
+struct array_example_struct1 {
+    int param1;
+};
+
+/*!
+ * \brief Example of struct with 2 parameter serialized into arrays.
+ */
+struct array_example_struct2 {
+    int param1;
+    int param2;
+};
+
+/*!
+ * \brief Example of struct with 3 parameter serialized into arrays.
+ */
+struct array_example_struct3 {
+    int param1;
+    int param2;
+    int param3;
+};
+
+/*!
+ * \brief Example of struct with 4 parameter serialized into arrays.
+ */
+struct array_example_struct4 {
+    int param1;
+    int param2;
+    int param3;
+    int param4;
+};
+
+/*!
+ * \brief Example of struct with 5 parameter serialized into arrays.
+ */
+struct array_example_struct5 {
+    int param1;
+    int param2;
+    int param3;
+    int param4;
+    int param5;
+};
+
+/*!
+ * \brief Example of struct with 6 parameter serialized into arrays.
+ */
+struct array_example_struct6 {
+    int param1;
+    int param2;
+    int param3;
+    int param4;
+    int param5;
+    int param6;
+};
+
+/*!
+ * \brief Example of struct with 7 parameter serialized into arrays.
+ */
+struct array_example_struct7 {
+    int param1;
+    int param2;
+    int param3;
+    int param4;
+    int param5;
+    int param6;
+    int param7;
+};
+
+/*!
+ * \brief Example of struct with 8 parameter serialized into arrays.
+ */
+struct array_example_struct8 {
+    int param1;
+    int param2;
+    int param3;
+    int param4;
+    int param5;
+    int param6;
+    int param7;
+    int param8;
+};
+
+/*!
+ * \brief Example of struct with 9 parameter serialized into arrays.
+ */
+struct array_example_struct9 {
+    int param1;
+    int param2;
+    int param3;
+    int param4;
+    int param5;
+    int param6;
+    int param7;
+    int param8;
+    int param9;
+};
+
+/*!
+ * \brief Example of struct with 10 parameter serialized into arrays.
+ */
+struct array_example_struct10 {
+    int param1;
+    int param2;
+    int param3;
+    int param4;
+    int param5;
+    int param6;
+    int param7;
+    int param8;
+    int param9;
+    int param10;
+};
+
 }  // namespace msgpack_light_test
 
 MSGPACK_LIGHT_STRUCT_MAP(msgpack_light_test::map_example_struct1, param1);
@@ -163,4 +278,23 @@ MSGPACK_LIGHT_STRUCT_MAP(msgpack_light_test::map_example_struct8, param1,
 MSGPACK_LIGHT_STRUCT_MAP(msgpack_light_test::map_example_struct9, param1,
     param2, param3, param4, param5, param6, param7, param8, param9);
 MSGPACK_LIGHT_STRUCT_MAP(msgpack_light_test::map_example_struct10, param1,
+    param2, param3, param4, param5, param6, param7, param8, param9, param10);
+MSGPACK_LIGHT_STRUCT_ARRAY(msgpack_light_test::array_example_struct1, param1);
+MSGPACK_LIGHT_STRUCT_ARRAY(
+    msgpack_light_test::array_example_struct2, param1, param2);
+MSGPACK_LIGHT_STRUCT_ARRAY(
+    msgpack_light_test::array_example_struct3, param1, param2, param3);
+MSGPACK_LIGHT_STRUCT_ARRAY(
+    msgpack_light_test::array_example_struct4, param1, param2, param3, param4);
+MSGPACK_LIGHT_STRUCT_ARRAY(msgpack_light_test::array_example_struct5, param1,
+    param2, param3, param4, param5);
+MSGPACK_LIGHT_STRUCT_ARRAY(msgpack_light_test::array_example_struct6, param1,
+    param2, param3, param4, param5, param6);
+MSGPACK_LIGHT_STRUCT_ARRAY(msgpack_light_test::array_example_struct7, param1,
+    param2, param3, param4, param5, param6, param7);
+MSGPACK_LIGHT_STRUCT_ARRAY(msgpack_light_test::array_example_struct8, param1,
+    param2, param3, param4, param5, param6, param7, param8);
+MSGPACK_LIGHT_STRUCT_ARRAY(msgpack_light_test::array_example_struct9, param1,
+    param2, param3, param4, param5, param6, param7, param8, param9);
+MSGPACK_LIGHT_STRUCT_ARRAY(msgpack_light_test::array_example_struct10, param1,
     param2, param3, param4, param5, param6, param7, param8, param9, param10);

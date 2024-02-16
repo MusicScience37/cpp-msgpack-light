@@ -30,29 +30,56 @@
 #include "msgpack_light/type_support/fwd.h"
 
 {% for i in range(1, max_params + 1) %}
-/*!
- * \brief Macro to generate class to support serialization of struct with {{i}} parameter.
- *
- * \param STRUCT Type of the struct.
-{% for j in range (1, i + 1) -%}
- * \param PARAM{{j}} Parameter.
-{% endfor -%}
- */
-#define INTERNAL_MSGPACK_LIGHT_STRUCT_MAP{{i}}(STRUCT,                          \
-{% for j in range (1, i + 1) -%}
-    PARAM{{j}} {% if j != i %} , {% endif %}                                    \
-{% endfor -%}
-)                                                                               \
-    template <>                                                                 \
-    struct msgpack_light::type_support::serialization_traits<STRUCT> {        \
-    public:                                                                     \
-        static void serialize(::msgpack_light::serialization_buffer& buffer,    \
-            const STRUCT& value) {                                              \
-            buffer.serialize_map_size({{i}});                                   \
-{% for j in range (1, i + 1) -%}
-            buffer.serialize(::std::string_view{ #PARAM{{j}} });                \
-            buffer.serialize(value.PARAM{{j}});                                 \
-{% endfor -%}
-        }                                                                       \
-    }
+    /*!
+     * \brief Macro to generate class to support serialization of struct with {{i}} parameter into maps.
+     *
+     * \param STRUCT Type of the struct.
+    {% for j in range (1, i + 1) -%}
+     * \param PARAM{{j}} Parameter.
+    {% endfor -%}
+     */
+    #define INTERNAL_MSGPACK_LIGHT_STRUCT_MAP{{i}}(STRUCT,                          \
+    {% for j in range (1, i + 1) -%}
+        PARAM{{j}} {% if j != i %} , {% endif %}                                    \
+    {% endfor -%}
+    )                                                                               \
+        template <>                                                                 \
+        struct msgpack_light::type_support::serialization_traits<STRUCT> {        \
+        public:                                                                     \
+            static void serialize(::msgpack_light::serialization_buffer& buffer,    \
+                const STRUCT& value) {                                              \
+                buffer.serialize_map_size({{i}});                                   \
+    {% for j in range (1, i + 1) -%}
+                buffer.serialize(::std::string_view{ #PARAM{{j}} });                \
+                buffer.serialize(value.PARAM{{j}});                                 \
+    {% endfor -%}
+            }                                                                       \
+        }
+{% endfor %}
+
+{% for i in range(1, max_params + 1) %}
+    /*!
+     * \brief Macro to generate class to support serialization of struct with {{i}} parameter into arrays.
+     *
+     * \param STRUCT Type of the struct.
+    {% for j in range (1, i + 1) -%}
+     * \param PARAM{{j}} Parameter.
+    {% endfor -%}
+     */
+    #define INTERNAL_MSGPACK_LIGHT_STRUCT_ARRAY{{i}}(STRUCT,                          \
+    {% for j in range (1, i + 1) -%}
+        PARAM{{j}} {% if j != i %} , {% endif %}                                    \
+    {% endfor -%}
+    )                                                                               \
+        template <>                                                                 \
+        struct msgpack_light::type_support::serialization_traits<STRUCT> {        \
+        public:                                                                     \
+            static void serialize(::msgpack_light::serialization_buffer& buffer,    \
+                const STRUCT& value) {                                              \
+                buffer.serialize_array_size({{i}});                                   \
+    {% for j in range (1, i + 1) -%}
+                buffer.serialize(value.PARAM{{j}});                                 \
+    {% endfor -%}
+            }                                                                       \
+        }
 {% endfor %}

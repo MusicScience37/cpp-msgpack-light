@@ -35,3 +35,17 @@
         INTERNAL_MSGPACK_LIGHT_CONCATENATE(INTERNAL_MSGPACK_LIGHT_STRUCT_MAP, \
             INTERNAL_MSGPACK_LIGHT_COUNT_ARGUMENTS(__VA_ARGS__)),             \
         (STRUCT, __VA_ARGS__))
+
+/*!
+ * \brief Macro to generate class to support serialization of struct into
+ * arrays.
+ *
+ * \param STRUCT Type of the struct. Remaining arguments are treated as
+ * parameter names.
+ */
+#define MSGPACK_LIGHT_STRUCT_ARRAY(STRUCT, ...)                   \
+    INTERNAL_MSGPACK_LIGHT_INVOKE_MACRO(                          \
+        INTERNAL_MSGPACK_LIGHT_CONCATENATE(                       \
+            INTERNAL_MSGPACK_LIGHT_STRUCT_ARRAY,                  \
+            INTERNAL_MSGPACK_LIGHT_COUNT_ARGUMENTS(__VA_ARGS__)), \
+        (STRUCT, __VA_ARGS__))

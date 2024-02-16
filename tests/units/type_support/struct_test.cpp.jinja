@@ -57,3 +57,30 @@ TEST_CASE("MSGPACK_LIGHT_STRUCT_MAP") {
         }
     {% endfor %}
 }
+
+TEST_CASE("MSGPACK_LIGHT_STRUCT_ARRAY") {
+    using msgpack_light::binary;
+    using msgpack_light::serialize;
+    {% for i in range(1, max_params + 1) -%}
+        using msgpack_light_test::array_example_struct{{i}};
+    {% endfor %}
+
+    {% for i in range(1, max_params + 1) %}
+        SECTION("serialize a struct with {{i}} parameter into an array") {
+            const auto value = array_example_struct{{i}}{
+                {% for j in range(1, i) -%}
+                    {{j}},
+                {% endfor -%}
+                {{i}}
+            };
+            const auto expected_binary = binary(
+                "9{{ '{0:X}'.format(i) }}"  // fixarray with {{i}} pair
+                {% for j in range(1, i + 1) -%}
+                    "{{ '{0:02X}'.format(j) }}"  // {{j}}
+                {% endfor -%}
+            );
+
+            CHECK(serialize(value) == expected_binary);
+        }
+    {% endfor %}
+}
