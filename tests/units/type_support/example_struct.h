@@ -31,7 +31,17 @@ struct map_example_struct1 {
     int param1;
 };
 
+/*!
+ * \brief Example of struct with 2 parameters serialized into maps.
+ */
+struct map_example_struct2 {
+    int param1;
+    int param2;
+};
+
 }  // namespace msgpack_light_test
 
-INTERNAL_MSGPACK_LIGHT_STRUCT_MAP2(
+INTERNAL_MSGPACK_LIGHT_STRUCT_MAP1(
     msgpack_light_test::map_example_struct1, param1);
+INTERNAL_MSGPACK_LIGHT_STRUCT_MAP2(
+    msgpack_light_test::map_example_struct2, param1, param2);

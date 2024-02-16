@@ -27,6 +27,7 @@ TEST_CASE("MSGPACK_LIGHT_STRUCT_MAP") {
     using msgpack_light::binary;
     using msgpack_light::serialize;
     using msgpack_light_test::map_example_struct1;
+    using msgpack_light_test::map_example_struct2;
 
     SECTION("serialize a struct with 1 parameter into a map") {
         const auto value = map_example_struct1{123};
@@ -34,6 +35,19 @@ TEST_CASE("MSGPACK_LIGHT_STRUCT_MAP") {
             "81"              // fixmap with 1 pair
             "A6706172616D31"  // "param1"
             "7B"              // 123
+        );
+
+        CHECK(serialize(value) == expected_binary);
+    }
+
+    SECTION("serialize a struct with 2 parameters into a map") {
+        const auto value = map_example_struct2{1, 2};
+        const auto expected_binary = binary(
+            "82"              // fixmap with 2 pairs
+            "A6706172616D31"  // "param1"
+            "01"              // 1
+            "A6706172616D32"  // "param2"
+            "02"              // 2
         );
 
         CHECK(serialize(value) == expected_binary);
