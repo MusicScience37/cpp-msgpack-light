@@ -37,7 +37,7 @@
  */
 #define INTERNAL_MSGPACK_LIGHT_STRUCT_MAP1(STRUCT, PARAM1)                   \
     template <>                                                              \
-    struct ::msgpack_light::type_support::serialization_traits<STRUCT> {     \
+    struct msgpack_light::type_support::serialization_traits<STRUCT> {       \
     public:                                                                  \
         static void serialize(::msgpack_light::serialization_buffer& buffer, \
             const STRUCT& value) {                                           \
@@ -57,7 +57,7 @@
  */
 #define INTERNAL_MSGPACK_LIGHT_STRUCT_MAP2(STRUCT, PARAM1, PARAM2)           \
     template <>                                                              \
-    struct ::msgpack_light::type_support::serialization_traits<STRUCT> {     \
+    struct msgpack_light::type_support::serialization_traits<STRUCT> {       \
     public:                                                                  \
         static void serialize(::msgpack_light::serialization_buffer& buffer, \
             const STRUCT& value) {                                           \
@@ -80,7 +80,7 @@
  */
 #define INTERNAL_MSGPACK_LIGHT_STRUCT_MAP3(STRUCT, PARAM1, PARAM2, PARAM3)   \
     template <>                                                              \
-    struct ::msgpack_light::type_support::serialization_traits<STRUCT> {     \
+    struct msgpack_light::type_support::serialization_traits<STRUCT> {       \
     public:                                                                  \
         static void serialize(::msgpack_light::serialization_buffer& buffer, \
             const STRUCT& value) {                                           \
@@ -107,7 +107,7 @@
 #define INTERNAL_MSGPACK_LIGHT_STRUCT_MAP4(                                  \
     STRUCT, PARAM1, PARAM2, PARAM3, PARAM4)                                  \
     template <>                                                              \
-    struct ::msgpack_light::type_support::serialization_traits<STRUCT> {     \
+    struct msgpack_light::type_support::serialization_traits<STRUCT> {       \
     public:                                                                  \
         static void serialize(::msgpack_light::serialization_buffer& buffer, \
             const STRUCT& value) {                                           \
@@ -137,7 +137,7 @@
 #define INTERNAL_MSGPACK_LIGHT_STRUCT_MAP5(                                  \
     STRUCT, PARAM1, PARAM2, PARAM3, PARAM4, PARAM5)                          \
     template <>                                                              \
-    struct ::msgpack_light::type_support::serialization_traits<STRUCT> {     \
+    struct msgpack_light::type_support::serialization_traits<STRUCT> {       \
     public:                                                                  \
         static void serialize(::msgpack_light::serialization_buffer& buffer, \
             const STRUCT& value) {                                           \
@@ -170,7 +170,7 @@
 #define INTERNAL_MSGPACK_LIGHT_STRUCT_MAP6(                                  \
     STRUCT, PARAM1, PARAM2, PARAM3, PARAM4, PARAM5, PARAM6)                  \
     template <>                                                              \
-    struct ::msgpack_light::type_support::serialization_traits<STRUCT> {     \
+    struct msgpack_light::type_support::serialization_traits<STRUCT> {       \
     public:                                                                  \
         static void serialize(::msgpack_light::serialization_buffer& buffer, \
             const STRUCT& value) {                                           \
@@ -206,7 +206,7 @@
 #define INTERNAL_MSGPACK_LIGHT_STRUCT_MAP7(                                  \
     STRUCT, PARAM1, PARAM2, PARAM3, PARAM4, PARAM5, PARAM6, PARAM7)          \
     template <>                                                              \
-    struct ::msgpack_light::type_support::serialization_traits<STRUCT> {     \
+    struct msgpack_light::type_support::serialization_traits<STRUCT> {       \
     public:                                                                  \
         static void serialize(::msgpack_light::serialization_buffer& buffer, \
             const STRUCT& value) {                                           \
@@ -245,7 +245,7 @@
 #define INTERNAL_MSGPACK_LIGHT_STRUCT_MAP8(                                  \
     STRUCT, PARAM1, PARAM2, PARAM3, PARAM4, PARAM5, PARAM6, PARAM7, PARAM8)  \
     template <>                                                              \
-    struct ::msgpack_light::type_support::serialization_traits<STRUCT> {     \
+    struct msgpack_light::type_support::serialization_traits<STRUCT> {       \
     public:                                                                  \
         static void serialize(::msgpack_light::serialization_buffer& buffer, \
             const STRUCT& value) {                                           \
@@ -287,7 +287,7 @@
 #define INTERNAL_MSGPACK_LIGHT_STRUCT_MAP9(STRUCT, PARAM1, PARAM2, PARAM3,   \
     PARAM4, PARAM5, PARAM6, PARAM7, PARAM8, PARAM9)                          \
     template <>                                                              \
-    struct ::msgpack_light::type_support::serialization_traits<STRUCT> {     \
+    struct msgpack_light::type_support::serialization_traits<STRUCT> {       \
     public:                                                                  \
         static void serialize(::msgpack_light::serialization_buffer& buffer, \
             const STRUCT& value) {                                           \
@@ -332,7 +332,7 @@
 #define INTERNAL_MSGPACK_LIGHT_STRUCT_MAP10(STRUCT, PARAM1, PARAM2, PARAM3,  \
     PARAM4, PARAM5, PARAM6, PARAM7, PARAM8, PARAM9, PARAM10)                 \
     template <>                                                              \
-    struct ::msgpack_light::type_support::serialization_traits<STRUCT> {     \
+    struct msgpack_light::type_support::serialization_traits<STRUCT> {       \
     public:                                                                  \
         static void serialize(::msgpack_light::serialization_buffer& buffer, \
             const STRUCT& value) {                                           \

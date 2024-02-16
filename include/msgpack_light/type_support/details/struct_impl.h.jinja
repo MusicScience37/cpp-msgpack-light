@@ -44,7 +44,7 @@
 {% endfor -%}
 )                                                                               \
     template <>                                                                 \
-    struct ::msgpack_light::type_support::serialization_traits<STRUCT> {        \
+    struct msgpack_light::type_support::serialization_traits<STRUCT> {        \
     public:                                                                     \
         static void serialize(::msgpack_light::serialization_buffer& buffer,    \
             const STRUCT& value) {                                              \
