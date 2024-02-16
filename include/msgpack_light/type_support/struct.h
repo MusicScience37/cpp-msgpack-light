@@ -29,6 +29,8 @@
  *
  * \param STRUCT Type of the struct. Remaining arguments are treated as
  * parameter names.
+ *
+ * \warning This macro works for 1 to 15 parameters.
  */
 #define MSGPACK_LIGHT_STRUCT_MAP(STRUCT, ...)                                 \
     INTERNAL_MSGPACK_LIGHT_INVOKE_MACRO(                                      \
@@ -42,6 +44,8 @@
  *
  * \param STRUCT Type of the struct. Remaining arguments are treated as
  * parameter names.
+ *
+ * \warning This macro works for 1 to 15 parameters.
  */
 #define MSGPACK_LIGHT_STRUCT_ARRAY(STRUCT, ...)                   \
     INTERNAL_MSGPACK_LIGHT_INVOKE_MACRO(                          \
