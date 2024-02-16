@@ -1,4 +1,5 @@
 set(SOURCE_FILES
+    details/count_arguments_macro_test.cpp
     details/to_big_endian_test.cpp
     memory_output_stream_test.cpp
     serialization_buffer_test.cpp

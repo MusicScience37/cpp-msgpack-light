@@ -29,7 +29,15 @@ SOURCES = [
     RenderedSource(
         template_path="include/msgpack_light/type_support/details/struct_impl.h.jinja",
         source_path="include/msgpack_light/type_support/details/struct_impl.h",
-    )
+    ),
+    RenderedSource(
+        template_path="include/msgpack_light/details/count_arguments_macro.h.jinja",
+        source_path="include/msgpack_light/details/count_arguments_macro.h",
+    ),
+    RenderedSource(
+        template_path="tests/units/details/count_arguments_macro_test.cpp.jinja",
+        source_path="tests/units/details/count_arguments_macro_test.cpp",
+    ),
 ]
 
 
