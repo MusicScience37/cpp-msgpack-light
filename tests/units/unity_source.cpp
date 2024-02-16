@@ -15,6 +15,7 @@
 #include "type_support/pair_test.cpp"    // NOLINT(bugprone-suspicious-include)
 #include "type_support/set_test.cpp"     // NOLINT(bugprone-suspicious-include)
 #include "type_support/string_test.cpp"  // NOLINT(bugprone-suspicious-include)
+#include "type_support/struct_test.cpp"  // NOLINT(bugprone-suspicious-include)
 #include "type_support/timespec_test.cpp"  // NOLINT(bugprone-suspicious-include)
 #include "type_support/tuple_test.cpp"  // NOLINT(bugprone-suspicious-include)
 #include "type_support/unordered_map_test.cpp"  // NOLINT(bugprone-suspicious-include)

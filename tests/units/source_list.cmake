@@ -16,6 +16,7 @@ set(SOURCE_FILES
     type_support/pair_test.cpp
     type_support/set_test.cpp
     type_support/string_test.cpp
+    type_support/struct_test.cpp
     type_support/timespec_test.cpp
     type_support/tuple_test.cpp
     type_support/unordered_map_test.cpp
