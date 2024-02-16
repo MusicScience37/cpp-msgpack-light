@@ -4,6 +4,7 @@
 import dataclasses
 import pathlib
 import subprocess
+import typing
 
 import jinja2
 
@@ -38,7 +39,39 @@ SOURCES = [
         template_path="tests/units/details/count_arguments_macro_test.cpp.jinja",
         source_path="tests/units/details/count_arguments_macro_test.cpp",
     ),
+    RenderedSource(
+        template_path="tests/units/type_support/example_struct.h.jinja",
+        source_path="tests/units/type_support/example_struct.h",
+    ),
+    RenderedSource(
+        template_path="tests/units/type_support/struct_test.cpp.jinja",
+        source_path="tests/units/type_support/struct_test.cpp",
+    ),
 ]
+
+
+def convert_to_ascii_string_hex_expression(x: typing.Any) -> str:
+    """Convert an variable to hex expression of string encoded in ASCII.
+
+    Args:
+        x (typing.Any): Variable.
+
+    Returns:
+        str: Hex expression.
+    """
+    return str(x).encode("ascii").hex()
+
+
+def get_ascii_string_length(x: typing.Any) -> int:
+    """Get the length of the string encoded in ASCII.
+
+    Args:
+        x (typing.Any): Variable.
+
+    Returns:
+        int: Length.
+    """
+    return len(str(x))
 
 
 def render_cpp_template_one(source: RenderedSource) -> None:
@@ -49,7 +82,11 @@ def render_cpp_template_one(source: RenderedSource) -> None:
     """
     env = jinja2.Environment(loader=jinja2.FileSystemLoader(str(ROOT_DIR)))
     template = env.get_template(source.template_path)
-    rendered_source = template.render(max_params=MAX_PARAMS)
+    rendered_source = template.render(
+        max_params=MAX_PARAMS,
+        convert_to_ascii_string_hex_expression=convert_to_ascii_string_hex_expression,
+        get_ascii_string_length=get_ascii_string_length,
+    )
     source_full_path = ROOT_DIR.joinpath(pathlib.Path(source.source_path)).absolute()
     with open(str(source_full_path), mode="w", encoding="utf-8") as file:
         file.write(rendered_source)
