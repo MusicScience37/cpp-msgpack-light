@@ -15,31 +15,26 @@
  */
 /*!
  * \file
- * \brief Definition of structs for tests.
+ * \brief Definition of INTERNAL_MSGPACK_LIGHT_CONCATENATE macro.
  */
 #pragma once
 
-#include "msgpack_light/type_support/struct.h"
-
-namespace msgpack_light_test {
+/*!
+ * \brief Internal macro to implement INTERNAL_MSGPACK_LIGHT_CONCATENATE macro.
+ */
+#define INTERNAL_MSGPACK_LIGHT_CONCATENATE_IMPL2(str1, str2) str1##str2
 
 /*!
- * \brief Example of struct with 1 parameter serialized into maps.
+ * \brief Internal macro to implement INTERNAL_MSGPACK_LIGHT_CONCATENATE macro.
  */
-struct map_example_struct1 {
-    int param1;
-};
+#define INTERNAL_MSGPACK_LIGHT_CONCATENATE_IMPL1(str1, str2) \
+    INTERNAL_MSGPACK_LIGHT_CONCATENATE_IMPL2(str1, str2)
 
 /*!
- * \brief Example of struct with 2 parameters serialized into maps.
+ * \brief Macro to concatenate two strings.
+ *
+ * \param str1 First string.
+ * \param str2 Second string.
  */
-struct map_example_struct2 {
-    int param1;
-    int param2;
-};
-
-}  // namespace msgpack_light_test
-
-MSGPACK_LIGHT_STRUCT_MAP(msgpack_light_test::map_example_struct1, param1);
-MSGPACK_LIGHT_STRUCT_MAP(
-    msgpack_light_test::map_example_struct2, param1, param2);
+#define INTERNAL_MSGPACK_LIGHT_CONCATENATE(str1, str2) \
+    INTERNAL_MSGPACK_LIGHT_CONCATENATE_IMPL1(str1, str2)

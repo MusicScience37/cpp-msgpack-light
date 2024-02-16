@@ -45,7 +45,7 @@
             buffer.serialize(::std::string_view{#PARAM1});                   \
             buffer.serialize(value.PARAM1);                                  \
         }                                                                    \
-    };
+    }
 
 /*!
  * \brief Macro to generate class to support serialization of struct with 2
@@ -67,7 +67,7 @@
             buffer.serialize(::std::string_view{#PARAM2});                   \
             buffer.serialize(value.PARAM2);                                  \
         }                                                                    \
-    };
+    }
 
 /*!
  * \brief Macro to generate class to support serialization of struct with 3
@@ -92,7 +92,7 @@
             buffer.serialize(::std::string_view{#PARAM3});                   \
             buffer.serialize(value.PARAM3);                                  \
         }                                                                    \
-    };
+    }
 
 /*!
  * \brief Macro to generate class to support serialization of struct with 4
@@ -121,7 +121,7 @@
             buffer.serialize(::std::string_view{#PARAM4});                   \
             buffer.serialize(value.PARAM4);                                  \
         }                                                                    \
-    };
+    }
 
 /*!
  * \brief Macro to generate class to support serialization of struct with 5
@@ -153,7 +153,7 @@
             buffer.serialize(::std::string_view{#PARAM5});                   \
             buffer.serialize(value.PARAM5);                                  \
         }                                                                    \
-    };
+    }
 
 /*!
  * \brief Macro to generate class to support serialization of struct with 6
@@ -188,7 +188,7 @@
             buffer.serialize(::std::string_view{#PARAM6});                   \
             buffer.serialize(value.PARAM6);                                  \
         }                                                                    \
-    };
+    }
 
 /*!
  * \brief Macro to generate class to support serialization of struct with 7
@@ -226,7 +226,7 @@
             buffer.serialize(::std::string_view{#PARAM7});                   \
             buffer.serialize(value.PARAM7);                                  \
         }                                                                    \
-    };
+    }
 
 /*!
  * \brief Macro to generate class to support serialization of struct with 8
@@ -267,7 +267,7 @@
             buffer.serialize(::std::string_view{#PARAM8});                   \
             buffer.serialize(value.PARAM8);                                  \
         }                                                                    \
-    };
+    }
 
 /*!
  * \brief Macro to generate class to support serialization of struct with 9
@@ -311,7 +311,7 @@
             buffer.serialize(::std::string_view{#PARAM9});                   \
             buffer.serialize(value.PARAM9);                                  \
         }                                                                    \
-    };
+    }
 
 /*!
  * \brief Macro to generate class to support serialization of struct with 10
@@ -358,4 +358,4 @@
             buffer.serialize(::std::string_view{#PARAM10});                  \
             buffer.serialize(value.PARAM10);                                 \
         }                                                                    \
-    };
+    }

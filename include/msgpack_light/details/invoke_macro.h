@@ -15,31 +15,12 @@
  */
 /*!
  * \file
- * \brief Definition of structs for tests.
+ * \brief Definition of INTERNAL_MSGPACK_LIGHT_INVOKE_MACRO macro.
  */
 #pragma once
 
-#include "msgpack_light/type_support/struct.h"
-
-namespace msgpack_light_test {
-
 /*!
- * \brief Example of struct with 1 parameter serialized into maps.
+ * \brief Internal macro to implement INTERNAL_MSGPACK_LIGHT_COUNT_ARGUMENTS
+ * macro.
  */
-struct map_example_struct1 {
-    int param1;
-};
-
-/*!
- * \brief Example of struct with 2 parameters serialized into maps.
- */
-struct map_example_struct2 {
-    int param1;
-    int param2;
-};
-
-}  // namespace msgpack_light_test
-
-MSGPACK_LIGHT_STRUCT_MAP(msgpack_light_test::map_example_struct1, param1);
-MSGPACK_LIGHT_STRUCT_MAP(
-    msgpack_light_test::map_example_struct2, param1, param2);
+#define INTERNAL_MSGPACK_LIGHT_INVOKE_MACRO(macro, args) macro args
