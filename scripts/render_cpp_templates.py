@@ -40,12 +40,16 @@ SOURCES = [
         source_path="tests/units/details/count_arguments_macro_test.cpp",
     ),
     RenderedSource(
-        template_path="tests/units/type_support/example_struct.h.jinja",
-        source_path="tests/units/type_support/example_struct.h",
+        template_path="tests/include/example_struct.h.jinja",
+        source_path="tests/include/example_struct.h",
     ),
     RenderedSource(
         template_path="tests/units/type_support/struct_test.cpp.jinja",
         source_path="tests/units/type_support/struct_test.cpp",
+    ),
+    RenderedSource(
+        template_path="tests/integ/serialize_struct_test.cpp.jinja",
+        source_path="tests/integ/serialize_struct_test.cpp",
     ),
 ]
 
