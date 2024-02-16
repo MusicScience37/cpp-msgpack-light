@@ -34,6 +34,11 @@ TEST_CASE("MSGPACK_LIGHT_STRUCT_MAP") {
     using msgpack_light::serialize;
     using msgpack_light_test::map_example_struct1;
     using msgpack_light_test::map_example_struct10;
+    using msgpack_light_test::map_example_struct11;
+    using msgpack_light_test::map_example_struct12;
+    using msgpack_light_test::map_example_struct13;
+    using msgpack_light_test::map_example_struct14;
+    using msgpack_light_test::map_example_struct15;
     using msgpack_light_test::map_example_struct2;
     using msgpack_light_test::map_example_struct3;
     using msgpack_light_test::map_example_struct4;
@@ -242,6 +247,186 @@ TEST_CASE("MSGPACK_LIGHT_STRUCT_MAP") {
 
         CHECK(serialize(value) == expected_binary);
     }
+
+    SECTION("serialize a struct with 11 parameter into a map") {
+        const auto value =
+            map_example_struct11{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11};
+        const auto expected_binary = binary(
+            "8B"                // fixmap with 11 pair
+            "A6706172616D31"    // "param1"
+            "01"                // 1
+            "A6706172616D32"    // "param2"
+            "02"                // 2
+            "A6706172616D33"    // "param3"
+            "03"                // 3
+            "A6706172616D34"    // "param4"
+            "04"                // 4
+            "A6706172616D35"    // "param5"
+            "05"                // 5
+            "A6706172616D36"    // "param6"
+            "06"                // 6
+            "A6706172616D37"    // "param7"
+            "07"                // 7
+            "A6706172616D38"    // "param8"
+            "08"                // 8
+            "A6706172616D39"    // "param9"
+            "09"                // 9
+            "A7706172616D3130"  // "param10"
+            "0A"                // 10
+            "A7706172616D3131"  // "param11"
+            "0B"                // 11
+        );
+
+        CHECK(serialize(value) == expected_binary);
+    }
+
+    SECTION("serialize a struct with 12 parameter into a map") {
+        const auto value =
+            map_example_struct12{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12};
+        const auto expected_binary = binary(
+            "8C"                // fixmap with 12 pair
+            "A6706172616D31"    // "param1"
+            "01"                // 1
+            "A6706172616D32"    // "param2"
+            "02"                // 2
+            "A6706172616D33"    // "param3"
+            "03"                // 3
+            "A6706172616D34"    // "param4"
+            "04"                // 4
+            "A6706172616D35"    // "param5"
+            "05"                // 5
+            "A6706172616D36"    // "param6"
+            "06"                // 6
+            "A6706172616D37"    // "param7"
+            "07"                // 7
+            "A6706172616D38"    // "param8"
+            "08"                // 8
+            "A6706172616D39"    // "param9"
+            "09"                // 9
+            "A7706172616D3130"  // "param10"
+            "0A"                // 10
+            "A7706172616D3131"  // "param11"
+            "0B"                // 11
+            "A7706172616D3132"  // "param12"
+            "0C"                // 12
+        );
+
+        CHECK(serialize(value) == expected_binary);
+    }
+
+    SECTION("serialize a struct with 13 parameter into a map") {
+        const auto value =
+            map_example_struct13{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13};
+        const auto expected_binary = binary(
+            "8D"                // fixmap with 13 pair
+            "A6706172616D31"    // "param1"
+            "01"                // 1
+            "A6706172616D32"    // "param2"
+            "02"                // 2
+            "A6706172616D33"    // "param3"
+            "03"                // 3
+            "A6706172616D34"    // "param4"
+            "04"                // 4
+            "A6706172616D35"    // "param5"
+            "05"                // 5
+            "A6706172616D36"    // "param6"
+            "06"                // 6
+            "A6706172616D37"    // "param7"
+            "07"                // 7
+            "A6706172616D38"    // "param8"
+            "08"                // 8
+            "A6706172616D39"    // "param9"
+            "09"                // 9
+            "A7706172616D3130"  // "param10"
+            "0A"                // 10
+            "A7706172616D3131"  // "param11"
+            "0B"                // 11
+            "A7706172616D3132"  // "param12"
+            "0C"                // 12
+            "A7706172616D3133"  // "param13"
+            "0D"                // 13
+        );
+
+        CHECK(serialize(value) == expected_binary);
+    }
+
+    SECTION("serialize a struct with 14 parameter into a map") {
+        const auto value =
+            map_example_struct14{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14};
+        const auto expected_binary = binary(
+            "8E"                // fixmap with 14 pair
+            "A6706172616D31"    // "param1"
+            "01"                // 1
+            "A6706172616D32"    // "param2"
+            "02"                // 2
+            "A6706172616D33"    // "param3"
+            "03"                // 3
+            "A6706172616D34"    // "param4"
+            "04"                // 4
+            "A6706172616D35"    // "param5"
+            "05"                // 5
+            "A6706172616D36"    // "param6"
+            "06"                // 6
+            "A6706172616D37"    // "param7"
+            "07"                // 7
+            "A6706172616D38"    // "param8"
+            "08"                // 8
+            "A6706172616D39"    // "param9"
+            "09"                // 9
+            "A7706172616D3130"  // "param10"
+            "0A"                // 10
+            "A7706172616D3131"  // "param11"
+            "0B"                // 11
+            "A7706172616D3132"  // "param12"
+            "0C"                // 12
+            "A7706172616D3133"  // "param13"
+            "0D"                // 13
+            "A7706172616D3134"  // "param14"
+            "0E"                // 14
+        );
+
+        CHECK(serialize(value) == expected_binary);
+    }
+
+    SECTION("serialize a struct with 15 parameter into a map") {
+        const auto value = map_example_struct15{
+            1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15};
+        const auto expected_binary = binary(
+            "8F"                // fixmap with 15 pair
+            "A6706172616D31"    // "param1"
+            "01"                // 1
+            "A6706172616D32"    // "param2"
+            "02"                // 2
+            "A6706172616D33"    // "param3"
+            "03"                // 3
+            "A6706172616D34"    // "param4"
+            "04"                // 4
+            "A6706172616D35"    // "param5"
+            "05"                // 5
+            "A6706172616D36"    // "param6"
+            "06"                // 6
+            "A6706172616D37"    // "param7"
+            "07"                // 7
+            "A6706172616D38"    // "param8"
+            "08"                // 8
+            "A6706172616D39"    // "param9"
+            "09"                // 9
+            "A7706172616D3130"  // "param10"
+            "0A"                // 10
+            "A7706172616D3131"  // "param11"
+            "0B"                // 11
+            "A7706172616D3132"  // "param12"
+            "0C"                // 12
+            "A7706172616D3133"  // "param13"
+            "0D"                // 13
+            "A7706172616D3134"  // "param14"
+            "0E"                // 14
+            "A7706172616D3135"  // "param15"
+            "0F"                // 15
+        );
+
+        CHECK(serialize(value) == expected_binary);
+    }
 }
 
 TEST_CASE("MSGPACK_LIGHT_STRUCT_ARRAY") {
@@ -249,6 +434,11 @@ TEST_CASE("MSGPACK_LIGHT_STRUCT_ARRAY") {
     using msgpack_light::serialize;
     using msgpack_light_test::array_example_struct1;
     using msgpack_light_test::array_example_struct10;
+    using msgpack_light_test::array_example_struct11;
+    using msgpack_light_test::array_example_struct12;
+    using msgpack_light_test::array_example_struct13;
+    using msgpack_light_test::array_example_struct14;
+    using msgpack_light_test::array_example_struct15;
     using msgpack_light_test::array_example_struct2;
     using msgpack_light_test::array_example_struct3;
     using msgpack_light_test::array_example_struct4;
@@ -399,6 +589,121 @@ TEST_CASE("MSGPACK_LIGHT_STRUCT_ARRAY") {
             "08"  // 8
             "09"  // 9
             "0A"  // 10
+        );
+
+        CHECK(serialize(value) == expected_binary);
+    }
+
+    SECTION("serialize a struct with 11 parameter into an array") {
+        const auto value =
+            array_example_struct11{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11};
+        const auto expected_binary = binary(
+            "9B"  // fixarray with 11 pair
+            "01"  // 1
+            "02"  // 2
+            "03"  // 3
+            "04"  // 4
+            "05"  // 5
+            "06"  // 6
+            "07"  // 7
+            "08"  // 8
+            "09"  // 9
+            "0A"  // 10
+            "0B"  // 11
+        );
+
+        CHECK(serialize(value) == expected_binary);
+    }
+
+    SECTION("serialize a struct with 12 parameter into an array") {
+        const auto value =
+            array_example_struct12{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12};
+        const auto expected_binary = binary(
+            "9C"  // fixarray with 12 pair
+            "01"  // 1
+            "02"  // 2
+            "03"  // 3
+            "04"  // 4
+            "05"  // 5
+            "06"  // 6
+            "07"  // 7
+            "08"  // 8
+            "09"  // 9
+            "0A"  // 10
+            "0B"  // 11
+            "0C"  // 12
+        );
+
+        CHECK(serialize(value) == expected_binary);
+    }
+
+    SECTION("serialize a struct with 13 parameter into an array") {
+        const auto value =
+            array_example_struct13{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13};
+        const auto expected_binary = binary(
+            "9D"  // fixarray with 13 pair
+            "01"  // 1
+            "02"  // 2
+            "03"  // 3
+            "04"  // 4
+            "05"  // 5
+            "06"  // 6
+            "07"  // 7
+            "08"  // 8
+            "09"  // 9
+            "0A"  // 10
+            "0B"  // 11
+            "0C"  // 12
+            "0D"  // 13
+        );
+
+        CHECK(serialize(value) == expected_binary);
+    }
+
+    SECTION("serialize a struct with 14 parameter into an array") {
+        const auto value = array_example_struct14{
+            1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14};
+        const auto expected_binary = binary(
+            "9E"  // fixarray with 14 pair
+            "01"  // 1
+            "02"  // 2
+            "03"  // 3
+            "04"  // 4
+            "05"  // 5
+            "06"  // 6
+            "07"  // 7
+            "08"  // 8
+            "09"  // 9
+            "0A"  // 10
+            "0B"  // 11
+            "0C"  // 12
+            "0D"  // 13
+            "0E"  // 14
+        );
+
+        CHECK(serialize(value) == expected_binary);
+    }
+
+    SECTION("serialize a struct with 15 parameter into an array") {
+        const auto value = array_example_struct15{
+            1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15};
+        const auto expected_binary = binary(
+            "9F"  // fixarray with 15 pair
+            "01"  // 1
+            "02"  // 2
+            "03"  // 3
+            "04"  // 4
+            "05"  // 5
+            "06"  // 6
+            "07"  // 7
+            "08"  // 8
+            "09"  // 9
+            "0A"  // 10
+            "0B"  // 11
+            "0C"  // 12
+            "0D"  // 13
+            "0E"  // 14
+            "0F"  // 15
         );
 
         CHECK(serialize(value) == expected_binary);

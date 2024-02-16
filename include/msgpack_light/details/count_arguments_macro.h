@@ -30,8 +30,8 @@
  * \brief Internal macro to implement INTERNAL_MSGPACK_LIGHT_COUNT_ARGUMENTS
  * macro.
  */
-#define INTERNAL_MSGPACK_LIGHT_COUNT_ARGUMENTS_IMPL_GET_COUNT( \
-    _1, _2, _3, _4, _5, _6, _7, _8, _9, _10, N, ...)           \
+#define INTERNAL_MSGPACK_LIGHT_COUNT_ARGUMENTS_IMPL_GET_COUNT(                \
+    _1, _2, _3, _4, _5, _6, _7, _8, _9, _10, _11, _12, _13, _14, _15, N, ...) \
     N
 
 /*!
@@ -39,7 +39,7 @@
  * macro.
  */
 #define INTERNAL_MSGPACK_LIGHT_COUNT_ARGUMENTS_IMPL_NUMBERS() \
-    10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0
+    15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0
 
 /*!
  * \brief Internal macro to implement INTERNAL_MSGPACK_LIGHT_COUNT_ARGUMENTS

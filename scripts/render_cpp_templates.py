@@ -12,7 +12,7 @@ import jinja2
 ROOT_DIR = pathlib.Path(__file__).absolute().parent.parent
 
 # Maximum number of parameters.
-MAX_PARAMS = 10
+MAX_PARAMS = 15
 
 
 @dataclasses.dataclass

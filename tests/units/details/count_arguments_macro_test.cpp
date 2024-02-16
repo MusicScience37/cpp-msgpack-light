@@ -45,5 +45,15 @@ TEST_CASE("INTERNAL_MSGPACK_LIGHT_COUNT_ARGUMENTS") {
                            a, a, a, a, a, a, a, a, a) == 9);
         STATIC_REQUIRE(INTERNAL_MSGPACK_LIGHT_COUNT_ARGUMENTS(
                            a, a, a, a, a, a, a, a, a, a) == 10);
+        STATIC_REQUIRE(INTERNAL_MSGPACK_LIGHT_COUNT_ARGUMENTS(
+                           a, a, a, a, a, a, a, a, a, a, a) == 11);
+        STATIC_REQUIRE(INTERNAL_MSGPACK_LIGHT_COUNT_ARGUMENTS(
+                           a, a, a, a, a, a, a, a, a, a, a, a) == 12);
+        STATIC_REQUIRE(INTERNAL_MSGPACK_LIGHT_COUNT_ARGUMENTS(
+                           a, a, a, a, a, a, a, a, a, a, a, a, a) == 13);
+        STATIC_REQUIRE(INTERNAL_MSGPACK_LIGHT_COUNT_ARGUMENTS(
+                           a, a, a, a, a, a, a, a, a, a, a, a, a, a) == 14);
+        STATIC_REQUIRE(INTERNAL_MSGPACK_LIGHT_COUNT_ARGUMENTS(
+                           a, a, a, a, a, a, a, a, a, a, a, a, a, a, a) == 15);
     }
 }

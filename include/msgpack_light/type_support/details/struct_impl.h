@@ -361,6 +361,289 @@
     }
 
 /*!
+ * \brief Macro to generate class to support serialization of struct with 11
+ * parameter into maps.
+ *
+ * \param STRUCT Type of the struct.
+ * \param PARAM1 Parameter.
+ * \param PARAM2 Parameter.
+ * \param PARAM3 Parameter.
+ * \param PARAM4 Parameter.
+ * \param PARAM5 Parameter.
+ * \param PARAM6 Parameter.
+ * \param PARAM7 Parameter.
+ * \param PARAM8 Parameter.
+ * \param PARAM9 Parameter.
+ * \param PARAM10 Parameter.
+ * \param PARAM11 Parameter.
+ */
+#define INTERNAL_MSGPACK_LIGHT_STRUCT_MAP11(STRUCT, PARAM1, PARAM2, PARAM3,  \
+    PARAM4, PARAM5, PARAM6, PARAM7, PARAM8, PARAM9, PARAM10, PARAM11)        \
+    template <>                                                              \
+    struct msgpack_light::type_support::serialization_traits<STRUCT> {       \
+    public:                                                                  \
+        static void serialize(::msgpack_light::serialization_buffer& buffer, \
+            const STRUCT& value) {                                           \
+            buffer.serialize_map_size(11);                                   \
+            buffer.serialize(::std::string_view{#PARAM1});                   \
+            buffer.serialize(value.PARAM1);                                  \
+            buffer.serialize(::std::string_view{#PARAM2});                   \
+            buffer.serialize(value.PARAM2);                                  \
+            buffer.serialize(::std::string_view{#PARAM3});                   \
+            buffer.serialize(value.PARAM3);                                  \
+            buffer.serialize(::std::string_view{#PARAM4});                   \
+            buffer.serialize(value.PARAM4);                                  \
+            buffer.serialize(::std::string_view{#PARAM5});                   \
+            buffer.serialize(value.PARAM5);                                  \
+            buffer.serialize(::std::string_view{#PARAM6});                   \
+            buffer.serialize(value.PARAM6);                                  \
+            buffer.serialize(::std::string_view{#PARAM7});                   \
+            buffer.serialize(value.PARAM7);                                  \
+            buffer.serialize(::std::string_view{#PARAM8});                   \
+            buffer.serialize(value.PARAM8);                                  \
+            buffer.serialize(::std::string_view{#PARAM9});                   \
+            buffer.serialize(value.PARAM9);                                  \
+            buffer.serialize(::std::string_view{#PARAM10});                  \
+            buffer.serialize(value.PARAM10);                                 \
+            buffer.serialize(::std::string_view{#PARAM11});                  \
+            buffer.serialize(value.PARAM11);                                 \
+        }                                                                    \
+    }
+
+/*!
+ * \brief Macro to generate class to support serialization of struct with 12
+ * parameter into maps.
+ *
+ * \param STRUCT Type of the struct.
+ * \param PARAM1 Parameter.
+ * \param PARAM2 Parameter.
+ * \param PARAM3 Parameter.
+ * \param PARAM4 Parameter.
+ * \param PARAM5 Parameter.
+ * \param PARAM6 Parameter.
+ * \param PARAM7 Parameter.
+ * \param PARAM8 Parameter.
+ * \param PARAM9 Parameter.
+ * \param PARAM10 Parameter.
+ * \param PARAM11 Parameter.
+ * \param PARAM12 Parameter.
+ */
+#define INTERNAL_MSGPACK_LIGHT_STRUCT_MAP12(STRUCT, PARAM1, PARAM2, PARAM3,    \
+    PARAM4, PARAM5, PARAM6, PARAM7, PARAM8, PARAM9, PARAM10, PARAM11, PARAM12) \
+    template <>                                                                \
+    struct msgpack_light::type_support::serialization_traits<STRUCT> {         \
+    public:                                                                    \
+        static void serialize(::msgpack_light::serialization_buffer& buffer,   \
+            const STRUCT& value) {                                             \
+            buffer.serialize_map_size(12);                                     \
+            buffer.serialize(::std::string_view{#PARAM1});                     \
+            buffer.serialize(value.PARAM1);                                    \
+            buffer.serialize(::std::string_view{#PARAM2});                     \
+            buffer.serialize(value.PARAM2);                                    \
+            buffer.serialize(::std::string_view{#PARAM3});                     \
+            buffer.serialize(value.PARAM3);                                    \
+            buffer.serialize(::std::string_view{#PARAM4});                     \
+            buffer.serialize(value.PARAM4);                                    \
+            buffer.serialize(::std::string_view{#PARAM5});                     \
+            buffer.serialize(value.PARAM5);                                    \
+            buffer.serialize(::std::string_view{#PARAM6});                     \
+            buffer.serialize(value.PARAM6);                                    \
+            buffer.serialize(::std::string_view{#PARAM7});                     \
+            buffer.serialize(value.PARAM7);                                    \
+            buffer.serialize(::std::string_view{#PARAM8});                     \
+            buffer.serialize(value.PARAM8);                                    \
+            buffer.serialize(::std::string_view{#PARAM9});                     \
+            buffer.serialize(value.PARAM9);                                    \
+            buffer.serialize(::std::string_view{#PARAM10});                    \
+            buffer.serialize(value.PARAM10);                                   \
+            buffer.serialize(::std::string_view{#PARAM11});                    \
+            buffer.serialize(value.PARAM11);                                   \
+            buffer.serialize(::std::string_view{#PARAM12});                    \
+            buffer.serialize(value.PARAM12);                                   \
+        }                                                                      \
+    }
+
+/*!
+ * \brief Macro to generate class to support serialization of struct with 13
+ * parameter into maps.
+ *
+ * \param STRUCT Type of the struct.
+ * \param PARAM1 Parameter.
+ * \param PARAM2 Parameter.
+ * \param PARAM3 Parameter.
+ * \param PARAM4 Parameter.
+ * \param PARAM5 Parameter.
+ * \param PARAM6 Parameter.
+ * \param PARAM7 Parameter.
+ * \param PARAM8 Parameter.
+ * \param PARAM9 Parameter.
+ * \param PARAM10 Parameter.
+ * \param PARAM11 Parameter.
+ * \param PARAM12 Parameter.
+ * \param PARAM13 Parameter.
+ */
+#define INTERNAL_MSGPACK_LIGHT_STRUCT_MAP13(STRUCT, PARAM1, PARAM2, PARAM3,    \
+    PARAM4, PARAM5, PARAM6, PARAM7, PARAM8, PARAM9, PARAM10, PARAM11, PARAM12, \
+    PARAM13)                                                                   \
+    template <>                                                                \
+    struct msgpack_light::type_support::serialization_traits<STRUCT> {         \
+    public:                                                                    \
+        static void serialize(::msgpack_light::serialization_buffer& buffer,   \
+            const STRUCT& value) {                                             \
+            buffer.serialize_map_size(13);                                     \
+            buffer.serialize(::std::string_view{#PARAM1});                     \
+            buffer.serialize(value.PARAM1);                                    \
+            buffer.serialize(::std::string_view{#PARAM2});                     \
+            buffer.serialize(value.PARAM2);                                    \
+            buffer.serialize(::std::string_view{#PARAM3});                     \
+            buffer.serialize(value.PARAM3);                                    \
+            buffer.serialize(::std::string_view{#PARAM4});                     \
+            buffer.serialize(value.PARAM4);                                    \
+            buffer.serialize(::std::string_view{#PARAM5});                     \
+            buffer.serialize(value.PARAM5);                                    \
+            buffer.serialize(::std::string_view{#PARAM6});                     \
+            buffer.serialize(value.PARAM6);                                    \
+            buffer.serialize(::std::string_view{#PARAM7});                     \
+            buffer.serialize(value.PARAM7);                                    \
+            buffer.serialize(::std::string_view{#PARAM8});                     \
+            buffer.serialize(value.PARAM8);                                    \
+            buffer.serialize(::std::string_view{#PARAM9});                     \
+            buffer.serialize(value.PARAM9);                                    \
+            buffer.serialize(::std::string_view{#PARAM10});                    \
+            buffer.serialize(value.PARAM10);                                   \
+            buffer.serialize(::std::string_view{#PARAM11});                    \
+            buffer.serialize(value.PARAM11);                                   \
+            buffer.serialize(::std::string_view{#PARAM12});                    \
+            buffer.serialize(value.PARAM12);                                   \
+            buffer.serialize(::std::string_view{#PARAM13});                    \
+            buffer.serialize(value.PARAM13);                                   \
+        }                                                                      \
+    }
+
+/*!
+ * \brief Macro to generate class to support serialization of struct with 14
+ * parameter into maps.
+ *
+ * \param STRUCT Type of the struct.
+ * \param PARAM1 Parameter.
+ * \param PARAM2 Parameter.
+ * \param PARAM3 Parameter.
+ * \param PARAM4 Parameter.
+ * \param PARAM5 Parameter.
+ * \param PARAM6 Parameter.
+ * \param PARAM7 Parameter.
+ * \param PARAM8 Parameter.
+ * \param PARAM9 Parameter.
+ * \param PARAM10 Parameter.
+ * \param PARAM11 Parameter.
+ * \param PARAM12 Parameter.
+ * \param PARAM13 Parameter.
+ * \param PARAM14 Parameter.
+ */
+#define INTERNAL_MSGPACK_LIGHT_STRUCT_MAP14(STRUCT, PARAM1, PARAM2, PARAM3,    \
+    PARAM4, PARAM5, PARAM6, PARAM7, PARAM8, PARAM9, PARAM10, PARAM11, PARAM12, \
+    PARAM13, PARAM14)                                                          \
+    template <>                                                                \
+    struct msgpack_light::type_support::serialization_traits<STRUCT> {         \
+    public:                                                                    \
+        static void serialize(::msgpack_light::serialization_buffer& buffer,   \
+            const STRUCT& value) {                                             \
+            buffer.serialize_map_size(14);                                     \
+            buffer.serialize(::std::string_view{#PARAM1});                     \
+            buffer.serialize(value.PARAM1);                                    \
+            buffer.serialize(::std::string_view{#PARAM2});                     \
+            buffer.serialize(value.PARAM2);                                    \
+            buffer.serialize(::std::string_view{#PARAM3});                     \
+            buffer.serialize(value.PARAM3);                                    \
+            buffer.serialize(::std::string_view{#PARAM4});                     \
+            buffer.serialize(value.PARAM4);                                    \
+            buffer.serialize(::std::string_view{#PARAM5});                     \
+            buffer.serialize(value.PARAM5);                                    \
+            buffer.serialize(::std::string_view{#PARAM6});                     \
+            buffer.serialize(value.PARAM6);                                    \
+            buffer.serialize(::std::string_view{#PARAM7});                     \
+            buffer.serialize(value.PARAM7);                                    \
+            buffer.serialize(::std::string_view{#PARAM8});                     \
+            buffer.serialize(value.PARAM8);                                    \
+            buffer.serialize(::std::string_view{#PARAM9});                     \
+            buffer.serialize(value.PARAM9);                                    \
+            buffer.serialize(::std::string_view{#PARAM10});                    \
+            buffer.serialize(value.PARAM10);                                   \
+            buffer.serialize(::std::string_view{#PARAM11});                    \
+            buffer.serialize(value.PARAM11);                                   \
+            buffer.serialize(::std::string_view{#PARAM12});                    \
+            buffer.serialize(value.PARAM12);                                   \
+            buffer.serialize(::std::string_view{#PARAM13});                    \
+            buffer.serialize(value.PARAM13);                                   \
+            buffer.serialize(::std::string_view{#PARAM14});                    \
+            buffer.serialize(value.PARAM14);                                   \
+        }                                                                      \
+    }
+
+/*!
+ * \brief Macro to generate class to support serialization of struct with 15
+ * parameter into maps.
+ *
+ * \param STRUCT Type of the struct.
+ * \param PARAM1 Parameter.
+ * \param PARAM2 Parameter.
+ * \param PARAM3 Parameter.
+ * \param PARAM4 Parameter.
+ * \param PARAM5 Parameter.
+ * \param PARAM6 Parameter.
+ * \param PARAM7 Parameter.
+ * \param PARAM8 Parameter.
+ * \param PARAM9 Parameter.
+ * \param PARAM10 Parameter.
+ * \param PARAM11 Parameter.
+ * \param PARAM12 Parameter.
+ * \param PARAM13 Parameter.
+ * \param PARAM14 Parameter.
+ * \param PARAM15 Parameter.
+ */
+#define INTERNAL_MSGPACK_LIGHT_STRUCT_MAP15(STRUCT, PARAM1, PARAM2, PARAM3,    \
+    PARAM4, PARAM5, PARAM6, PARAM7, PARAM8, PARAM9, PARAM10, PARAM11, PARAM12, \
+    PARAM13, PARAM14, PARAM15)                                                 \
+    template <>                                                                \
+    struct msgpack_light::type_support::serialization_traits<STRUCT> {         \
+    public:                                                                    \
+        static void serialize(::msgpack_light::serialization_buffer& buffer,   \
+            const STRUCT& value) {                                             \
+            buffer.serialize_map_size(15);                                     \
+            buffer.serialize(::std::string_view{#PARAM1});                     \
+            buffer.serialize(value.PARAM1);                                    \
+            buffer.serialize(::std::string_view{#PARAM2});                     \
+            buffer.serialize(value.PARAM2);                                    \
+            buffer.serialize(::std::string_view{#PARAM3});                     \
+            buffer.serialize(value.PARAM3);                                    \
+            buffer.serialize(::std::string_view{#PARAM4});                     \
+            buffer.serialize(value.PARAM4);                                    \
+            buffer.serialize(::std::string_view{#PARAM5});                     \
+            buffer.serialize(value.PARAM5);                                    \
+            buffer.serialize(::std::string_view{#PARAM6});                     \
+            buffer.serialize(value.PARAM6);                                    \
+            buffer.serialize(::std::string_view{#PARAM7});                     \
+            buffer.serialize(value.PARAM7);                                    \
+            buffer.serialize(::std::string_view{#PARAM8});                     \
+            buffer.serialize(value.PARAM8);                                    \
+            buffer.serialize(::std::string_view{#PARAM9});                     \
+            buffer.serialize(value.PARAM9);                                    \
+            buffer.serialize(::std::string_view{#PARAM10});                    \
+            buffer.serialize(value.PARAM10);                                   \
+            buffer.serialize(::std::string_view{#PARAM11});                    \
+            buffer.serialize(value.PARAM11);                                   \
+            buffer.serialize(::std::string_view{#PARAM12});                    \
+            buffer.serialize(value.PARAM12);                                   \
+            buffer.serialize(::std::string_view{#PARAM13});                    \
+            buffer.serialize(value.PARAM13);                                   \
+            buffer.serialize(::std::string_view{#PARAM14});                    \
+            buffer.serialize(value.PARAM14);                                   \
+            buffer.serialize(::std::string_view{#PARAM15});                    \
+            buffer.serialize(value.PARAM15);                                   \
+        }                                                                      \
+    }
+
+/*!
  * \brief Macro to generate class to support serialization of struct with 1
  * parameter into arrays.
  *
@@ -635,4 +918,222 @@
             buffer.serialize(value.PARAM9);                                   \
             buffer.serialize(value.PARAM10);                                  \
         }                                                                     \
+    }
+
+/*!
+ * \brief Macro to generate class to support serialization of struct with 11
+ * parameter into arrays.
+ *
+ * \param STRUCT Type of the struct.
+ * \param PARAM1 Parameter.
+ * \param PARAM2 Parameter.
+ * \param PARAM3 Parameter.
+ * \param PARAM4 Parameter.
+ * \param PARAM5 Parameter.
+ * \param PARAM6 Parameter.
+ * \param PARAM7 Parameter.
+ * \param PARAM8 Parameter.
+ * \param PARAM9 Parameter.
+ * \param PARAM10 Parameter.
+ * \param PARAM11 Parameter.
+ */
+#define INTERNAL_MSGPACK_LIGHT_STRUCT_ARRAY11(STRUCT, PARAM1, PARAM2, PARAM3, \
+    PARAM4, PARAM5, PARAM6, PARAM7, PARAM8, PARAM9, PARAM10, PARAM11)         \
+    template <>                                                               \
+    struct msgpack_light::type_support::serialization_traits<STRUCT> {        \
+    public:                                                                   \
+        static void serialize(::msgpack_light::serialization_buffer& buffer,  \
+            const STRUCT& value) {                                            \
+            buffer.serialize_array_size(11);                                  \
+            buffer.serialize(value.PARAM1);                                   \
+            buffer.serialize(value.PARAM2);                                   \
+            buffer.serialize(value.PARAM3);                                   \
+            buffer.serialize(value.PARAM4);                                   \
+            buffer.serialize(value.PARAM5);                                   \
+            buffer.serialize(value.PARAM6);                                   \
+            buffer.serialize(value.PARAM7);                                   \
+            buffer.serialize(value.PARAM8);                                   \
+            buffer.serialize(value.PARAM9);                                   \
+            buffer.serialize(value.PARAM10);                                  \
+            buffer.serialize(value.PARAM11);                                  \
+        }                                                                     \
+    }
+
+/*!
+ * \brief Macro to generate class to support serialization of struct with 12
+ * parameter into arrays.
+ *
+ * \param STRUCT Type of the struct.
+ * \param PARAM1 Parameter.
+ * \param PARAM2 Parameter.
+ * \param PARAM3 Parameter.
+ * \param PARAM4 Parameter.
+ * \param PARAM5 Parameter.
+ * \param PARAM6 Parameter.
+ * \param PARAM7 Parameter.
+ * \param PARAM8 Parameter.
+ * \param PARAM9 Parameter.
+ * \param PARAM10 Parameter.
+ * \param PARAM11 Parameter.
+ * \param PARAM12 Parameter.
+ */
+#define INTERNAL_MSGPACK_LIGHT_STRUCT_ARRAY12(STRUCT, PARAM1, PARAM2, PARAM3,  \
+    PARAM4, PARAM5, PARAM6, PARAM7, PARAM8, PARAM9, PARAM10, PARAM11, PARAM12) \
+    template <>                                                                \
+    struct msgpack_light::type_support::serialization_traits<STRUCT> {         \
+    public:                                                                    \
+        static void serialize(::msgpack_light::serialization_buffer& buffer,   \
+            const STRUCT& value) {                                             \
+            buffer.serialize_array_size(12);                                   \
+            buffer.serialize(value.PARAM1);                                    \
+            buffer.serialize(value.PARAM2);                                    \
+            buffer.serialize(value.PARAM3);                                    \
+            buffer.serialize(value.PARAM4);                                    \
+            buffer.serialize(value.PARAM5);                                    \
+            buffer.serialize(value.PARAM6);                                    \
+            buffer.serialize(value.PARAM7);                                    \
+            buffer.serialize(value.PARAM8);                                    \
+            buffer.serialize(value.PARAM9);                                    \
+            buffer.serialize(value.PARAM10);                                   \
+            buffer.serialize(value.PARAM11);                                   \
+            buffer.serialize(value.PARAM12);                                   \
+        }                                                                      \
+    }
+
+/*!
+ * \brief Macro to generate class to support serialization of struct with 13
+ * parameter into arrays.
+ *
+ * \param STRUCT Type of the struct.
+ * \param PARAM1 Parameter.
+ * \param PARAM2 Parameter.
+ * \param PARAM3 Parameter.
+ * \param PARAM4 Parameter.
+ * \param PARAM5 Parameter.
+ * \param PARAM6 Parameter.
+ * \param PARAM7 Parameter.
+ * \param PARAM8 Parameter.
+ * \param PARAM9 Parameter.
+ * \param PARAM10 Parameter.
+ * \param PARAM11 Parameter.
+ * \param PARAM12 Parameter.
+ * \param PARAM13 Parameter.
+ */
+#define INTERNAL_MSGPACK_LIGHT_STRUCT_ARRAY13(STRUCT, PARAM1, PARAM2, PARAM3,  \
+    PARAM4, PARAM5, PARAM6, PARAM7, PARAM8, PARAM9, PARAM10, PARAM11, PARAM12, \
+    PARAM13)                                                                   \
+    template <>                                                                \
+    struct msgpack_light::type_support::serialization_traits<STRUCT> {         \
+    public:                                                                    \
+        static void serialize(::msgpack_light::serialization_buffer& buffer,   \
+            const STRUCT& value) {                                             \
+            buffer.serialize_array_size(13);                                   \
+            buffer.serialize(value.PARAM1);                                    \
+            buffer.serialize(value.PARAM2);                                    \
+            buffer.serialize(value.PARAM3);                                    \
+            buffer.serialize(value.PARAM4);                                    \
+            buffer.serialize(value.PARAM5);                                    \
+            buffer.serialize(value.PARAM6);                                    \
+            buffer.serialize(value.PARAM7);                                    \
+            buffer.serialize(value.PARAM8);                                    \
+            buffer.serialize(value.PARAM9);                                    \
+            buffer.serialize(value.PARAM10);                                   \
+            buffer.serialize(value.PARAM11);                                   \
+            buffer.serialize(value.PARAM12);                                   \
+            buffer.serialize(value.PARAM13);                                   \
+        }                                                                      \
+    }
+
+/*!
+ * \brief Macro to generate class to support serialization of struct with 14
+ * parameter into arrays.
+ *
+ * \param STRUCT Type of the struct.
+ * \param PARAM1 Parameter.
+ * \param PARAM2 Parameter.
+ * \param PARAM3 Parameter.
+ * \param PARAM4 Parameter.
+ * \param PARAM5 Parameter.
+ * \param PARAM6 Parameter.
+ * \param PARAM7 Parameter.
+ * \param PARAM8 Parameter.
+ * \param PARAM9 Parameter.
+ * \param PARAM10 Parameter.
+ * \param PARAM11 Parameter.
+ * \param PARAM12 Parameter.
+ * \param PARAM13 Parameter.
+ * \param PARAM14 Parameter.
+ */
+#define INTERNAL_MSGPACK_LIGHT_STRUCT_ARRAY14(STRUCT, PARAM1, PARAM2, PARAM3,  \
+    PARAM4, PARAM5, PARAM6, PARAM7, PARAM8, PARAM9, PARAM10, PARAM11, PARAM12, \
+    PARAM13, PARAM14)                                                          \
+    template <>                                                                \
+    struct msgpack_light::type_support::serialization_traits<STRUCT> {         \
+    public:                                                                    \
+        static void serialize(::msgpack_light::serialization_buffer& buffer,   \
+            const STRUCT& value) {                                             \
+            buffer.serialize_array_size(14);                                   \
+            buffer.serialize(value.PARAM1);                                    \
+            buffer.serialize(value.PARAM2);                                    \
+            buffer.serialize(value.PARAM3);                                    \
+            buffer.serialize(value.PARAM4);                                    \
+            buffer.serialize(value.PARAM5);                                    \
+            buffer.serialize(value.PARAM6);                                    \
+            buffer.serialize(value.PARAM7);                                    \
+            buffer.serialize(value.PARAM8);                                    \
+            buffer.serialize(value.PARAM9);                                    \
+            buffer.serialize(value.PARAM10);                                   \
+            buffer.serialize(value.PARAM11);                                   \
+            buffer.serialize(value.PARAM12);                                   \
+            buffer.serialize(value.PARAM13);                                   \
+            buffer.serialize(value.PARAM14);                                   \
+        }                                                                      \
+    }
+
+/*!
+ * \brief Macro to generate class to support serialization of struct with 15
+ * parameter into arrays.
+ *
+ * \param STRUCT Type of the struct.
+ * \param PARAM1 Parameter.
+ * \param PARAM2 Parameter.
+ * \param PARAM3 Parameter.
+ * \param PARAM4 Parameter.
+ * \param PARAM5 Parameter.
+ * \param PARAM6 Parameter.
+ * \param PARAM7 Parameter.
+ * \param PARAM8 Parameter.
+ * \param PARAM9 Parameter.
+ * \param PARAM10 Parameter.
+ * \param PARAM11 Parameter.
+ * \param PARAM12 Parameter.
+ * \param PARAM13 Parameter.
+ * \param PARAM14 Parameter.
+ * \param PARAM15 Parameter.
+ */
+#define INTERNAL_MSGPACK_LIGHT_STRUCT_ARRAY15(STRUCT, PARAM1, PARAM2, PARAM3,  \
+    PARAM4, PARAM5, PARAM6, PARAM7, PARAM8, PARAM9, PARAM10, PARAM11, PARAM12, \
+    PARAM13, PARAM14, PARAM15)                                                 \
+    template <>                                                                \
+    struct msgpack_light::type_support::serialization_traits<STRUCT> {         \
+    public:                                                                    \
+        static void serialize(::msgpack_light::serialization_buffer& buffer,   \
+            const STRUCT& value) {                                             \
+            buffer.serialize_array_size(15);                                   \
+            buffer.serialize(value.PARAM1);                                    \
+            buffer.serialize(value.PARAM2);                                    \
+            buffer.serialize(value.PARAM3);                                    \
+            buffer.serialize(value.PARAM4);                                    \
+            buffer.serialize(value.PARAM5);                                    \
+            buffer.serialize(value.PARAM6);                                    \
+            buffer.serialize(value.PARAM7);                                    \
+            buffer.serialize(value.PARAM8);                                    \
+            buffer.serialize(value.PARAM9);                                    \
+            buffer.serialize(value.PARAM10);                                   \
+            buffer.serialize(value.PARAM11);                                   \
+            buffer.serialize(value.PARAM12);                                   \
+            buffer.serialize(value.PARAM13);                                   \
+            buffer.serialize(value.PARAM14);                                   \
+            buffer.serialize(value.PARAM15);                                   \
+        }                                                                      \
     }
