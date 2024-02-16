@@ -1,4 +1,5 @@
 set(SOURCE_FILES
+    details/count_arguments_macro_test.cpp
     details/to_big_endian_test.cpp
     memory_output_stream_test.cpp
     serialization_buffer_test.cpp
@@ -16,6 +17,7 @@ set(SOURCE_FILES
     type_support/pair_test.cpp
     type_support/set_test.cpp
     type_support/string_test.cpp
+    type_support/struct_test.cpp
     type_support/timespec_test.cpp
     type_support/tuple_test.cpp
     type_support/unordered_map_test.cpp
