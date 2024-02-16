@@ -7,6 +7,7 @@ set(SOURCE_FILES
     serialize_maps_test.cpp
     serialize_optional_values_test.cpp
     serialize_strings_test.cpp
+    serialize_struct_general_test.cpp
     serialize_struct_test.cpp
     serialize_timespec_test.cpp
     serialize_unordered_map_test.cpp
