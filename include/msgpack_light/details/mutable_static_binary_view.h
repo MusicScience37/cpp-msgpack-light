@@ -73,6 +73,19 @@ public:
      */
     [[nodiscard]] std::size_t size() const noexcept { return N; }
 
+    /*!
+     * \brief Get a subset of this buffer.
+     *
+     * \tparam Start Index of the first byte in the current buffer.
+     * \return Subset.
+     */
+    template <std::size_t Start, std::size_t Size = N - Start>
+    [[nodiscard]] mutable_static_binary_view<Size> sub_buffer() const noexcept {
+        static_assert(Start <= N);
+        static_assert(Start + Size <= N);
+        return mutable_static_binary_view<Size>(buffer_ + Start);
+    }
+
 private:
     //! Buffer.
     unsigned char* buffer_;

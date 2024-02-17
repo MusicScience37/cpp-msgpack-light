@@ -34,7 +34,7 @@ TEMPLATE_TEST_CASE("serialize floating-point numbers", "", float, double) {
     using float_type = TestType;
 
     SECTION("serialize") {
-        const float value = GENERATE(take(1000,
+        const float_type value = GENERATE(take(1000,
             random(static_cast<float_type>(-10), static_cast<float_type>(10))));
         INFO("value = " << value);
 

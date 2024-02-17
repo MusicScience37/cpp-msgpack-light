@@ -43,6 +43,8 @@
   { include: ["<__tree>", private, "<map>", public ] },
   { include: ["<__bit_reference>", private, "<vector>", public ] },
   { include: ["<__fwd/string_view.h>", private, "<string_view>", public ] },
+  { include: ["<__hash_table>", private, "<unordered_set>", public ] },
+  { include: ["<__hash_table>", private, "<unordered_map>", public ] },
   # Custom (STL - Others)
   { symbol: [ "std::hash", private, "<functional>", public ] },
   { symbol: [ "std::FILE", private, "<cstdio>", public ] },

@@ -46,6 +46,18 @@ inline void to_big_endian(
  * \param[out] to Output.
  */
 template <>
+inline void to_big_endian<1U>(
+    const void* from, mutable_static_binary_view<1U> to) noexcept {
+    std::memcpy(to.data(), from, 1U);
+}
+
+/*!
+ * \brief Convert to big endian.
+ *
+ * \param[in] from Input.
+ * \param[out] to Output.
+ */
+template <>
 inline void to_big_endian<2U>(
     const void* from, mutable_static_binary_view<2U> to) noexcept {
     std::uint16_t value{};

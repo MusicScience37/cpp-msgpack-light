@@ -30,6 +30,15 @@ TEST_CASE("msgpack_light::details::to_big_endian") {
     using msgpack_light::binary;
     using msgpack_light::details::to_big_endian;
 
+    SECTION("copy 1 byte integer") {
+        std::array<unsigned char, 1U> buffer{};
+
+        constexpr auto value = static_cast<std::uint8_t>(0x12U);
+        to_big_endian(&value, &buffer);
+
+        CHECK(binary(buffer.data(), buffer.size()) == binary("12"));
+    }
+
     SECTION("convert 2 byte integer") {
         std::array<unsigned char, 2U> buffer{};
 
