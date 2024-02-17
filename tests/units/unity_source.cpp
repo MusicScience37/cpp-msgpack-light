@@ -1,5 +1,6 @@
 #include "details/buffered_serialization_buffer_impl_test.cpp"  // NOLINT(bugprone-suspicious-include)
 #include "details/count_arguments_macro_test.cpp"  // NOLINT(bugprone-suspicious-include)
+#include "details/non_buffered_serialization_buffer_impl_test.cpp"  // NOLINT(bugprone-suspicious-include)
 #include "details/to_big_endian_test.cpp"  // NOLINT(bugprone-suspicious-include)
 #include "memory_output_stream_test.cpp"  // NOLINT(bugprone-suspicious-include)
 #include "serialization_buffer_test.cpp"  // NOLINT(bugprone-suspicious-include)
