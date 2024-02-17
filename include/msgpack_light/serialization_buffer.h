@@ -395,23 +395,21 @@ public:
      * \param[in] size Size.
      */
     void serialize_array_size(std::size_t size) {
-        constexpr auto max_fixarray_size = static_cast<std::size_t>(15);
-        constexpr auto max_array16_size = static_cast<std::size_t>(0xFFFF);
-
-        if (size <= max_fixarray_size) {
+        constexpr auto fixarray_mask = ~static_cast<std::size_t>(15);
+        if ((size & fixarray_mask) == static_cast<std::size_t>(0)) {
             serialize_fixarray_size(static_cast<std::uint8_t>(size));
             return;
         }
 
-        if (size <= max_array16_size) {
+        constexpr auto array16_mask = ~static_cast<std::size_t>(0xFFFF);
+        if ((size & array16_mask) == static_cast<std::size_t>(0)) {
             serialize_array16_size(static_cast<std::uint16_t>(size));
             return;
         }
 
         if constexpr (sizeof(std::size_t) > 4U) {
-            constexpr auto max_array32_size =
-                static_cast<std::size_t>(0xFFFFFFFF);
-            if (size > max_array32_size) {
+            constexpr auto array32_mask = ~static_cast<std::size_t>(0xFFFFFFFF);
+            if ((size & array32_mask) != static_cast<std::size_t>(0)) {
                 throw std::runtime_error("Size is too large.");
             }
         }
@@ -457,23 +455,21 @@ public:
      * \param[in] size Size.
      */
     void serialize_map_size(std::size_t size) {
-        constexpr auto max_fixmap_size = static_cast<std::size_t>(15);
-        constexpr auto max_map16_size = static_cast<std::size_t>(0xFFFF);
-
-        if (size <= max_fixmap_size) {
+        constexpr auto fixmap_mask = ~static_cast<std::size_t>(15);
+        if ((size & fixmap_mask) == static_cast<std::size_t>(0)) {
             serialize_fixmap_size(static_cast<std::uint8_t>(size));
             return;
         }
 
-        if (size <= max_map16_size) {
+        constexpr auto map16_mask = ~static_cast<std::size_t>(0xFFFF);
+        if ((size & map16_mask) == static_cast<std::size_t>(0)) {
             serialize_map16_size(static_cast<std::uint16_t>(size));
             return;
         }
 
         if constexpr (sizeof(std::size_t) > 4U) {
-            constexpr auto max_map32_size =
-                static_cast<std::size_t>(0xFFFFFFFF);
-            if (size > max_map32_size) {
+            constexpr auto map32_mask = ~static_cast<std::size_t>(0xFFFFFFFF);
+            if ((size & map32_mask) != static_cast<std::size_t>(0)) {
                 throw std::runtime_error("Size is too large.");
             }
         }
