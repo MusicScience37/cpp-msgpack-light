@@ -1,0 +1,7 @@
+@PACKAGE_INIT@
+
+if(NOT TARGET cpp_msgpack_light::msgpack_light)
+    include(${CMAKE_CURRENT_LIST_DIR}/cpp-msgpack-light-targets.cmake)
+endif()
+
+check_required_components(msgpack_light)
