@@ -28,6 +28,8 @@ include(CTest)
 option(${UPPER_PROJECT_NAME}_BUILD_DOC
        "build documentation of ${FULL_PROJECT_NAME}" OFF)
 option(${UPPER_PROJECT_NAME}_TESTING "enable tests of ${FULL_PROJECT_NAME}" OFF)
+option(${UPPER_PROJECT_NAME}_ENABLE_INSTALL
+       "enable installation of ${FULL_PROJECT_NAME}" ON)
 
 set(CMAKE_CXX_STANDARD
     "17"
@@ -57,8 +59,11 @@ set(${UPPER_PROJECT_NAME}_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR})
 
 add_library(${PROJECT_NAME} INTERFACE)
 target_include_directories(
-    ${PROJECT_NAME} INTERFACE ${${UPPER_PROJECT_NAME}_SOURCE_DIR}/include)
-target_link_libraries(${PROJECT_NAME} INTERFACE ${PROJECT_NAME}_cpp_warnings)
+    ${PROJECT_NAME}
+    INTERFACE $<BUILD_INTERFACE:${${UPPER_PROJECT_NAME}_SOURCE_DIR}/include>
+              $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>)
+target_link_libraries(${PROJECT_NAME}
+                      INTERFACE $<BUILD_INTERFACE:${PROJECT_NAME}_cpp_warnings>)
 target_compile_features(${PROJECT_NAME} INTERFACE cxx_std_17)
 
 if(${UPPER_PROJECT_NAME}_BUILD_DOC)
@@ -67,4 +72,28 @@ endif()
 
 if(${UPPER_PROJECT_NAME}_TESTING)
     add_subdirectory(tests)
+endif()
+
+if(${UPPER_PROJECT_NAME}_ENABLE_INSTALL)
+    install(TARGETS ${PROJECT_NAME} EXPORT ${FULL_PROJECT_NAME}-targets)
+
+    install(
+        DIRECTORY ${${UPPER_PROJECT_NAME}_SOURCE_DIR}/include/msgpack_light
+        DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+        FILES_MATCHING
+        PATTERN "*.h")
+
+    install(
+        EXPORT ${FULL_PROJECT_NAME}-targets
+        DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/${FULL_PROJECT_NAME}
+        NAMESPACE cpp_msgpack_light::)
+
+    include(CMakePackageConfigHelpers)
+    configure_package_config_file(
+        cmake/${FULL_PROJECT_NAME}-config.cmake.in
+        ${CMAKE_CURRENT_BINARY_DIR}/${FULL_PROJECT_NAME}-config.cmake
+        INSTALL_DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/${FULL_PROJECT_NAME})
+
+    install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${FULL_PROJECT_NAME}-config.cmake
+            DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/${FULL_PROJECT_NAME})
 endif()
