@@ -26,12 +26,17 @@
  */
 #define MSGPACK_LIGHT_USE_BUFFER_IN_SERIALIZATION \
 <compiler-specific-default-value>
+#elif defined(_MSC_VER)
+// With MSVC, non_buffered_serialization_buffer_impl was slightly faster.
+#define MSGPACK_LIGHT_USE_BUFFER_IN_SERIALIZATION 0
 #elif defined(__clang__)
+// With Clang, buffered_serialization_buffer_impl was faster.
 #define MSGPACK_LIGHT_USE_BUFFER_IN_SERIALIZATION 1
 #elif defined(__GNUC__) || defined(__GNUG__)
+// With GCC, non_buffered_serialization_buffer_impl was faster.
 #define MSGPACK_LIGHT_USE_BUFFER_IN_SERIALIZATION 0
 #else
-#define MSGPACK_LIGHT_USE_BUFFER_IN_SERIALIZATION 1
+#define MSGPACK_LIGHT_USE_BUFFER_IN_SERIALIZATION 0
 #endif
 #endif
 
