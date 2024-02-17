@@ -27,6 +27,7 @@
 #include <stdexcept>
 
 #include "msgpack_light/details/mutable_static_binary_view.h"
+#include "msgpack_light/details/serialization_buffer_impl.h"
 #include "msgpack_light/details/static_memory_buffer_size.h"
 #include "msgpack_light/details/to_big_endian.h"
 #include "msgpack_light/output_stream.h"
@@ -47,7 +48,7 @@ public:
      *
      * \warning This class hold the reference of the given stream.
      */
-    explicit serialization_buffer(output_stream& stream) : stream_(stream) {}
+    explicit serialization_buffer(output_stream& stream) : buffer_(stream) {}
 
     serialization_buffer(const serialization_buffer&) = delete;
     serialization_buffer(serialization_buffer&&) = delete;
@@ -689,10 +690,7 @@ public:
     /*!
      * \brief Flush the internal buffer in this object.
      */
-    void flush() {
-        stream_.write(buffer_.data(), current_position_in_buffer_);
-        current_position_in_buffer_ = 0U;
-    }
+    void flush() { buffer_.flush(); }
 
     /*!
      * \brief Write data.
@@ -701,16 +699,7 @@ public:
      * \param[in] size Size of the data.
      */
     void write(const unsigned char* data, std::size_t size) {
-        if (buffer_size - current_position_in_buffer_ < size) {
-            flush();
-            if (buffer_size < size) {
-                stream_.write(data, size);
-                return;
-            }
-        }
-
-        std::memcpy(buffer_.data() + current_position_in_buffer_, data, size);
-        current_position_in_buffer_ += size;
+        buffer_.write(data, size);
     }
 
     /*!
@@ -718,13 +707,7 @@ public:
      *
      * \param[in] data Data.
      */
-    void put(unsigned char data) {
-        if (buffer_size == current_position_in_buffer_) {
-            flush();
-        }
-        *(buffer_.data() + current_position_in_buffer_) = data;
-        ++current_position_in_buffer_;
-    }
+    void put(unsigned char data) { buffer_.put(data); }
 
     /*!
      * \brief Write a value in big endian.
@@ -734,52 +717,12 @@ public:
      */
     template <typename T>
     inline void write_in_big_endian(T value) {
-        details::to_big_endian(&value, prepare_buffer<sizeof(T)>());
-        set_buffer_written<sizeof(T)>();
+        buffer_.write_in_big_endian(value);
     }
 
 private:
-    /*!
-     * \brief Prepare a buffer.
-     *
-     * \tparam N Number of bytes.
-     * \return Buffer.
-     */
-    template <std::size_t N>
-    [[nodiscard]] inline details::mutable_static_binary_view<N>
-    prepare_buffer() {
-        static_assert(N <= buffer_size);
-
-        if (buffer_size - current_position_in_buffer_ < N) {
-            flush();
-        }
-
-        return details::mutable_static_binary_view<N>(
-            buffer_.data() + current_position_in_buffer_);
-    }
-
-    /*!
-     * \brief Set the buffer returned by prepare_buffer function to be written.
-     *
-     * \tparam N Number of bytes.
-     */
-    template <std::size_t N>
-    inline void set_buffer_written() noexcept {
-        current_position_in_buffer_ += N;
-    }
-
-    //! Stream to write output to.
-    output_stream& stream_;
-
-    //! Size of the internal buffer.
-    static constexpr std::size_t buffer_size =
-        details::static_memory_buffer_size;
-
-    //! Internal buffer.
-    std::array<unsigned char, buffer_size> buffer_{};
-
-    //! Current position in the internal buffer.
-    std::size_t current_position_in_buffer_{0U};
+    //! Object to perform internal processing.
+    details::serialization_buffer_impl buffer_;
 };
 
 }  // namespace msgpack_light
