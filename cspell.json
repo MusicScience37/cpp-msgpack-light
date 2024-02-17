@@ -71,6 +71,7 @@
     "LIBDIR",
     "libstdc",
     "maxdepth",
+    "MAXSIZE",
     "msgpack",
     "msvc",
     "MusicScience37",
