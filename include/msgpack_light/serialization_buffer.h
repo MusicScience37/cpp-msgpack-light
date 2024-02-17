@@ -114,8 +114,7 @@ public:
      */
     void serialize_uint8(std::uint8_t value) {
         constexpr auto prefix = static_cast<unsigned char>(0xCC);
-        put(prefix);
-        put(static_cast<unsigned char>(value));
+        write_in_big_endian(prefix, value);
     }
 
     /*!
@@ -125,8 +124,7 @@ public:
      */
     void serialize_uint16(std::uint16_t value) {
         constexpr auto prefix = static_cast<unsigned char>(0xCD);
-        put(prefix);
-        write_in_big_endian(value);
+        write_in_big_endian(prefix, value);
     }
 
     /*!
@@ -136,8 +134,7 @@ public:
      */
     void serialize_uint32(std::uint32_t value) {
         constexpr auto prefix = static_cast<unsigned char>(0xCE);
-        put(prefix);
-        write_in_big_endian(value);
+        write_in_big_endian(prefix, value);
     }
 
     /*!
@@ -147,8 +144,7 @@ public:
      */
     void serialize_uint64(std::uint64_t value) {
         constexpr auto prefix = static_cast<unsigned char>(0xCF);
-        put(prefix);
-        write_in_big_endian(value);
+        write_in_big_endian(prefix, value);
     }
 
     /*!
@@ -158,8 +154,7 @@ public:
      */
     void serialize_int8(std::int8_t value) {
         constexpr auto prefix = static_cast<unsigned char>(0xD0);
-        put(prefix);
-        put(static_cast<unsigned char>(value));
+        write_in_big_endian(prefix, value);
     }
 
     /*!
@@ -169,8 +164,7 @@ public:
      */
     void serialize_int16(std::int16_t value) {
         constexpr auto prefix = static_cast<unsigned char>(0xD1);
-        put(prefix);
-        write_in_big_endian(value);
+        write_in_big_endian(prefix, value);
     }
 
     /*!
@@ -180,8 +174,7 @@ public:
      */
     void serialize_int32(std::int32_t value) {
         constexpr auto prefix = static_cast<unsigned char>(0xD2);
-        put(prefix);
-        write_in_big_endian(value);
+        write_in_big_endian(prefix, value);
     }
 
     /*!
@@ -191,8 +184,7 @@ public:
      */
     void serialize_int64(std::int64_t value) {
         constexpr auto prefix = static_cast<unsigned char>(0xD3);
-        put(prefix);
-        write_in_big_endian(value);
+        write_in_big_endian(prefix, value);
     }
 
     /*!
@@ -207,8 +199,7 @@ public:
             "IEEE 754 single precision floating point number is required.");
 
         constexpr auto prefix = static_cast<unsigned char>(0xCA);
-        put(prefix);
-        write_in_big_endian(value);
+        write_in_big_endian(prefix, value);
     }
 
     /*!
@@ -224,8 +215,7 @@ public:
             "IEEE 754 double precision floating point number is required.");
 
         constexpr auto prefix = static_cast<unsigned char>(0xCB);
-        put(prefix);
-        write_in_big_endian(value);
+        write_in_big_endian(prefix, value);
     }
 
     /*!
@@ -248,8 +238,7 @@ public:
      */
     void serialize_str8_size(std::uint8_t size) {
         constexpr auto prefix = static_cast<unsigned char>(0xD9);
-        put(prefix);
-        put(static_cast<unsigned char>(size));
+        write_in_big_endian(prefix, size);
     }
 
     /*!
@@ -259,8 +248,7 @@ public:
      */
     void serialize_str16_size(std::uint16_t size) {
         constexpr auto prefix = static_cast<unsigned char>(0xDA);
-        put(prefix);
-        write_in_big_endian(size);
+        write_in_big_endian(prefix, size);
     }
 
     /*!
@@ -270,8 +258,7 @@ public:
      */
     void serialize_str32_size(std::uint32_t size) {
         constexpr auto prefix = static_cast<unsigned char>(0xDB);
-        put(prefix);
-        write_in_big_endian(size);
+        write_in_big_endian(prefix, size);
     }
 
     /*!
@@ -317,8 +304,7 @@ public:
      */
     void serialize_bin8_size(std::uint8_t size) {
         constexpr auto prefix = static_cast<unsigned char>(0xC4);
-        put(prefix);
-        put(static_cast<unsigned char>(size));
+        write_in_big_endian(prefix, size);
     }
 
     /*!
@@ -328,8 +314,7 @@ public:
      */
     void serialize_bin16_size(std::uint16_t size) {
         constexpr auto prefix = static_cast<unsigned char>(0xC5);
-        put(prefix);
-        write_in_big_endian(size);
+        write_in_big_endian(prefix, size);
     }
 
     /*!
@@ -339,8 +324,7 @@ public:
      */
     void serialize_bin32_size(std::uint32_t size) {
         constexpr auto prefix = static_cast<unsigned char>(0xC6);
-        put(prefix);
-        write_in_big_endian(size);
+        write_in_big_endian(prefix, size);
     }
 
     /*!
@@ -392,8 +376,7 @@ public:
      */
     void serialize_array16_size(std::uint16_t size) {
         constexpr auto prefix = static_cast<unsigned char>(0xDC);
-        put(prefix);
-        write_in_big_endian(size);
+        write_in_big_endian(prefix, size);
     }
 
     /*!
@@ -403,8 +386,7 @@ public:
      */
     void serialize_array32_size(std::uint32_t size) {
         constexpr auto prefix = static_cast<unsigned char>(0xDD);
-        put(prefix);
-        write_in_big_endian(size);
+        write_in_big_endian(prefix, size);
     }
 
     /*!
@@ -456,8 +438,7 @@ public:
      */
     void serialize_map16_size(std::uint16_t size) {
         constexpr auto prefix = static_cast<unsigned char>(0xDE);
-        put(prefix);
-        write_in_big_endian(size);
+        write_in_big_endian(prefix, size);
     }
 
     /*!
@@ -467,8 +448,7 @@ public:
      */
     void serialize_map32_size(std::uint32_t size) {
         constexpr auto prefix = static_cast<unsigned char>(0xDF);
-        put(prefix);
-        write_in_big_endian(size);
+        write_in_big_endian(prefix, size);
     }
 
     /*!
@@ -511,8 +491,7 @@ public:
      */
     void serialize_fixext1_header(std::int8_t ext_type) {
         constexpr auto prefix = static_cast<unsigned char>(0xD4);
-        put(prefix);
-        put(static_cast<unsigned char>(ext_type));
+        write_in_big_endian(prefix, static_cast<unsigned char>(ext_type));
     }
 
     /*!
@@ -525,8 +504,7 @@ public:
      */
     void serialize_fixext2_header(std::int8_t ext_type) {
         constexpr auto prefix = static_cast<unsigned char>(0xD5);
-        put(prefix);
-        put(static_cast<unsigned char>(ext_type));
+        write_in_big_endian(prefix, static_cast<unsigned char>(ext_type));
     }
 
     /*!
@@ -539,8 +517,7 @@ public:
      */
     void serialize_fixext4_header(std::int8_t ext_type) {
         constexpr auto prefix = static_cast<unsigned char>(0xD6);
-        put(prefix);
-        put(static_cast<unsigned char>(ext_type));
+        write_in_big_endian(prefix, static_cast<unsigned char>(ext_type));
     }
 
     /*!
@@ -553,8 +530,7 @@ public:
      */
     void serialize_fixext8_header(std::int8_t ext_type) {
         constexpr auto prefix = static_cast<unsigned char>(0xD7);
-        put(prefix);
-        put(static_cast<unsigned char>(ext_type));
+        write_in_big_endian(prefix, static_cast<unsigned char>(ext_type));
     }
 
     /*!
@@ -567,8 +543,7 @@ public:
      */
     void serialize_fixext16_header(std::int8_t ext_type) {
         constexpr auto prefix = static_cast<unsigned char>(0xD8);
-        put(prefix);
-        put(static_cast<unsigned char>(ext_type));
+        write_in_big_endian(prefix, static_cast<unsigned char>(ext_type));
     }
 
     /*!
@@ -581,8 +556,7 @@ public:
      */
     void serialize_ext8_header(std::int8_t ext_type, std::uint8_t data_size) {
         constexpr auto prefix = static_cast<unsigned char>(0xC7);
-        put(prefix);
-        put(static_cast<unsigned char>(data_size));
+        write_in_big_endian(prefix, static_cast<unsigned char>(data_size));
         put(static_cast<unsigned char>(ext_type));
     }
 
@@ -597,8 +571,7 @@ public:
      */
     void serialize_ext16_header(std::int8_t ext_type, std::uint16_t data_size) {
         constexpr auto prefix = static_cast<unsigned char>(0xC8);
-        put(prefix);
-        write_in_big_endian(data_size);
+        write_in_big_endian(prefix, data_size);
         put(static_cast<unsigned char>(ext_type));
     }
 
@@ -613,8 +586,7 @@ public:
      */
     void serialize_ext32_header(std::int8_t ext_type, std::uint32_t data_size) {
         constexpr auto prefix = static_cast<unsigned char>(0xC9);
-        put(prefix);
-        write_in_big_endian(data_size);
+        write_in_big_endian(prefix, data_size);
         put(static_cast<unsigned char>(ext_type));
     }
 
@@ -718,6 +690,18 @@ public:
     template <typename T>
     inline void write_in_big_endian(T value) {
         buffer_.write_in_big_endian(value);
+    }
+
+    /*!
+     * \brief Write a value in big endian.
+     *
+     * \tparam T Type of the value.
+     * \param[in] prefix Prefix.
+     * \param[in] value Value.
+     */
+    template <typename T>
+    inline void write_in_big_endian(unsigned char prefix, T value) {
+        buffer_.write_in_big_endian(prefix, value);
     }
 
 private:

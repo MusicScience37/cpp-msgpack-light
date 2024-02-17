@@ -117,6 +117,22 @@ public:
         set_buffer_written<sizeof(T)>();
     }
 
+    /*!
+     * \brief Write a value in big endian.
+     *
+     * \tparam T Type of the value.
+     * \param[in] prefix Prefix.
+     * \param[in] value Value.
+     */
+    template <typename T>
+    inline void write_in_big_endian(unsigned char prefix, T value) {
+        mutable_static_binary_view<sizeof(T) + 1U> buffer =
+            prepare_buffer<sizeof(T) + 1U>();
+        buffer[0] = prefix;
+        to_big_endian(&value, buffer.template sub_buffer<1U>());
+        set_buffer_written<sizeof(T) + 1U>();
+    }
+
 private:
     /*!
      * \brief Prepare a buffer.

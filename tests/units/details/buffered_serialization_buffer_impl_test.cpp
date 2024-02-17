@@ -96,4 +96,16 @@ TEST_CASE("msgpack_light::details::buffered_serialization_buffer_impl") {
         buffer.flush();
         CHECK(stream.as_binary() == binary("12345678"));
     }
+
+    SECTION("write two integers in big endian") {
+        memory_output_stream stream;
+        buffered_serialization_buffer_impl buffer(stream);
+
+        constexpr auto value1 = static_cast<std::uint8_t>(0x12);
+        constexpr auto value2 = static_cast<std::uint32_t>(0x3456789AU);
+        buffer.write_in_big_endian(value1, value2);
+
+        buffer.flush();
+        CHECK(stream.as_binary() == binary("123456789A"));
+    }
 }

@@ -103,6 +103,22 @@ public:
         write(buffer.data(), buffer.size());
     }
 
+    /*!
+     * \brief Write a value in big endian.
+     *
+     * \tparam T Type of the value.
+     * \param[in] prefix Prefix.
+     * \param[in] value Value.
+     */
+    template <typename T>
+    inline void write_in_big_endian(unsigned char prefix, T value) {
+        std::array<unsigned char, sizeof(T) + 1U> buffer{};
+        buffer[0] = prefix;
+        to_big_endian(
+            &value, mutable_static_binary_view<sizeof(T)>{buffer.data() + 1U});
+        write(buffer.data(), buffer.size());
+    }
+
 private:
     //! Stream to write output to.
     output_stream& stream_;
