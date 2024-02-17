@@ -14,3 +14,7 @@ cmake .. ^
     -DMSGPACK_LIGHT_BUILD_EXAMPLES=OFF ^
     -DMSGPACK_LIGHT_WRITE_JUNIT:BOOL=ON ^
     -DBUILD_SHARED_LIBS:BOOL=ON
+
+cmake --build . --config Release --parallel
+
+ctest -V --build-config Release
