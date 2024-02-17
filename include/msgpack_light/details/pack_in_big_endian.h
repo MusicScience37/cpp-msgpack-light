@@ -21,7 +21,7 @@
 
 #include "msgpack_light/details/mutable_static_binary_view.h"
 #include "msgpack_light/details/to_big_endian.h"
-#include "msgpack_light/details/total_size_of.h"
+#include "msgpack_light/details/total_size_of.h"  // IWYU pragma: keep
 
 namespace msgpack_light::details {
 
