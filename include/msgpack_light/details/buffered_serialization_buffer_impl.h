@@ -27,8 +27,10 @@
 #include <stdexcept>
 
 #include "msgpack_light/details/mutable_static_binary_view.h"
+#include "msgpack_light/details/pack_in_big_endian.h"
 #include "msgpack_light/details/static_memory_buffer_size.h"
 #include "msgpack_light/details/to_big_endian.h"
+#include "msgpack_light/details/total_size_of.h"
 #include "msgpack_light/output_stream.h"
 #include "msgpack_light/serialization_buffer_fwd.h"  // IWYU pragma: keep
 #include "msgpack_light/type_support/fwd.h"
@@ -106,31 +108,16 @@ public:
     }
 
     /*!
-     * \brief Write a value in big endian.
+     * \brief Write values in big endian.
      *
-     * \tparam T Type of the value.
-     * \param[in] value Value.
+     * \tparam T Types of the values.
+     * \param[in] values Values.
      */
-    template <typename T>
-    inline void write_in_big_endian(T value) {
-        details::to_big_endian(&value, prepare_buffer<sizeof(T)>());
-        set_buffer_written<sizeof(T)>();
-    }
-
-    /*!
-     * \brief Write a value in big endian.
-     *
-     * \tparam T Type of the value.
-     * \param[in] prefix Prefix.
-     * \param[in] value Value.
-     */
-    template <typename T>
-    inline void write_in_big_endian(unsigned char prefix, T value) {
-        mutable_static_binary_view<sizeof(T) + 1U> buffer =
-            prepare_buffer<sizeof(T) + 1U>();
-        buffer[0] = prefix;
-        to_big_endian(&value, buffer.template sub_buffer<1U>());
-        set_buffer_written<sizeof(T) + 1U>();
+    template <typename... T>
+    inline void write_in_big_endian(T... values) {
+        details::pack_in_big_endian(
+            prepare_buffer<total_size_of<T...>>(), values...);
+        set_buffer_written<total_size_of<T...>>();
     }
 
 private:
