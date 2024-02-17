@@ -15,7 +15,7 @@ target:
         CMAKE_C_FLAGS: "-stdlib=libc++"
 
 buildType:
-  default: clang-asan-ubsan-unit-dox
+  default: debug-unit
   choices:
     none:
       short: None
