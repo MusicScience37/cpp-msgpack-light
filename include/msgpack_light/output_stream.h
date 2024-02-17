@@ -25,6 +25,9 @@ namespace msgpack_light {
 
 /*!
  * \brief Interface of streams to write data.
+ *
+ * \note Users can write a class implementing this interface
+ * to create a stream not implemented in this library.
  */
 class output_stream {
 public:

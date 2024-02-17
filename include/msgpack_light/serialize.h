@@ -28,7 +28,7 @@
 namespace msgpack_light {
 
 /*!
- * \brief Serialize data to a stream.
+ * \brief Serialize data in memory and return the resulting binary data.
  *
  * \tparam T Type of data.
  * \param[out] stream Stream to write serialized data.
@@ -42,7 +42,7 @@ inline void serialize_to(output_stream& stream, const T& data) {
 }
 
 /*!
- * \brief Serialize data.
+ * \brief Serialize data to an output stream.
  *
  * \tparam T Type of data to serialize.
  * \param[in] data Data to serialize.
