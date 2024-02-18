@@ -33,9 +33,18 @@ namespace msgpack_light {
 
 /*!
  * \brief Class of buffers to serialize data.
+ *
+ * \note For serialization of types already supported by
+ * msgpack_light::type_support::serialization_traits template, use serialize()
+ * function.
  */
 class serialization_buffer {
 public:
+    /*!
+     * \name Initialization and finalization.
+     */
+    //!\{
+
     /*!
      * \brief Constructor.
      *
@@ -52,8 +61,25 @@ public:
 
     /*!
      * \brief Destructor.
+     *
+     * \note This will call flush() function.
      */
     ~serialization_buffer() noexcept { flush(); }
+
+    /*!
+     * \brief Flush the internal buffer in this object.
+     *
+     * \warning Data may not be written to streams without call of this function
+     * or destructor.
+     */
+    void flush() { buffer_.flush(); }
+
+    //!\}
+
+    /*!
+     * \name Serialization of Nil in MessagePack.
+     */
+    //!\{
 
     /*!
      * \brief Serialize a nli value.
@@ -62,6 +88,13 @@ public:
         constexpr auto nil_byte = static_cast<unsigned char>(0xC0);
         put(nil_byte);
     }
+
+    //!\}
+
+    /*!
+     * \name Serialization of Boolean in MessagePack.
+     */
+    //!\{
 
     /*!
      * \brief Serialize a boolean value.
@@ -77,6 +110,18 @@ public:
             put(false_byte);
         }
     }
+
+    //!\}
+
+    /*!
+     * \name Serialization of Integer in MessagePack.
+     *
+     * These functions implements serialization of integers in formats in
+     * MessagePack specification.
+     * To serialize integers with automatic selection of formats, use
+     * serialize() function.
+     */
+    //!\{
 
     /*!
      * \brief Serialize a value in positive fixint format.
@@ -182,6 +227,13 @@ public:
         write_in_big_endian(prefix, value);
     }
 
+    //!\}
+
+    /*!
+     * \name Serialization of Float in MessagePack.
+     */
+    //!\{
+
     /*!
      * \brief Serialize a value in float 32 format.
      *
@@ -212,6 +264,16 @@ public:
         constexpr auto prefix = static_cast<unsigned char>(0xCB);
         write_in_big_endian(prefix, value);
     }
+
+    //!\}
+
+    /*!
+     * \name Serialization of sizes in String in MessagePack.
+     *
+     * To serialize sizes with automatic selection of formats, use
+     * serialize_str_size() function.
+     */
+    //!\{
 
     /*!
      * \brief Serialize a size of fixstr format.
@@ -292,6 +354,16 @@ public:
         serialize_str32_size(static_cast<std::uint32_t>(size));
     }
 
+    //!\}
+
+    /*!
+     * \name Serialization of sizes in Binary in MessagePack.
+     *
+     * To serialize sizes with automatic selection of formats, use
+     * serialize_bin_size() function.
+     */
+    //!\{
+
     /*!
      * \brief Serialize a size of bin 8 format.
      *
@@ -351,6 +423,16 @@ public:
 
         serialize_bin32_size(static_cast<std::uint32_t>(size));
     }
+
+    //!\}
+
+    /*!
+     * \name Serialization of sizes in Array in MessagePack.
+     *
+     * To serialize sizes with automatic selection of formats, use
+     * serialize_array_size() function.
+     */
+    //!\{
 
     /*!
      * \brief Serialize a size of fixarray format.
@@ -412,6 +494,16 @@ public:
         serialize_array32_size(static_cast<std::uint32_t>(size));
     }
 
+    //!\}
+
+    /*!
+     * \name Serialization of sizes in Map in MessagePack.
+     *
+     * To serialize sizes with automatic selection of formats, use
+     * serialize_map_size() function.
+     */
+    //!\{
+
     /*!
      * \brief Serialize a size of fixmap format.
      *
@@ -471,6 +563,16 @@ public:
 
         serialize_map32_size(static_cast<std::uint32_t>(size));
     }
+
+    //!\}
+
+    /*!
+     * \name Serialization of sizes and types in Extension in MessagePack.
+     *
+     * To serialize sizes with automatic selection of formats, use
+     * serialize_ext_header() function.
+     */
+    //!\{
 
     /*!
      * \brief Serialize the size and type of an extension value in fixext 1
@@ -636,8 +738,18 @@ public:
         serialize_ext32_header(ext_type, static_cast<std::uint32_t>(data_size));
     }
 
+    //!\}
+
+    /*!
+     * \name Serialization of general types.
+     */
+    //!\{
+
     /*!
      * \brief Serialize data.
+     *
+     * \note This function can be usable for types using
+     * msgpack_light::type_support::serialization_traits class.
      *
      * \tparam T Type of data.
      * \param[in] data Data.
@@ -647,13 +759,18 @@ public:
         type_support::serialization_traits<T>::serialize(*this, data);
     }
 
+    //!\}
+
     /*!
-     * \brief Flush the internal buffer in this object.
+     * \name Functions to write data directly.
      */
-    void flush() { buffer_.flush(); }
+    //!\{
 
     /*!
      * \brief Write data.
+     *
+     * \note Use this function to write data of strings, binaries, arrays, maps,
+     * and extension types.
      *
      * \param[in] data Pointer to the data.
      * \param[in] size Size of the data.
@@ -679,6 +796,8 @@ public:
     inline void write_in_big_endian(T... values) {
         buffer_.write_in_big_endian(values...);
     }
+
+    //!\}
 
 private:
     //! Object to perform internal processing.

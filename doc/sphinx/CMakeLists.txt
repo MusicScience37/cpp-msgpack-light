@@ -9,7 +9,8 @@ set(PLANTUML_JAR_PATH
 
 set(${UPPER_PROJECT_NAME}_SPHINX_OPTIONS
     -D "plantuml=java -jar ${PLANTUML_JAR_PATH}" -D
-    "release=${PROJECT_VERSION}")
+    "release=${PROJECT_VERSION}" -D
+    breathe_projects.msgpack_light="${${UPPER_PROJECT_NAME}_DOXYGEN_XML_PATH}")
 
 add_custom_target(
     ${PROJECT_NAME}_doc_sphinx_html ALL
@@ -20,6 +21,7 @@ add_custom_target(
     COMMENT "Generate Sphinx html API documentation for ${FULL_PROJECT_NAME}"
     WORKING_DIRECTORY ${${UPPER_PROJECT_NAME}_SOURCE_DIR})
 
+add_dependencies(${PROJECT_NAME}_doc_sphinx_html ${PROJECT_NAME}_doc_doxygen)
 add_dependencies(${PROJECT_NAME}_doc ${PROJECT_NAME}_doc_sphinx_html)
 
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/start_auto_build.sh.in

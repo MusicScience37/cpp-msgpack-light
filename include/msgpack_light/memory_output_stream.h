@@ -134,7 +134,7 @@ public:
     [[nodiscard]] std::size_t size() const noexcept { return written_; }
 
     /*!
-     * \brief Get the data as binary object.
+     * \brief Get the data as msgpack_light::binary object.
      *
      * \return binary object.
      */

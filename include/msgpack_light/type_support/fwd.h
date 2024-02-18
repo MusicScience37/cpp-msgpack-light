@@ -26,6 +26,18 @@ namespace msgpack_light::type_support {
  *
  * \tparam T Type of the object to serialize.
  * \tparam SFINAE Template parameter to use for SFINAE.
+ *
+ * Specializations of this template must implement a function with the following
+ * signature.
+ *
+ * ```cpp
+ * static void serialize(serialization_buffer& buffer, const T& value);
+ * ```
+ *
+ * - The first argument is the buffer to serialize to.
+ *   For the usage of the buffer, see msgpack_light::serialization_buffer class.
+ * - The second argument is the serialized value.
+ *   (Either `const T&` or `T` can be usable.)
  */
 template <typename T, typename SFINAE = void>
 struct serialization_traits;  // IWYU pragma: keep

@@ -17,3 +17,44 @@
  * \file
  * \brief Documentation of namespaces
  */
+
+/*!
+ * \dir include
+ * \brief Directory of headers.
+ */
+
+/*!
+ * \dir include/msgpack_light
+ * \brief Directory of headers of this project.
+ */
+
+//! Namespace of this project.
+namespace msgpack_light {
+
+    /*!
+     * \dir include/msgpack_light/details
+     * \brief Directory of internal implementations.
+     */
+
+    //! Namespace of internal implementations.
+    namespace details {}
+
+    /*!
+     * \dir include/msgpack_light/type_support
+     * \brief Directory of classes to support serialization of types.
+     */
+
+    //! Namespace of classes to support serialization of types.
+    namespace type_support {
+
+        /*!
+         * \dir include/msgpack_light/type_support/details
+         * \brief Directory of internal implementations.
+         */
+
+        //! Namespace of internal implementations.
+        namespace details {}
+
+    }  // namespace type_support
+
+}  // namespace msgpack_light
