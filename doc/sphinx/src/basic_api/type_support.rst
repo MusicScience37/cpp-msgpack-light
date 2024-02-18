@@ -7,6 +7,10 @@ and the way to add support for other types.
 Types Supported by This Library
 -------------------------------------
 
+This library supports serialization of some builtin scalar types
+and some types in C++ standard library.
+Such support can be used by including corresponding headers.
+
 .. list-table:: Currently Supported Types in cpp-msgpack-light Library
     :header-rows: 1
     :widths: 2,1,3
@@ -129,9 +133,12 @@ Types Supported by This Library
 Add Support for Other Types
 ---------------------------------
 
-Users can add support for other types by specializing
-``msgpack_light::type_support::serialization_traits``
-template or using macros for struct.
+Users can add support for other types by one of the following methods:
+
+- Specialization of
+  :cpp:class:`msgpack_light::type_support::serialization_traits`
+  template
+- Use of macros for struct
 
 Specialization of ``serialization_traits``
 ```````````````````````````````````````````````
@@ -161,7 +168,8 @@ For example, a class ``example::Example`` can be supported as follows:
 
     }  // namespace msgpack_light::type_support
 
-``serialization_traits`` has a template parameter to be used for SFINAE
+:cpp:class:`msgpack_light::type_support::serialization_traits`
+has a template parameter to be used for SFINAE
 as the second template parameter.
 For example, classes derived from a class ``example::Base``
 can be supported as follows:
@@ -190,16 +198,51 @@ can be supported as follows:
     }  // namespace msgpack_light::type_support
 
 .. seealso::
+    - :cpp:class:`msgpack_light::type_support::serialization_traits`
     - :cpp:class:`msgpack_light::serialization_buffer`
-    - :cpp:func:`msgpack_light::serialization_buffer::serialize`
 
-Macro to Add Support of C++ struct
+      - :cpp:func:`msgpack_light::serialization_buffer::serialize`
+
+        - Serialize types already supported by
+          :cpp:class:`msgpack_light::type_support::serialization_traits`
+          template.
+
+      - :cpp:func:`msgpack_light::serialization_buffer::serialize_str_size`
+
+        - Serialize a size of a string.
+
+      - :cpp:func:`msgpack_light::serialization_buffer::serialize_bin_size`
+
+        - Serialize a size of a binary.
+
+      - :cpp:func:`msgpack_light::serialization_buffer::serialize_array_size`
+
+        - Serialize a size of an array.
+
+      - :cpp:func:`msgpack_light::serialization_buffer::serialize_map_size`
+
+        - Serialize a size of a map.
+
+      - :cpp:func:`msgpack_light::serialization_buffer::serialize_ext_header`
+
+        - Serialize the size and type of an extension value.
+
+      - :cpp:func:`msgpack_light::serialization_buffer::write`
+
+        - Write data.
+          Use this function to write data of strings, binaries, arrays, maps, and extension types.
+
+      - :cpp:func:`msgpack_light::serialization_buffer::write_in_big_endian`
+
+        - Write values in big endian.
+
+Macros to Add Support of C++ struct
 ``````````````````````````````````````
 
 This library provides two macros for support of C++ struct.
 
-- ``MSGPACK_LIGHT_STRUCT_MAP``
-- ``MSGPACK_LIGHT_STRUCT_ARRAY``
+- :c:func:`MSGPACK_LIGHT_STRUCT_MAP`
+- :c:func:`MSGPACK_LIGHT_STRUCT_ARRAY`
 
 For example, a struct can be supported as follows:
 
@@ -225,5 +268,7 @@ Reference
 .. doxygendefine:: MSGPACK_LIGHT_STRUCT_MAP
 
 .. doxygendefine:: MSGPACK_LIGHT_STRUCT_ARRAY
+
+.. doxygenstruct:: msgpack_light::type_support::serialization_traits
 
 .. doxygenclass:: msgpack_light::serialization_buffer
