@@ -19,6 +19,7 @@
  */
 #include "msgpack_light/details/basic_binary_buffer.h"
 
+#include <catch2/catch_message.hpp>
 #include <catch2/catch_test_macros.hpp>
 
 TEST_CASE("msgpack_light::details::basic_binary_buffer") {

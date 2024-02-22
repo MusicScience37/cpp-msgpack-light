@@ -19,7 +19,6 @@
  */
 #include "msgpack_light/memory_output_stream.h"
 
-#include <limits>
 #include <vector>
 
 #include <catch2/catch_test_macros.hpp>

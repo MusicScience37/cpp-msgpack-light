@@ -19,10 +19,12 @@
  */
 #pragma once
 
-#include <cstddef>
+#include <cstddef>  // IWYU pragma: keep
 #include <cstring>
 #include <initializer_list>
+#include <limits>
 #include <ostream>
+#include <stdexcept>
 #include <string_view>
 #include <vector>
 

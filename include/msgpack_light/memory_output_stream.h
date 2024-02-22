@@ -19,14 +19,9 @@
  */
 #pragma once
 
-#include <cstddef>  // IWYU pragma: keep
-#include <cstdlib>
-#include <cstring>
-#include <limits>
-#include <new>
+#include <cstddef>
 
 #include "msgpack_light/binary.h"
-#include "msgpack_light/details/static_memory_buffer_size.h"
 #include "msgpack_light/output_stream.h"
 
 namespace msgpack_light {
