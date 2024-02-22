@@ -63,9 +63,9 @@ namespace details {
 }
 
 /*!
- * \brief Minimum capacity of the buffer in msgpack_light::binary class.
+ * \brief Default of the capacity of the buffer in msgpack_light::binary class.
  */
-constexpr std::size_t minimum_capacity_of_binary = 8U;
+constexpr std::size_t default_binary_capacity = 8U;
 
 }  // namespace details
 
@@ -79,7 +79,7 @@ public:
      *
      * Create empty data.
      */
-    binary() : buffer_(details::minimum_capacity_of_binary), size_(0U) {}
+    binary() : buffer_(details::default_binary_capacity), size_(0U) {}
 
     /*!
      * \brief Constructor.
@@ -88,9 +88,7 @@ public:
      *
      * \param[in] size Size of the buffer.
      */
-    explicit binary(std::size_t size)
-        : buffer_(std::max(details::minimum_capacity_of_binary, size)),
-          size_(size) {}
+    explicit binary(std::size_t size) : buffer_(size), size_(size) {}
 
     /*!
      * \brief Constructor.
