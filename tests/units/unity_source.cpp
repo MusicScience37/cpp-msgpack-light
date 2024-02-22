@@ -1,3 +1,5 @@
+#include "binary_test.cpp"  // NOLINT(bugprone-suspicious-include)
+#include "details/basic_binary_buffer_test.cpp"  // NOLINT(bugprone-suspicious-include)
 #include "details/buffered_serialization_buffer_impl_test.cpp"  // NOLINT(bugprone-suspicious-include)
 #include "details/count_arguments_macro_test.cpp"  // NOLINT(bugprone-suspicious-include)
 #include "details/non_buffered_serialization_buffer_impl_test.cpp"  // NOLINT(bugprone-suspicious-include)

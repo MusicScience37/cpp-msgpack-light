@@ -11,6 +11,7 @@ Checks: >
     -cppcoreguidelines-avoid-const-or-ref-data-members,
     -cppcoreguidelines-pro-type-union-access,
     -cppcoreguidelines-macro-usage,
+    -cppcoreguidelines-no-malloc,
   google-*,
     -google-runtime-references,
     -google-readability-todo,
@@ -26,6 +27,7 @@ Checks: >
     -modernize-use-trailing-return-type,
   hicpp-*,
     -hicpp-signed-bitwise,
+    -hicpp-no-malloc,
   cert-*,
     -cert-err58-cpp,
   bugprone-*,
@@ -51,6 +53,7 @@ Checks: >
 # - modernize-use-trailing-return-type make some tools not working.
 # - cppcoreguidelines-pro-type-union-access produces warnings in msgpack library.
 # - cppcoreguidelines-macro-usage only generates false positives.
+# - hicpp-no-malloc and cppcoreguidelines-no-malloc generates many false positives in implementation of containers in this library.
 
 CheckOptions:
   # Naming Conventions

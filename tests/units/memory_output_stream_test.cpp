@@ -19,43 +19,11 @@
  */
 #include "msgpack_light/memory_output_stream.h"
 
-#include <limits>
 #include <vector>
 
 #include <catch2/catch_test_macros.hpp>
 
 #include "msgpack_light/binary.h"
-
-TEST_CASE("msgpack_light::details::calculate_expanded_memory_buffer_size") {
-    using msgpack_light::details::calculate_expanded_memory_buffer_size;
-
-    constexpr std::size_t max_size = std::numeric_limits<std::size_t>::max();
-
-    SECTION("calculate size") {
-        // NOLINTNEXTLINE(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
-        CHECK(calculate_expanded_memory_buffer_size(8U, 2U) == 16U);
-    }
-
-    SECTION("calculate size with large additional size") {
-        // NOLINTNEXTLINE(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
-        CHECK(calculate_expanded_memory_buffer_size(8U, 16U) == 32U);
-    }
-
-    SECTION("calculate size with almost maximum size") {
-        CHECK(calculate_expanded_memory_buffer_size(
-                  max_size / 2U, max_size / 2U) == max_size - 1U);
-    }
-
-    SECTION("calculate size resulting in the maximum size") {
-        CHECK(calculate_expanded_memory_buffer_size(
-                  max_size / 2U, max_size / 2U + 1U) == max_size);
-    }
-
-    SECTION("try to calculate too large size") {
-        CHECK_THROWS((void)calculate_expanded_memory_buffer_size(
-            max_size / 2U, max_size / 2U + 2U));
-    }
-}
 
 TEST_CASE("msgpack_light::memory_output_stream") {
     using msgpack_light::binary;
@@ -98,5 +66,23 @@ TEST_CASE("msgpack_light::memory_output_stream") {
         stream.write(written_data.data(), written_data.size());
 
         CHECK(stream.as_binary() == written_data);
+    }
+
+    SECTION("clear data") {
+        memory_output_stream stream;
+        const auto written_data1 = binary("010203");
+        stream.write(written_data1.data(), written_data1.size());
+        CHECK(stream.as_binary() == written_data1);
+
+        stream.clear();
+
+        CHECK(stream.as_binary() == binary());
+
+        SECTION("write the next data") {
+            const auto written_data2 = binary("0405");
+            stream.write(written_data2.data(), written_data2.size());
+
+            CHECK(stream.as_binary() == written_data2);
+        }
     }
 }
