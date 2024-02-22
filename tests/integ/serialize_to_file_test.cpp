@@ -55,4 +55,12 @@ TEST_CASE("serialize to files") {
             CHECK(deserialized->as<std::string>() == value);
         }
     }
+
+    SECTION("try to open a file at invalid path") {
+        // Current implementation does not create parent directories
+        // automatically.
+        const std::string file_path = "test/invalid/file/path.data";
+
+        CHECK_THROWS((void)file_output_stream(file_path));
+    }
 }
