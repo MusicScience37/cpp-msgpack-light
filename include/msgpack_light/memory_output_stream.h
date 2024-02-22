@@ -48,6 +48,11 @@ public:
     }
 
     /*!
+     * \brief Clear data.
+     */
+    void clear() { buffer_.resize(0U); }
+
+    /*!
      * \brief Get the pointer to the written data.
      *
      * \return Pointer to the written data.

@@ -67,4 +67,22 @@ TEST_CASE("msgpack_light::memory_output_stream") {
 
         CHECK(stream.as_binary() == written_data);
     }
+
+    SECTION("clear data") {
+        memory_output_stream stream;
+        const auto written_data1 = binary("010203");
+        stream.write(written_data1.data(), written_data1.size());
+        CHECK(stream.as_binary() == written_data1);
+
+        stream.clear();
+
+        CHECK(stream.as_binary() == binary());
+
+        SECTION("write the next data") {
+            const auto written_data2 = binary("0405");
+            stream.write(written_data2.data(), written_data2.size());
+
+            CHECK(stream.as_binary() == written_data2);
+        }
+    }
 }
