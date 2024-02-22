@@ -32,6 +32,11 @@ Contents
     - An implementation of :cpp:class:`msgpack_light::output_stream`
       which writes data to buffers in memory.
 
+  - :cpp:class:`msgpack_light::file_output_stream`
+
+    - An implementation of :cpp:class:`msgpack_light::output_stream`
+      which writes data to files.
+
 Reference
 ----------------
 
@@ -42,3 +47,5 @@ Reference
 .. doxygenclass:: msgpack_light::output_stream
 
 .. doxygenclass:: msgpack_light::memory_output_stream
+
+.. doxygenclass:: msgpack_light::file_output_stream
