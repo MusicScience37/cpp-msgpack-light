@@ -150,6 +150,30 @@ TEST_CASE("msgpack_light::details::basic_binary_buffer") {
         }
     }
 
+    SECTION("handle self-assignment") {
+        constexpr std::size_t size = 5U;
+        auto buffer = basic_binary_buffer(size);
+        for (std::size_t i = 0; i < size; ++i) {
+            buffer.data()[i] = static_cast<unsigned char>(i);
+        }
+
+#if __clang__
+#pragma clang diagnostic push
+// cspell: ignore Wself
+#pragma clang diagnostic ignored "-Wself-assign-overloaded"
+#endif
+        buffer = buffer;  // NOLINT: intended for test
+#if __clang__
+#pragma clang diagnostic pop
+#endif
+
+        CHECK(buffer.size() == size);
+        for (std::size_t i = 0; i < size; ++i) {
+            INFO("i = " << i);
+            CHECK(static_cast<std::size_t>(buffer.data()[i]) == i);
+        }
+    }
+
     SECTION("move a buffer via move constructor") {
         constexpr std::size_t size = 5U;
         auto buffer = basic_binary_buffer(size);
