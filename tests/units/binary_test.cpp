@@ -24,8 +24,8 @@
 #include <catch2/catch_message.hpp>
 #include <catch2/catch_test_macros.hpp>
 
-TEST_CASE("msgpack_light::details::calculate_new_capacity_of_binary") {
-    using msgpack_light::details::calculate_new_capacity_of_binary;
+TEST_CASE("msgpack_light::details::calculate_expanded_memory_buffer_size") {
+    using msgpack_light::details::calculate_expanded_memory_buffer_size;
 
     constexpr std::size_t max_size = std::numeric_limits<std::size_t>::max();
     constexpr auto digits =
@@ -35,38 +35,43 @@ TEST_CASE("msgpack_light::details::calculate_new_capacity_of_binary") {
 
     SECTION("calculate capacities in ordinary range") {
         // NOLINTNEXTLINE(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
-        CHECK(calculate_new_capacity_of_binary(8U, 9U) == 16U);
+        CHECK(calculate_expanded_memory_buffer_size(8U, 1U) == 16U);
 
         // NOLINTNEXTLINE(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
-        CHECK(calculate_new_capacity_of_binary(8U, 15U) == 16U);
+        CHECK(calculate_expanded_memory_buffer_size(8U, 7U) == 16U);
         // NOLINTNEXTLINE(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
-        CHECK(calculate_new_capacity_of_binary(8U, 16U) == 16U);
+        CHECK(calculate_expanded_memory_buffer_size(8U, 8U) == 16U);
         // NOLINTNEXTLINE(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
-        CHECK(calculate_new_capacity_of_binary(8U, 17U) == 32U);
+        CHECK(calculate_expanded_memory_buffer_size(8U, 9U) == 32U);
     }
 
     SECTION("calculate capacities near the maximum power of 2") {
         // NOLINTNEXTLINE(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
-        CHECK(calculate_new_capacity_of_binary(8U, max_power_of_2 - 1U) ==
+        CHECK(calculate_expanded_memory_buffer_size(8U, max_power_of_2 - 9U) ==
             max_power_of_2);
         // NOLINTNEXTLINE(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
-        CHECK(calculate_new_capacity_of_binary(8U, max_power_of_2) ==
+        CHECK(calculate_expanded_memory_buffer_size(8U, max_power_of_2 - 8U) ==
             max_power_of_2);
         // NOLINTNEXTLINE(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
-        CHECK(calculate_new_capacity_of_binary(8U, max_power_of_2 + 1U) ==
+        CHECK(calculate_expanded_memory_buffer_size(8U, max_power_of_2 - 7U) ==
             max_size);
 
-        CHECK(calculate_new_capacity_of_binary(
-                  max_power_of_2, max_power_of_2 + 1U) == max_size);
+        CHECK(calculate_expanded_memory_buffer_size(max_power_of_2, 1U) ==
+            max_size);
     }
 
     SECTION("calculate capacities near the maximum sizes") {
         // NOLINTNEXTLINE(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
-        CHECK(calculate_new_capacity_of_binary(8U, max_size - 2U) == max_size);
+        CHECK(calculate_expanded_memory_buffer_size(8U, max_size - 10U) ==
+            max_size);
         // NOLINTNEXTLINE(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
-        CHECK(calculate_new_capacity_of_binary(8U, max_size - 1U) == max_size);
+        CHECK(calculate_expanded_memory_buffer_size(8U, max_size - 9U) ==
+            max_size);
         // NOLINTNEXTLINE(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
-        CHECK(calculate_new_capacity_of_binary(8U, max_size) == max_size);
+        CHECK(calculate_expanded_memory_buffer_size(8U, max_size - 8U) ==
+            max_size);
+        // NOLINTNEXTLINE(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
+        CHECK_THROWS(calculate_expanded_memory_buffer_size(8U, max_size - 7U));
     }
 }
 

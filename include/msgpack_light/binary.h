@@ -36,26 +36,28 @@ namespace msgpack_light {
 namespace details {
 
 /*!
- * \brief Calculate the new capacity of the buffer of binary data.
+ * \brief Calculate the size of an expanded buffer.
  *
- * \param[in] current_capacity Current capacity.
- * \param[in] required_capacity Required capacity.
- * \return New capacity.
+ * \param[in] current_size Current size.
+ * \param[in] additional_size Additional size.
+ * \return Size of the expanded buffer.
  */
-[[nodiscard]] inline std::size_t calculate_new_capacity_of_binary(
-    std::size_t current_capacity, std::size_t required_capacity) {
-    std::size_t new_capacity = current_capacity;
+[[nodiscard]] inline std::size_t calculate_expanded_memory_buffer_size(
+    std::size_t current_size, std::size_t additional_size) {
+    std::size_t next_size = current_size;
     while (true) {
-        const std::size_t previous_capacity = new_capacity;
-        new_capacity *= 2U;
-        if (new_capacity <= previous_capacity) {
+        next_size *= 2;
+        if (next_size <= current_size) {
             // Overflow
-            const std::size_t max_capacity =
+            const std::size_t max_size =
                 std::numeric_limits<std::size_t>::max();
-            return max_capacity;
+            if (max_size - current_size >= additional_size) {
+                return max_size;
+            }
+            throw std::bad_alloc();
         }
-        if (new_capacity >= required_capacity) {
-            return new_capacity;
+        if (next_size - current_size >= additional_size) {
+            return next_size;
         }
     }
 }
@@ -192,13 +194,13 @@ public:
      */
     void append(const unsigned char* data, std::size_t size) {
         const std::size_t current_size = size_;
-        const std::size_t new_size = current_size + size;
-        if (new_size > buffer_.size()) {
-            reserve(details::calculate_new_capacity_of_binary(
-                buffer_.size(), new_size));
+        const std::size_t remaining_capacity = buffer_.size() - size_;
+        if (remaining_capacity < size) {
+            reserve(details::calculate_expanded_memory_buffer_size(
+                buffer_.size(), size - remaining_capacity));
         }
         std::memcpy(buffer_.data() + current_size, data, size);
-        size_ = new_size;
+        size_ += size;
     }
 
     /*!
