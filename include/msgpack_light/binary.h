@@ -19,6 +19,7 @@
  */
 #pragma once
 
+#include <algorithm>
 #include <cstddef>  // IWYU pragma: keep
 #include <cstring>
 #include <initializer_list>
@@ -86,8 +87,7 @@ public:
      * \param[in] size Size of the buffer.
      */
     explicit binary(std::size_t size)
-        : buffer_(details::calculate_new_capacity_of_binary(
-              details::minimum_capacity_of_binary, size)),
+        : buffer_(std::max(details::minimum_capacity_of_binary, size)),
           size_(size) {}
 
     /*!
@@ -166,10 +166,22 @@ public:
      */
     void resize(std::size_t size) {
         if (size > buffer_.size()) {
-            buffer_.resize(details::calculate_new_capacity_of_binary(
-                buffer_.size(), size));
+            buffer_.resize(size);
         }
         size_ = size;
+    }
+
+    /*!
+     * \brief Change the size of the internal buffer.
+     *
+     * This function preserves the existing data and its size.
+     *
+     * \param[in] size New size.
+     */
+    void reserve(std::size_t size) {
+        if (size > buffer_.size()) {
+            buffer_.resize(size);
+        }
     }
 
     /*!
@@ -180,8 +192,13 @@ public:
      */
     void append(const unsigned char* data, std::size_t size) {
         const std::size_t current_size = size_;
-        resize(current_size + size);
+        const std::size_t new_size = current_size + size;
+        if (new_size > buffer_.size()) {
+            reserve(details::calculate_new_capacity_of_binary(
+                buffer_.size(), new_size));
+        }
         std::memcpy(buffer_.data() + current_size, data, size);
+        size_ = new_size;
     }
 
     /*!

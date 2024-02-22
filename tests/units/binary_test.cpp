@@ -204,6 +204,24 @@ TEST_CASE("msgpack_light::binary") {
         }
     }
 
+    SECTION("change the size of the internal buffer") {
+        constexpr std::size_t size1 = 5U;
+        auto buffer = binary(size1);
+        for (std::size_t i = 0; i < size1; ++i) {
+            buffer[i] = static_cast<unsigned char>(i);
+        }
+
+        constexpr std::size_t size2 = 7U;
+        buffer.reserve(size2);
+
+        CHECK(buffer.size() == size1);
+        CHECK(buffer.capacity() >= size2);
+        for (std::size_t i = 0; i < size1; ++i) {
+            INFO("i = " << i);
+            CHECK(static_cast<std::size_t>(buffer[i]) == i);
+        }
+    }
+
     SECTION("change the size to zero") {
         constexpr std::size_t size1 = 5U;
         auto buffer = binary(size1);
