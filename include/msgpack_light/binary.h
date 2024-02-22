@@ -19,7 +19,6 @@
  */
 #pragma once
 
-#include <algorithm>
 #include <cstddef>  // IWYU pragma: keep
 #include <cstring>
 #include <initializer_list>

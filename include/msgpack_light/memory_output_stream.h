@@ -22,6 +22,7 @@
 #include <cstddef>
 
 #include "msgpack_light/binary.h"
+#include "msgpack_light/details/static_memory_buffer_size.h"
 #include "msgpack_light/output_stream.h"
 
 namespace msgpack_light {
@@ -34,7 +35,7 @@ public:
     /*!
      * \brief Constructor.
      */
-    memory_output_stream() = default;
+    memory_output_stream() { buffer_.reserve(initial_buffer_size); }
 
     /*!
      * \brief Write data.
@@ -70,8 +71,13 @@ public:
     [[nodiscard]] const binary& as_binary() const { return buffer_; }
 
 private:
+    //! Size of the initial buffer.
+    static constexpr std::size_t initial_buffer_size = 4096U;
+
+    static_assert(initial_buffer_size > details::static_memory_buffer_size);
+
     //! Buffer.
-    binary buffer_;
+    binary buffer_{};
 };
 
 }  // namespace msgpack_light
