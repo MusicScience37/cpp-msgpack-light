@@ -24,6 +24,52 @@
 #include <catch2/catch_message.hpp>
 #include <catch2/catch_test_macros.hpp>
 
+TEST_CASE("msgpack_light::details::calculate_new_capacity_of_binary") {
+    using msgpack_light::details::calculate_new_capacity_of_binary;
+
+    constexpr std::size_t max_size = std::numeric_limits<std::size_t>::max();
+    constexpr auto digits =
+        static_cast<unsigned int>(std::numeric_limits<std::size_t>::digits);
+    constexpr std::size_t max_power_of_2 = static_cast<std::size_t>(1)
+        << (digits - 1U);
+
+    SECTION("calculate capacities in ordinary range") {
+        // NOLINTNEXTLINE(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
+        CHECK(calculate_new_capacity_of_binary(8U, 9U) == 16U);
+
+        // NOLINTNEXTLINE(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
+        CHECK(calculate_new_capacity_of_binary(8U, 15U) == 16U);
+        // NOLINTNEXTLINE(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
+        CHECK(calculate_new_capacity_of_binary(8U, 16U) == 16U);
+        // NOLINTNEXTLINE(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
+        CHECK(calculate_new_capacity_of_binary(8U, 17U) == 32U);
+    }
+
+    SECTION("calculate capacities near the maximum power of 2") {
+        // NOLINTNEXTLINE(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
+        CHECK(calculate_new_capacity_of_binary(8U, max_power_of_2 - 1U) ==
+            max_power_of_2);
+        // NOLINTNEXTLINE(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
+        CHECK(calculate_new_capacity_of_binary(8U, max_power_of_2) ==
+            max_power_of_2);
+        // NOLINTNEXTLINE(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
+        CHECK(calculate_new_capacity_of_binary(8U, max_power_of_2 + 1U) ==
+            max_size);
+
+        CHECK(calculate_new_capacity_of_binary(
+                  max_power_of_2, max_power_of_2 + 1U) == max_size);
+    }
+
+    SECTION("calculate capacities near the maximum sizes") {
+        // NOLINTNEXTLINE(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
+        CHECK(calculate_new_capacity_of_binary(8U, max_size - 2U) == max_size);
+        // NOLINTNEXTLINE(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
+        CHECK(calculate_new_capacity_of_binary(8U, max_size - 1U) == max_size);
+        // NOLINTNEXTLINE(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
+        CHECK(calculate_new_capacity_of_binary(8U, max_size) == max_size);
+    }
+}
+
 TEST_CASE("msgpack_light::binary") {
     using msgpack_light::binary;
 
