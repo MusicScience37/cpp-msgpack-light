@@ -28,7 +28,7 @@
 namespace msgpack_light {
 
 /*!
- * \brief Class to write to file.
+ * \brief Class of streams to write data to files.
  */
 class file_output_stream final : public output_stream {
 public:
