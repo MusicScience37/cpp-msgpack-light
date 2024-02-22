@@ -1,4 +1,5 @@
 set(SOURCE_FILES
+    binary_test.cpp
     details/basic_binary_buffer_test.cpp
     details/buffered_serialization_buffer_impl_test.cpp
     details/count_arguments_macro_test.cpp

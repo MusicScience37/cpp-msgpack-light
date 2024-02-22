@@ -30,6 +30,40 @@
 
 namespace msgpack_light {
 
+namespace details {
+
+/*!
+ * \brief Calculate the new capacity of the buffer of binary data.
+ *
+ * \param[in] current_capacity Current capacity.
+ * \param[in] required_capacity Required capacity.
+ * \return New capacity.
+ */
+[[nodiscard]] inline std::size_t calculate_new_capacity_of_binary(
+    std::size_t current_capacity, std::size_t required_capacity) {
+    std::size_t new_capacity = current_capacity;
+    while (true) {
+        const std::size_t previous_capacity = new_capacity;
+        new_capacity *= 2U;
+        if (new_capacity <= previous_capacity) {
+            // Overflow
+            const std::size_t max_capacity =
+                std::numeric_limits<std::size_t>::max();
+            return max_capacity;
+        }
+        if (new_capacity >= required_capacity) {
+            return new_capacity;
+        }
+    }
+}
+
+/*!
+ * \brief Minimum capacity of the buffer in msgpack_light::binary class.
+ */
+constexpr std::size_t minimum_capacity_of_binary = 8U;
+
+}  // namespace details
+
 /*!
  * \brief Class of binary data.
  */
@@ -40,56 +74,19 @@ public:
      *
      * Create empty data.
      */
-    binary() : data_(0U) {}
+    binary() : buffer_(details::minimum_capacity_of_binary), size_(0U) {}
 
     /*!
      * \brief Constructor.
      *
-     * \param[in] data Data.
-     */
-    explicit binary(const std::vector<unsigned char>& data)
-        : data_(data.size()) {
-        std::memcpy(data_.data(), data.data(), data.size());
-    }
-
-    /*!
-     * \brief Constructor.
+     * Create a buffer with uninitialized data.
      *
-     * \param[in] data Data.
+     * \param[in] size Size of the buffer.
      */
-    binary(std::initializer_list<unsigned char> data) : data_(data.size()) {
-        std::memcpy(data_.data(), data.begin(), data.size());
-    }
-
-    /*!
-     * \brief Constructor.
-     *
-     * \param[in] data_string Hex string of data.
-     */
-    explicit binary(std::string_view data_string)
-        : data_(data_string.size() / 2U) {
-        constexpr std::string_view hex_digits = "0123456789ABCDEF";
-        unsigned int byte = 0U;
-        bool is_first_digit = true;
-        std::size_t current_byte_index = 0U;
-        for (char digit : data_string) {
-            const auto pos = hex_digits.find(digit);
-            if (pos == std::string_view::npos) {
-                throw std::invalid_argument("Invalid hex string.");
-            }
-            if (is_first_digit) {
-                byte = static_cast<unsigned int>(pos);
-                is_first_digit = false;
-            } else {
-                byte <<= 4U;
-                byte |= static_cast<unsigned int>(pos);
-                data_.data()[current_byte_index] =
-                    static_cast<unsigned char>(byte);
-                ++current_byte_index;
-                is_first_digit = true;
-            }
-        }
-    }
+    explicit binary(std::size_t size)
+        : buffer_(details::calculate_new_capacity_of_binary(
+              details::minimum_capacity_of_binary, size)),
+          size_(size) {}
 
     /*!
      * \brief Constructor.
@@ -97,8 +94,123 @@ public:
      * \param[in] data Pointer to the data.
      * \param[in] size Size of the data.
      */
-    binary(const unsigned char* data, std::size_t size) : data_(size) {
-        std::memcpy(data_.data(), data, size);
+    binary(const unsigned char* data, std::size_t size) : binary(size) {
+        std::memcpy(buffer_.data(), data, size);
+    }
+
+    /*!
+     * \brief Constructor.
+     *
+     * \param[in] data Data.
+     */
+    explicit binary(const std::vector<unsigned char>& data)
+        : binary(data.data(), data.size()) {}
+
+    /*!
+     * \brief Constructor.
+     *
+     * \param[in] data Data.
+     */
+    binary(std::initializer_list<unsigned char> data)
+        : binary(data.begin(), data.size()) {}
+
+    /*!
+     * \brief Constructor.
+     *
+     * \note This function accepts hex expression of data written with
+     * numeric characters from `0` to `9` and uppercase characters from `A` to
+     * `F`.
+     *
+     * \warning Current implementation doesn't accept lowercase characters
+     * from `a` to `f`.
+     *
+     * \param[in] data_string Hex expression of data.
+     */
+    explicit binary(std::string_view data_string)
+        : binary(data_string.size() / 2U) {
+        constexpr std::string_view hex_digits = "0123456789ABCDEF";
+        unsigned int byte = 0U;
+        bool is_first_digit = true;
+        std::size_t current_byte_index = 0U;
+        for (char digit : data_string) {
+            const auto pos = hex_digits.find(digit);
+            if (pos == std::string_view::npos) {
+                throw std::invalid_argument("Invalid hex expression.");
+            }
+            if (is_first_digit) {
+                byte = static_cast<unsigned int>(pos);
+                is_first_digit = false;
+            } else {
+                byte <<= 4U;
+                byte |= static_cast<unsigned int>(pos);
+                buffer_.data()[current_byte_index] =
+                    static_cast<unsigned char>(byte);
+                ++current_byte_index;
+                is_first_digit = true;
+            }
+        }
+        if (!is_first_digit) {
+            throw std::invalid_argument("Invalid hex expression.");
+        }
+    }
+
+    /*!
+     * \brief Change the size of this data.
+     *
+     * This function preserves the existing data.
+     * Additional bytes will be left uninitialized.
+     *
+     * \param[in] size New size.
+     */
+    void resize(std::size_t size) {
+        if (size > buffer_.size()) {
+            buffer_.resize(details::calculate_new_capacity_of_binary(
+                buffer_.size(), size));
+        }
+        size_ = size;
+    }
+
+    /*!
+     * \brief Append another binary data.
+     *
+     * \param[in] data Pointer to the appended data.
+     * \param[in] size Size of the appended data.
+     */
+    void append(const unsigned char* data, std::size_t size) {
+        const std::size_t current_size = size_;
+        resize(current_size + size);
+        std::memcpy(buffer_.data() + current_size, data, size);
+    }
+
+    /*!
+     * \brief Append another binary data.
+     *
+     * \param[in] other Another binary data to append.
+     * \return This.
+     */
+    binary& operator+=(const binary& other) {
+        append(other.data(), other.size());
+        return *this;
+    }
+
+    /*!
+     * \brief Access to a byte.
+     *
+     * \param[in] index Index of the byte.
+     * \return Reference to the byte.
+     */
+    [[nodiscard]] unsigned char& operator[](std::size_t index) noexcept {
+        return buffer_.data()[index];
+    }
+
+    /*!
+     * \brief Access to a byte.
+     *
+     * \param[in] index Index of the byte.
+     * \return Value of the byte.
+     */
+    [[nodiscard]] unsigned char operator[](std::size_t index) const noexcept {
+        return buffer_.data()[index];
     }
 
     /*!
@@ -106,8 +218,15 @@ public:
      *
      * \return Pointer to the data.
      */
+    [[nodiscard]] unsigned char* data() noexcept { return buffer_.data(); }
+
+    /*!
+     * \brief Get the pointer to the data.
+     *
+     * \return Pointer to the data.
+     */
     [[nodiscard]] const unsigned char* data() const noexcept {
-        return data_.data();
+        return buffer_.data();
     }
 
     /*!
@@ -115,7 +234,16 @@ public:
      *
      * \return Size of the data.
      */
-    [[nodiscard]] std::size_t size() const noexcept { return data_.size(); }
+    [[nodiscard]] std::size_t size() const noexcept { return size_; }
+
+    /*!
+     * \brief Get the size of the internal buffer for data.
+     *
+     * \return Size of the internal buffer.
+     */
+    [[nodiscard]] std::size_t capacity() const noexcept {
+        return buffer_.size();
+    }
 
     /*!
      * \brief Compare with another object.
@@ -125,8 +253,8 @@ public:
      * \retval false Two object are not equal.
      */
     [[nodiscard]] bool operator==(const binary& other) const noexcept {
-        return data_.size() == other.data_.size() &&
-            std::memcmp(data_.data(), other.data_.data(), data_.size()) == 0;
+        return size_ == other.size_ &&
+            std::memcmp(buffer_.data(), other.buffer_.data(), size_) == 0;
     }
 
     /*!
@@ -140,23 +268,12 @@ public:
         return !operator==(other);
     }
 
-    /*!
-     * \brief Append another binary data.
-     *
-     * \param[in] other Another binary data to append.
-     * \return This.
-     */
-    binary& operator+=(const binary& other) {
-        const std::size_t current_size = data_.size();
-        data_.resize(current_size + other.data_.size());
-        std::memcpy(data_.data() + current_size, other.data_.data(),
-            other.data_.size());
-        return *this;
-    }
-
 private:
-    //! Data.
-    details::basic_binary_buffer data_;
+    //! Buffer.
+    details::basic_binary_buffer buffer_;
+
+    //! Size.
+    std::size_t size_;
 };
 
 /*!
