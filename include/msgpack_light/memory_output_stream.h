@@ -71,9 +71,8 @@ public:
      * \brief Constructor.
      */
     memory_output_stream()
-        : buffer_(static_cast<unsigned char*>(
-              // NOLINTNEXTLINE(hicpp-no-malloc, cppcoreguidelines-no-malloc): This class is a container.
-              std::malloc(initial_buffer_size))),
+        : buffer_(
+              static_cast<unsigned char*>(std::malloc(initial_buffer_size))),
           capacity_(initial_buffer_size) {
         if (buffer_ == nullptr) {
             throw std::bad_alloc();
@@ -88,10 +87,7 @@ public:
     /*!
      * \brief Destructor.
      */
-    ~memory_output_stream() {
-        // NOLINTNEXTLINE(hicpp-no-malloc, cppcoreguidelines-no-malloc): This class is a container.
-        std::free(buffer_);
-    }
+    ~memory_output_stream() { std::free(buffer_); }
 
     /*!
      * \brief Write data.
@@ -106,7 +102,6 @@ public:
                 details::calculate_expanded_memory_buffer_size(
                     capacity_, size - remaining);
             auto* new_buffer = static_cast<unsigned char*>(
-                // NOLINTNEXTLINE(hicpp-no-malloc, cppcoreguidelines-no-malloc): This class is a container.
                 std::realloc(buffer_, new_capacity));
             if (new_buffer == nullptr) {
                 throw std::bad_alloc();

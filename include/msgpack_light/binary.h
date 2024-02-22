@@ -20,10 +20,13 @@
 #pragma once
 
 #include <cstddef>
+#include <cstring>
 #include <initializer_list>
 #include <ostream>
 #include <string_view>
 #include <vector>
+
+#include "msgpack_light/details/basic_binary_buffer.h"
 
 namespace msgpack_light {
 
@@ -37,31 +40,38 @@ public:
      *
      * Create empty data.
      */
-    binary() = default;
+    binary() : data_(0U) {}
 
     /*!
      * \brief Constructor.
      *
      * \param[in] data Data.
      */
-    explicit binary(std::vector<unsigned char> data) : data_(std::move(data)) {}
+    explicit binary(const std::vector<unsigned char>& data)
+        : data_(data.size()) {
+        std::memcpy(data_.data(), data.data(), data.size());
+    }
 
     /*!
      * \brief Constructor.
      *
      * \param[in] data Data.
      */
-    binary(std::initializer_list<unsigned char> data) : data_(data) {}
+    binary(std::initializer_list<unsigned char> data) : data_(data.size()) {
+        std::memcpy(data_.data(), data.begin(), data.size());
+    }
 
     /*!
      * \brief Constructor.
      *
      * \param[in] data_string Hex string of data.
      */
-    explicit binary(std::string_view data_string) {
+    explicit binary(std::string_view data_string)
+        : data_(data_string.size() / 2U) {
         constexpr std::string_view hex_digits = "0123456789ABCDEF";
         unsigned int byte = 0U;
         bool is_first_digit = true;
+        std::size_t current_byte_index = 0U;
         for (char digit : data_string) {
             const auto pos = hex_digits.find(digit);
             if (pos == std::string_view::npos) {
@@ -73,7 +83,9 @@ public:
             } else {
                 byte <<= 4U;
                 byte |= static_cast<unsigned int>(pos);
-                data_.push_back(static_cast<unsigned char>(byte));
+                data_.data()[current_byte_index] =
+                    static_cast<unsigned char>(byte);
+                ++current_byte_index;
                 is_first_digit = true;
             }
         }
@@ -85,8 +97,9 @@ public:
      * \param[in] data Pointer to the data.
      * \param[in] size Size of the data.
      */
-    binary(const unsigned char* data, std::size_t size)
-        : data_(data, data + size) {}
+    binary(const unsigned char* data, std::size_t size) : data_(size) {
+        std::memcpy(data_.data(), data, size);
+    }
 
     /*!
      * \brief Get the pointer to the data.
@@ -112,7 +125,8 @@ public:
      * \retval false Two object are not equal.
      */
     [[nodiscard]] bool operator==(const binary& other) const noexcept {
-        return data_ == other.data_;
+        return data_.size() == other.data_.size() &&
+            std::memcmp(data_.data(), other.data_.data(), data_.size()) == 0;
     }
 
     /*!
@@ -133,13 +147,16 @@ public:
      * \return This.
      */
     binary& operator+=(const binary& other) {
-        data_.insert(data_.end(), other.data_.begin(), other.data_.end());
+        const std::size_t current_size = data_.size();
+        data_.resize(current_size + other.data_.size());
+        std::memcpy(data_.data() + current_size, other.data_.data(),
+            other.data_.size());
         return *this;
     }
 
 private:
     //! Data.
-    std::vector<unsigned char> data_;
+    details::basic_binary_buffer data_;
 };
 
 /*!
