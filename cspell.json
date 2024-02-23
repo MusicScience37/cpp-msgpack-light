@@ -106,6 +106,7 @@
     "TOUPPER",
     "tqdm",
     "ubsan",
+    "undoc",
     "vcpkg",
     "venv",
     "virtualenv",

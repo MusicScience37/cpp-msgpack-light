@@ -10,6 +10,7 @@ set(SOURCE_FILES
     serialize_struct_general_test.cpp
     serialize_struct_test.cpp
     serialize_timespec_test.cpp
+    serialize_to_file_test.cpp
     serialize_unordered_map_test.cpp
     serialize_unordered_set_test.cpp
     serialize_vectors_test.cpp

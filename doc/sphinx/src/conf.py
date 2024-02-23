@@ -49,7 +49,7 @@ breathe_projects = {"msgpack_light": ""}
 
 breathe_default_project = "msgpack_light"
 
-breathe_default_members = ("members",)
+breathe_default_members = ("members", "protected-members", "undoc-members")
 
 breathe_domain_by_extension = {
     "h": "cpp",
