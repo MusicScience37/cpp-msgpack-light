@@ -39,10 +39,9 @@ TEST_CASE("serialize more general struct") {
 
         const binary serialized = serialize(value);
 
-        const msgpack::object_handle deserialized = msgpack::unpack(
-            // NOLINTNEXTLINE(cppcoreguidelines-pro-type-reinterpret-cast)
-            reinterpret_cast<const char*>(serialized.data()),
-            serialized.size());
+        const msgpack::object_handle deserialized =
+            msgpack::unpack(reinterpret_cast<const char*>(serialized.data()),
+                serialized.size());
 
         REQUIRE(deserialized->type == msgpack::type::ARRAY);
         REQUIRE(deserialized->via.array.size == 2U);

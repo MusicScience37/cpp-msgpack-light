@@ -48,10 +48,9 @@ TEMPLATE_TEST_CASE("serialize unsigned integers", "", std::uint8_t,
 
         const binary serialized = serialize(value);
 
-        const msgpack::object_handle deserialized = msgpack::unpack(
-            // NOLINTNEXTLINE(cppcoreguidelines-pro-type-reinterpret-cast)
-            reinterpret_cast<const char*>(serialized.data()),
-            serialized.size());
+        const msgpack::object_handle deserialized =
+            msgpack::unpack(reinterpret_cast<const char*>(serialized.data()),
+                serialized.size());
 
         CHECK(deserialized->as<integer_type>() == value);
     }
@@ -69,7 +68,6 @@ TEMPLATE_TEST_CASE("serialize unsigned integers", "", std::uint8_t,
             const binary serialized = serialize(value);
 
             const msgpack::object_handle deserialized = msgpack::unpack(
-                // NOLINTNEXTLINE(cppcoreguidelines-pro-type-reinterpret-cast)
                 reinterpret_cast<const char*>(serialized.data()),
                 serialized.size());
 
@@ -90,7 +88,6 @@ TEMPLATE_TEST_CASE("serialize unsigned integers", "", std::uint8_t,
             const binary serialized = serialize(value);
 
             const msgpack::object_handle deserialized = msgpack::unpack(
-                // NOLINTNEXTLINE(cppcoreguidelines-pro-type-reinterpret-cast)
                 reinterpret_cast<const char*>(serialized.data()),
                 serialized.size());
 
@@ -98,7 +95,7 @@ TEMPLATE_TEST_CASE("serialize unsigned integers", "", std::uint8_t,
         }
     }
 
-    // NOLINTNEXTLINE(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
+    // NOLINTNEXTLINE(readability-magic-numbers)
     if constexpr (sizeof(integer_type) >= 8U) {
         SECTION(
             "serialize values from 0x0000000100000000 to 0xFFFFFFFFFFFFFFFF") {
@@ -115,7 +112,6 @@ TEMPLATE_TEST_CASE("serialize unsigned integers", "", std::uint8_t,
             const binary serialized = serialize(value);
 
             const msgpack::object_handle deserialized = msgpack::unpack(
-                // NOLINTNEXTLINE(cppcoreguidelines-pro-type-reinterpret-cast)
                 reinterpret_cast<const char*>(serialized.data()),
                 serialized.size());
 
@@ -131,10 +127,9 @@ TEMPLATE_TEST_CASE("serialize unsigned integers", "", std::uint8_t,
 
         const binary serialized = serialize(value);
 
-        const msgpack::object_handle deserialized = msgpack::unpack(
-            // NOLINTNEXTLINE(cppcoreguidelines-pro-type-reinterpret-cast)
-            reinterpret_cast<const char*>(serialized.data()),
-            serialized.size());
+        const msgpack::object_handle deserialized =
+            msgpack::unpack(reinterpret_cast<const char*>(serialized.data()),
+                serialized.size());
 
         CHECK(deserialized->as<integer_type>() == value);
     }
@@ -156,10 +151,9 @@ TEMPLATE_TEST_CASE("serialize signed integers", "", std::int8_t, std::int16_t,
 
         const binary serialized = serialize(value);
 
-        const msgpack::object_handle deserialized = msgpack::unpack(
-            // NOLINTNEXTLINE(cppcoreguidelines-pro-type-reinterpret-cast)
-            reinterpret_cast<const char*>(serialized.data()),
-            serialized.size());
+        const msgpack::object_handle deserialized =
+            msgpack::unpack(reinterpret_cast<const char*>(serialized.data()),
+                serialized.size());
 
         CHECK(deserialized->as<integer_type>() == value);
     }
@@ -178,7 +172,6 @@ TEMPLATE_TEST_CASE("serialize signed integers", "", std::int8_t, std::int16_t,
             const binary serialized = serialize(value);
 
             const msgpack::object_handle deserialized = msgpack::unpack(
-                // NOLINTNEXTLINE(cppcoreguidelines-pro-type-reinterpret-cast)
                 reinterpret_cast<const char*>(serialized.data()),
                 serialized.size());
 
@@ -200,7 +193,6 @@ TEMPLATE_TEST_CASE("serialize signed integers", "", std::int8_t, std::int16_t,
             const binary serialized = serialize(value);
 
             const msgpack::object_handle deserialized = msgpack::unpack(
-                // NOLINTNEXTLINE(cppcoreguidelines-pro-type-reinterpret-cast)
                 reinterpret_cast<const char*>(serialized.data()),
                 serialized.size());
 
@@ -208,7 +200,7 @@ TEMPLATE_TEST_CASE("serialize signed integers", "", std::int8_t, std::int16_t,
         }
     }
 
-    // NOLINTNEXTLINE(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
+    // NOLINTNEXTLINE(readability-magic-numbers)
     if constexpr (sizeof(integer_type) >= 8U) {
         SECTION(
             "serialize values from 0x0000000080000000 to 0x7FFFFFFFFFFFFFFF") {
@@ -226,7 +218,6 @@ TEMPLATE_TEST_CASE("serialize signed integers", "", std::int8_t, std::int16_t,
             const binary serialized = serialize(value);
 
             const msgpack::object_handle deserialized = msgpack::unpack(
-                // NOLINTNEXTLINE(cppcoreguidelines-pro-type-reinterpret-cast)
                 reinterpret_cast<const char*>(serialized.data()),
                 serialized.size());
 
@@ -245,10 +236,9 @@ TEMPLATE_TEST_CASE("serialize signed integers", "", std::int8_t, std::int16_t,
 
         const binary serialized = serialize(value);
 
-        const msgpack::object_handle deserialized = msgpack::unpack(
-            // NOLINTNEXTLINE(cppcoreguidelines-pro-type-reinterpret-cast)
-            reinterpret_cast<const char*>(serialized.data()),
-            serialized.size());
+        const msgpack::object_handle deserialized =
+            msgpack::unpack(reinterpret_cast<const char*>(serialized.data()),
+                serialized.size());
 
         CHECK(deserialized->as<integer_type>() == value);
     }
@@ -266,7 +256,6 @@ TEMPLATE_TEST_CASE("serialize signed integers", "", std::int8_t, std::int16_t,
             const binary serialized = serialize(value);
 
             const msgpack::object_handle deserialized = msgpack::unpack(
-                // NOLINTNEXTLINE(cppcoreguidelines-pro-type-reinterpret-cast)
                 reinterpret_cast<const char*>(serialized.data()),
                 serialized.size());
 
@@ -287,7 +276,6 @@ TEMPLATE_TEST_CASE("serialize signed integers", "", std::int8_t, std::int16_t,
             const binary serialized = serialize(value);
 
             const msgpack::object_handle deserialized = msgpack::unpack(
-                // NOLINTNEXTLINE(cppcoreguidelines-pro-type-reinterpret-cast)
                 reinterpret_cast<const char*>(serialized.data()),
                 serialized.size());
 
@@ -295,7 +283,7 @@ TEMPLATE_TEST_CASE("serialize signed integers", "", std::int8_t, std::int16_t,
         }
     }
 
-    // NOLINTNEXTLINE(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
+    // NOLINTNEXTLINE(readability-magic-numbers)
     if constexpr (sizeof(integer_type) >= 8U) {
         SECTION(
             "serialize values from 0xFFFFFFFF7FFFFFFF to 0x8000000000000000") {
@@ -312,7 +300,6 @@ TEMPLATE_TEST_CASE("serialize signed integers", "", std::int8_t, std::int16_t,
             const binary serialized = serialize(value);
 
             const msgpack::object_handle deserialized = msgpack::unpack(
-                // NOLINTNEXTLINE(cppcoreguidelines-pro-type-reinterpret-cast)
                 reinterpret_cast<const char*>(serialized.data()),
                 serialized.size());
 
@@ -328,10 +315,9 @@ TEMPLATE_TEST_CASE("serialize signed integers", "", std::int8_t, std::int16_t,
 
         const binary serialized = serialize(value);
 
-        const msgpack::object_handle deserialized = msgpack::unpack(
-            // NOLINTNEXTLINE(cppcoreguidelines-pro-type-reinterpret-cast)
-            reinterpret_cast<const char*>(serialized.data()),
-            serialized.size());
+        const msgpack::object_handle deserialized =
+            msgpack::unpack(reinterpret_cast<const char*>(serialized.data()),
+                serialized.size());
 
         CHECK(deserialized->as<integer_type>() == value);
     }

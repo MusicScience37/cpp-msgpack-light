@@ -27,7 +27,6 @@
     "COMPILERCHECK",
     "Cookiecutter",
     "copydoc",
-    "cppcoreguidelines",
     "cpptools",
     "ctest",
     "DCMAKE",

@@ -41,10 +41,9 @@ TEMPLATE_TEST_CASE("serialize floating-point numbers", "", float, double) {
         const binary serialized = serialize(value);
         INFO("serialized = " << serialized);
 
-        const msgpack::object_handle deserialized = msgpack::unpack(
-            // NOLINTNEXTLINE(cppcoreguidelines-pro-type-reinterpret-cast)
-            reinterpret_cast<const char*>(serialized.data()),
-            serialized.size());
+        const msgpack::object_handle deserialized =
+            msgpack::unpack(reinterpret_cast<const char*>(serialized.data()),
+                serialized.size());
 
         CHECK(deserialized->as<float_type>() == value);  // NOLINT
     }

@@ -3,15 +3,7 @@ Checks: >
   clang-diagnostic-*,
   clang-analyzer-*,
     -clang-analyzer-optin.performance.Padding,
-  cppcoreguidelines-*,
-    -cppcoreguidelines-owning-memory,
-    -cppcoreguidelines-pro-bounds-constant-array-index,
-    -cppcoreguidelines-avoid-non-const-global-variables,
-    -cppcoreguidelines-pro-bounds-pointer-arithmetic,
-    -cppcoreguidelines-avoid-const-or-ref-data-members,
-    -cppcoreguidelines-pro-type-union-access,
-    -cppcoreguidelines-macro-usage,
-    -cppcoreguidelines-no-malloc,
+  -cppcoreguidelines-*,
   google-*,
     -google-runtime-references,
     -google-readability-todo,
@@ -42,18 +34,13 @@ Checks: >
 # - google-runtime-references is a Google-specific rule, and forces use of raw pointers.
 # - clang-analyzer-optin.performance.Padding is hard to be fixed.
 # - readability-function-cognitive-complexity is hard to be fixed in tests.
-# - cppcoreguidelines-owning-memory forces to use an external library.
-# - cppcoreguidelines-pro-bounds-constant-array-index forces to use an external library.
+# - cppcoreguidelines assumes use of an external library only for its rules and generates too many false positives.
 # - bugprone-easily-swappable-parameters, readability-suspicious-call-argument is difficult to fix.
 # - cert-err58-cpp produces warnings in all tests due to Catch2 library.
-# - cppcoreguidelines-avoid-non-const-global-variables produces warnings in all tests due to Catch2 library.
 # - readability-identifier-length prevent traditional codes.
 # - bugprone-unchecked-optional-access has a bug as in https://github.com/clangd/clangd/issues/1700.
-# - cppcoreguidelines-pro-bounds-pointer-arithmetic forces to use an external library.
 # - modernize-use-trailing-return-type make some tools not working.
-# - cppcoreguidelines-pro-type-union-access produces warnings in msgpack library.
-# - cppcoreguidelines-macro-usage only generates false positives.
-# - hicpp-no-malloc and cppcoreguidelines-no-malloc generates many false positives in implementation of containers in this library.
+# - hicpp-no-malloc generates many false positives in implementation of containers in this library.
 
 CheckOptions:
   # Naming Conventions

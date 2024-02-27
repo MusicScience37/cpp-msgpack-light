@@ -37,10 +37,9 @@ TEST_CASE("serialize std::timespec objects") {
 
         const binary serialized = serialize(value);
 
-        const msgpack::object_handle deserialized = msgpack::unpack(
-            // NOLINTNEXTLINE(cppcoreguidelines-pro-type-reinterpret-cast)
-            reinterpret_cast<const char*>(serialized.data()),
-            serialized.size());
+        const msgpack::object_handle deserialized =
+            msgpack::unpack(reinterpret_cast<const char*>(serialized.data()),
+                serialized.size());
 
         std::timespec deserialized_value{};
         REQUIRE_NOTHROW(deserialized_value = deserialized->as<std::timespec>());
@@ -55,10 +54,9 @@ TEST_CASE("serialize std::timespec objects") {
 
         const binary serialized = serialize(value);
 
-        const msgpack::object_handle deserialized = msgpack::unpack(
-            // NOLINTNEXTLINE(cppcoreguidelines-pro-type-reinterpret-cast)
-            reinterpret_cast<const char*>(serialized.data()),
-            serialized.size());
+        const msgpack::object_handle deserialized =
+            msgpack::unpack(reinterpret_cast<const char*>(serialized.data()),
+                serialized.size());
 
         std::timespec deserialized_value{};
         REQUIRE_NOTHROW(deserialized_value = deserialized->as<std::timespec>());
@@ -73,10 +71,9 @@ TEST_CASE("serialize std::timespec objects") {
 
         const binary serialized = serialize(value);
 
-        const msgpack::object_handle deserialized = msgpack::unpack(
-            // NOLINTNEXTLINE(cppcoreguidelines-pro-type-reinterpret-cast)
-            reinterpret_cast<const char*>(serialized.data()),
-            serialized.size());
+        const msgpack::object_handle deserialized =
+            msgpack::unpack(reinterpret_cast<const char*>(serialized.data()),
+                serialized.size());
 
         std::timespec deserialized_value{};
         REQUIRE_NOTHROW(deserialized_value = deserialized->as<std::timespec>());
@@ -90,10 +87,9 @@ TEST_CASE("serialize std::timespec objects") {
 
         const binary serialized = serialize(value);
 
-        const msgpack::object_handle deserialized = msgpack::unpack(
-            // NOLINTNEXTLINE(cppcoreguidelines-pro-type-reinterpret-cast)
-            reinterpret_cast<const char*>(serialized.data()),
-            serialized.size());
+        const msgpack::object_handle deserialized =
+            msgpack::unpack(reinterpret_cast<const char*>(serialized.data()),
+                serialized.size());
 
         std::timespec deserialized_value{};
         REQUIRE_NOTHROW(deserialized_value = deserialized->as<std::timespec>());

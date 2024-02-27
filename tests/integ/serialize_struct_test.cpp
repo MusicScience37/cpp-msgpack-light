@@ -59,10 +59,9 @@ TEST_CASE("serialize struct into maps") {
 
         const binary serialized = serialize(value);
 
-        const msgpack::object_handle deserialized = msgpack::unpack(
-            // NOLINTNEXTLINE(cppcoreguidelines-pro-type-reinterpret-cast)
-            reinterpret_cast<const char*>(serialized.data()),
-            serialized.size());
+        const msgpack::object_handle deserialized =
+            msgpack::unpack(reinterpret_cast<const char*>(serialized.data()),
+                serialized.size());
 
         std::unordered_map<std::string, int> expected_map;
         constexpr int num_params = 1;
@@ -80,10 +79,9 @@ TEST_CASE("serialize struct into maps") {
 
         const binary serialized = serialize(value);
 
-        const msgpack::object_handle deserialized = msgpack::unpack(
-            // NOLINTNEXTLINE(cppcoreguidelines-pro-type-reinterpret-cast)
-            reinterpret_cast<const char*>(serialized.data()),
-            serialized.size());
+        const msgpack::object_handle deserialized =
+            msgpack::unpack(reinterpret_cast<const char*>(serialized.data()),
+                serialized.size());
 
         std::unordered_map<std::string, int> expected_map;
         constexpr int num_params = 2;
@@ -101,10 +99,9 @@ TEST_CASE("serialize struct into maps") {
 
         const binary serialized = serialize(value);
 
-        const msgpack::object_handle deserialized = msgpack::unpack(
-            // NOLINTNEXTLINE(cppcoreguidelines-pro-type-reinterpret-cast)
-            reinterpret_cast<const char*>(serialized.data()),
-            serialized.size());
+        const msgpack::object_handle deserialized =
+            msgpack::unpack(reinterpret_cast<const char*>(serialized.data()),
+                serialized.size());
 
         std::unordered_map<std::string, int> expected_map;
         constexpr int num_params = 3;
@@ -122,10 +119,9 @@ TEST_CASE("serialize struct into maps") {
 
         const binary serialized = serialize(value);
 
-        const msgpack::object_handle deserialized = msgpack::unpack(
-            // NOLINTNEXTLINE(cppcoreguidelines-pro-type-reinterpret-cast)
-            reinterpret_cast<const char*>(serialized.data()),
-            serialized.size());
+        const msgpack::object_handle deserialized =
+            msgpack::unpack(reinterpret_cast<const char*>(serialized.data()),
+                serialized.size());
 
         std::unordered_map<std::string, int> expected_map;
         constexpr int num_params = 4;
@@ -143,10 +139,9 @@ TEST_CASE("serialize struct into maps") {
 
         const binary serialized = serialize(value);
 
-        const msgpack::object_handle deserialized = msgpack::unpack(
-            // NOLINTNEXTLINE(cppcoreguidelines-pro-type-reinterpret-cast)
-            reinterpret_cast<const char*>(serialized.data()),
-            serialized.size());
+        const msgpack::object_handle deserialized =
+            msgpack::unpack(reinterpret_cast<const char*>(serialized.data()),
+                serialized.size());
 
         std::unordered_map<std::string, int> expected_map;
         constexpr int num_params = 5;
@@ -164,10 +159,9 @@ TEST_CASE("serialize struct into maps") {
 
         const binary serialized = serialize(value);
 
-        const msgpack::object_handle deserialized = msgpack::unpack(
-            // NOLINTNEXTLINE(cppcoreguidelines-pro-type-reinterpret-cast)
-            reinterpret_cast<const char*>(serialized.data()),
-            serialized.size());
+        const msgpack::object_handle deserialized =
+            msgpack::unpack(reinterpret_cast<const char*>(serialized.data()),
+                serialized.size());
 
         std::unordered_map<std::string, int> expected_map;
         constexpr int num_params = 6;
@@ -185,10 +179,9 @@ TEST_CASE("serialize struct into maps") {
 
         const binary serialized = serialize(value);
 
-        const msgpack::object_handle deserialized = msgpack::unpack(
-            // NOLINTNEXTLINE(cppcoreguidelines-pro-type-reinterpret-cast)
-            reinterpret_cast<const char*>(serialized.data()),
-            serialized.size());
+        const msgpack::object_handle deserialized =
+            msgpack::unpack(reinterpret_cast<const char*>(serialized.data()),
+                serialized.size());
 
         std::unordered_map<std::string, int> expected_map;
         constexpr int num_params = 7;
@@ -206,10 +199,9 @@ TEST_CASE("serialize struct into maps") {
 
         const binary serialized = serialize(value);
 
-        const msgpack::object_handle deserialized = msgpack::unpack(
-            // NOLINTNEXTLINE(cppcoreguidelines-pro-type-reinterpret-cast)
-            reinterpret_cast<const char*>(serialized.data()),
-            serialized.size());
+        const msgpack::object_handle deserialized =
+            msgpack::unpack(reinterpret_cast<const char*>(serialized.data()),
+                serialized.size());
 
         std::unordered_map<std::string, int> expected_map;
         constexpr int num_params = 8;
@@ -227,10 +219,9 @@ TEST_CASE("serialize struct into maps") {
 
         const binary serialized = serialize(value);
 
-        const msgpack::object_handle deserialized = msgpack::unpack(
-            // NOLINTNEXTLINE(cppcoreguidelines-pro-type-reinterpret-cast)
-            reinterpret_cast<const char*>(serialized.data()),
-            serialized.size());
+        const msgpack::object_handle deserialized =
+            msgpack::unpack(reinterpret_cast<const char*>(serialized.data()),
+                serialized.size());
 
         std::unordered_map<std::string, int> expected_map;
         constexpr int num_params = 9;
@@ -248,10 +239,9 @@ TEST_CASE("serialize struct into maps") {
 
         const binary serialized = serialize(value);
 
-        const msgpack::object_handle deserialized = msgpack::unpack(
-            // NOLINTNEXTLINE(cppcoreguidelines-pro-type-reinterpret-cast)
-            reinterpret_cast<const char*>(serialized.data()),
-            serialized.size());
+        const msgpack::object_handle deserialized =
+            msgpack::unpack(reinterpret_cast<const char*>(serialized.data()),
+                serialized.size());
 
         std::unordered_map<std::string, int> expected_map;
         constexpr int num_params = 10;
@@ -270,10 +260,9 @@ TEST_CASE("serialize struct into maps") {
 
         const binary serialized = serialize(value);
 
-        const msgpack::object_handle deserialized = msgpack::unpack(
-            // NOLINTNEXTLINE(cppcoreguidelines-pro-type-reinterpret-cast)
-            reinterpret_cast<const char*>(serialized.data()),
-            serialized.size());
+        const msgpack::object_handle deserialized =
+            msgpack::unpack(reinterpret_cast<const char*>(serialized.data()),
+                serialized.size());
 
         std::unordered_map<std::string, int> expected_map;
         constexpr int num_params = 11;
@@ -292,10 +281,9 @@ TEST_CASE("serialize struct into maps") {
 
         const binary serialized = serialize(value);
 
-        const msgpack::object_handle deserialized = msgpack::unpack(
-            // NOLINTNEXTLINE(cppcoreguidelines-pro-type-reinterpret-cast)
-            reinterpret_cast<const char*>(serialized.data()),
-            serialized.size());
+        const msgpack::object_handle deserialized =
+            msgpack::unpack(reinterpret_cast<const char*>(serialized.data()),
+                serialized.size());
 
         std::unordered_map<std::string, int> expected_map;
         constexpr int num_params = 12;
@@ -314,10 +302,9 @@ TEST_CASE("serialize struct into maps") {
 
         const binary serialized = serialize(value);
 
-        const msgpack::object_handle deserialized = msgpack::unpack(
-            // NOLINTNEXTLINE(cppcoreguidelines-pro-type-reinterpret-cast)
-            reinterpret_cast<const char*>(serialized.data()),
-            serialized.size());
+        const msgpack::object_handle deserialized =
+            msgpack::unpack(reinterpret_cast<const char*>(serialized.data()),
+                serialized.size());
 
         std::unordered_map<std::string, int> expected_map;
         constexpr int num_params = 13;
@@ -336,10 +323,9 @@ TEST_CASE("serialize struct into maps") {
 
         const binary serialized = serialize(value);
 
-        const msgpack::object_handle deserialized = msgpack::unpack(
-            // NOLINTNEXTLINE(cppcoreguidelines-pro-type-reinterpret-cast)
-            reinterpret_cast<const char*>(serialized.data()),
-            serialized.size());
+        const msgpack::object_handle deserialized =
+            msgpack::unpack(reinterpret_cast<const char*>(serialized.data()),
+                serialized.size());
 
         std::unordered_map<std::string, int> expected_map;
         constexpr int num_params = 14;
@@ -358,10 +344,9 @@ TEST_CASE("serialize struct into maps") {
 
         const binary serialized = serialize(value);
 
-        const msgpack::object_handle deserialized = msgpack::unpack(
-            // NOLINTNEXTLINE(cppcoreguidelines-pro-type-reinterpret-cast)
-            reinterpret_cast<const char*>(serialized.data()),
-            serialized.size());
+        const msgpack::object_handle deserialized =
+            msgpack::unpack(reinterpret_cast<const char*>(serialized.data()),
+                serialized.size());
 
         std::unordered_map<std::string, int> expected_map;
         constexpr int num_params = 15;
@@ -399,10 +384,9 @@ TEST_CASE("serialize struct into arrays") {
 
         const binary serialized = serialize(value);
 
-        const msgpack::object_handle deserialized = msgpack::unpack(
-            // NOLINTNEXTLINE(cppcoreguidelines-pro-type-reinterpret-cast)
-            reinterpret_cast<const char*>(serialized.data()),
-            serialized.size());
+        const msgpack::object_handle deserialized =
+            msgpack::unpack(reinterpret_cast<const char*>(serialized.data()),
+                serialized.size());
 
         std::vector<int> expected_array;
         constexpr int num_params = 1;
@@ -419,10 +403,9 @@ TEST_CASE("serialize struct into arrays") {
 
         const binary serialized = serialize(value);
 
-        const msgpack::object_handle deserialized = msgpack::unpack(
-            // NOLINTNEXTLINE(cppcoreguidelines-pro-type-reinterpret-cast)
-            reinterpret_cast<const char*>(serialized.data()),
-            serialized.size());
+        const msgpack::object_handle deserialized =
+            msgpack::unpack(reinterpret_cast<const char*>(serialized.data()),
+                serialized.size());
 
         std::vector<int> expected_array;
         constexpr int num_params = 2;
@@ -439,10 +422,9 @@ TEST_CASE("serialize struct into arrays") {
 
         const binary serialized = serialize(value);
 
-        const msgpack::object_handle deserialized = msgpack::unpack(
-            // NOLINTNEXTLINE(cppcoreguidelines-pro-type-reinterpret-cast)
-            reinterpret_cast<const char*>(serialized.data()),
-            serialized.size());
+        const msgpack::object_handle deserialized =
+            msgpack::unpack(reinterpret_cast<const char*>(serialized.data()),
+                serialized.size());
 
         std::vector<int> expected_array;
         constexpr int num_params = 3;
@@ -459,10 +441,9 @@ TEST_CASE("serialize struct into arrays") {
 
         const binary serialized = serialize(value);
 
-        const msgpack::object_handle deserialized = msgpack::unpack(
-            // NOLINTNEXTLINE(cppcoreguidelines-pro-type-reinterpret-cast)
-            reinterpret_cast<const char*>(serialized.data()),
-            serialized.size());
+        const msgpack::object_handle deserialized =
+            msgpack::unpack(reinterpret_cast<const char*>(serialized.data()),
+                serialized.size());
 
         std::vector<int> expected_array;
         constexpr int num_params = 4;
@@ -479,10 +460,9 @@ TEST_CASE("serialize struct into arrays") {
 
         const binary serialized = serialize(value);
 
-        const msgpack::object_handle deserialized = msgpack::unpack(
-            // NOLINTNEXTLINE(cppcoreguidelines-pro-type-reinterpret-cast)
-            reinterpret_cast<const char*>(serialized.data()),
-            serialized.size());
+        const msgpack::object_handle deserialized =
+            msgpack::unpack(reinterpret_cast<const char*>(serialized.data()),
+                serialized.size());
 
         std::vector<int> expected_array;
         constexpr int num_params = 5;
@@ -499,10 +479,9 @@ TEST_CASE("serialize struct into arrays") {
 
         const binary serialized = serialize(value);
 
-        const msgpack::object_handle deserialized = msgpack::unpack(
-            // NOLINTNEXTLINE(cppcoreguidelines-pro-type-reinterpret-cast)
-            reinterpret_cast<const char*>(serialized.data()),
-            serialized.size());
+        const msgpack::object_handle deserialized =
+            msgpack::unpack(reinterpret_cast<const char*>(serialized.data()),
+                serialized.size());
 
         std::vector<int> expected_array;
         constexpr int num_params = 6;
@@ -519,10 +498,9 @@ TEST_CASE("serialize struct into arrays") {
 
         const binary serialized = serialize(value);
 
-        const msgpack::object_handle deserialized = msgpack::unpack(
-            // NOLINTNEXTLINE(cppcoreguidelines-pro-type-reinterpret-cast)
-            reinterpret_cast<const char*>(serialized.data()),
-            serialized.size());
+        const msgpack::object_handle deserialized =
+            msgpack::unpack(reinterpret_cast<const char*>(serialized.data()),
+                serialized.size());
 
         std::vector<int> expected_array;
         constexpr int num_params = 7;
@@ -539,10 +517,9 @@ TEST_CASE("serialize struct into arrays") {
 
         const binary serialized = serialize(value);
 
-        const msgpack::object_handle deserialized = msgpack::unpack(
-            // NOLINTNEXTLINE(cppcoreguidelines-pro-type-reinterpret-cast)
-            reinterpret_cast<const char*>(serialized.data()),
-            serialized.size());
+        const msgpack::object_handle deserialized =
+            msgpack::unpack(reinterpret_cast<const char*>(serialized.data()),
+                serialized.size());
 
         std::vector<int> expected_array;
         constexpr int num_params = 8;
@@ -559,10 +536,9 @@ TEST_CASE("serialize struct into arrays") {
 
         const binary serialized = serialize(value);
 
-        const msgpack::object_handle deserialized = msgpack::unpack(
-            // NOLINTNEXTLINE(cppcoreguidelines-pro-type-reinterpret-cast)
-            reinterpret_cast<const char*>(serialized.data()),
-            serialized.size());
+        const msgpack::object_handle deserialized =
+            msgpack::unpack(reinterpret_cast<const char*>(serialized.data()),
+                serialized.size());
 
         std::vector<int> expected_array;
         constexpr int num_params = 9;
@@ -580,10 +556,9 @@ TEST_CASE("serialize struct into arrays") {
 
         const binary serialized = serialize(value);
 
-        const msgpack::object_handle deserialized = msgpack::unpack(
-            // NOLINTNEXTLINE(cppcoreguidelines-pro-type-reinterpret-cast)
-            reinterpret_cast<const char*>(serialized.data()),
-            serialized.size());
+        const msgpack::object_handle deserialized =
+            msgpack::unpack(reinterpret_cast<const char*>(serialized.data()),
+                serialized.size());
 
         std::vector<int> expected_array;
         constexpr int num_params = 10;
@@ -601,10 +576,9 @@ TEST_CASE("serialize struct into arrays") {
 
         const binary serialized = serialize(value);
 
-        const msgpack::object_handle deserialized = msgpack::unpack(
-            // NOLINTNEXTLINE(cppcoreguidelines-pro-type-reinterpret-cast)
-            reinterpret_cast<const char*>(serialized.data()),
-            serialized.size());
+        const msgpack::object_handle deserialized =
+            msgpack::unpack(reinterpret_cast<const char*>(serialized.data()),
+                serialized.size());
 
         std::vector<int> expected_array;
         constexpr int num_params = 11;
@@ -622,10 +596,9 @@ TEST_CASE("serialize struct into arrays") {
 
         const binary serialized = serialize(value);
 
-        const msgpack::object_handle deserialized = msgpack::unpack(
-            // NOLINTNEXTLINE(cppcoreguidelines-pro-type-reinterpret-cast)
-            reinterpret_cast<const char*>(serialized.data()),
-            serialized.size());
+        const msgpack::object_handle deserialized =
+            msgpack::unpack(reinterpret_cast<const char*>(serialized.data()),
+                serialized.size());
 
         std::vector<int> expected_array;
         constexpr int num_params = 12;
@@ -643,10 +616,9 @@ TEST_CASE("serialize struct into arrays") {
 
         const binary serialized = serialize(value);
 
-        const msgpack::object_handle deserialized = msgpack::unpack(
-            // NOLINTNEXTLINE(cppcoreguidelines-pro-type-reinterpret-cast)
-            reinterpret_cast<const char*>(serialized.data()),
-            serialized.size());
+        const msgpack::object_handle deserialized =
+            msgpack::unpack(reinterpret_cast<const char*>(serialized.data()),
+                serialized.size());
 
         std::vector<int> expected_array;
         constexpr int num_params = 13;
@@ -664,10 +636,9 @@ TEST_CASE("serialize struct into arrays") {
 
         const binary serialized = serialize(value);
 
-        const msgpack::object_handle deserialized = msgpack::unpack(
-            // NOLINTNEXTLINE(cppcoreguidelines-pro-type-reinterpret-cast)
-            reinterpret_cast<const char*>(serialized.data()),
-            serialized.size());
+        const msgpack::object_handle deserialized =
+            msgpack::unpack(reinterpret_cast<const char*>(serialized.data()),
+                serialized.size());
 
         std::vector<int> expected_array;
         constexpr int num_params = 14;
@@ -685,10 +656,9 @@ TEST_CASE("serialize struct into arrays") {
 
         const binary serialized = serialize(value);
 
-        const msgpack::object_handle deserialized = msgpack::unpack(
-            // NOLINTNEXTLINE(cppcoreguidelines-pro-type-reinterpret-cast)
-            reinterpret_cast<const char*>(serialized.data()),
-            serialized.size());
+        const msgpack::object_handle deserialized =
+            msgpack::unpack(reinterpret_cast<const char*>(serialized.data()),
+                serialized.size());
 
         std::vector<int> expected_array;
         constexpr int num_params = 15;

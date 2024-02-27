@@ -50,10 +50,9 @@ TEST_CASE("serialize values in ext format") {
         buffer.flush();
         const binary serialized = stream.as_binary();
 
-        const msgpack::object_handle deserialized = msgpack::unpack(
-            // NOLINTNEXTLINE(cppcoreguidelines-pro-type-reinterpret-cast)
-            reinterpret_cast<const char*>(serialized.data()),
-            serialized.size());
+        const msgpack::object_handle deserialized =
+            msgpack::unpack(reinterpret_cast<const char*>(serialized.data()),
+                serialized.size());
         REQUIRE(deserialized->type == msgpack::type::EXT);
         CHECK(deserialized->via.ext.type() == ext_type);
         REQUIRE(deserialized->via.ext.size == data_size);
@@ -74,10 +73,9 @@ TEST_CASE("serialize values in ext format") {
         buffer.flush();
         const binary serialized = stream.as_binary();
 
-        const msgpack::object_handle deserialized = msgpack::unpack(
-            // NOLINTNEXTLINE(cppcoreguidelines-pro-type-reinterpret-cast)
-            reinterpret_cast<const char*>(serialized.data()),
-            serialized.size());
+        const msgpack::object_handle deserialized =
+            msgpack::unpack(reinterpret_cast<const char*>(serialized.data()),
+                serialized.size());
         REQUIRE(deserialized->type == msgpack::type::EXT);
         CHECK(deserialized->via.ext.type() == ext_type);
         REQUIRE(deserialized->via.ext.size == data_size);

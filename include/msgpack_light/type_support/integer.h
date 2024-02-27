@@ -227,7 +227,7 @@ struct serialization_traits<T,
 template <typename T>
 struct serialization_traits<T,
     std::enable_if_t<details::is_unsigned_integer_v<T> &&
-        // NOLINTNEXTLINE(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
+        // NOLINTNEXTLINE(readability-magic-numbers)
         sizeof(T) == 8U>> {
     /*!
      * \brief Serialize a value.
@@ -485,7 +485,7 @@ private:
 template <typename T>
 struct serialization_traits<T,
     std::enable_if_t<details::is_signed_integer_v<T> &&
-        // NOLINTNEXTLINE(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
+        // NOLINTNEXTLINE(readability-magic-numbers)
         sizeof(T) == 8U>> {
 public:
     /*!
