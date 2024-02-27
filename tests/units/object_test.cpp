@@ -40,6 +40,10 @@ TEST_CASE("msgpack_light::object") {
 
         CHECK(obj.type() == object_data_type::nil);
         CHECK_THROWS((void)obj.as_unsigned_integer());
+        CHECK_THROWS((void)obj.as_signed_integer());
+        CHECK_THROWS((void)obj.as_boolean());
+        CHECK_THROWS((void)obj.as_float32());
+        CHECK_THROWS((void)obj.as_float64());
     }
 
     SECTION("create an object of unsigned integer") {
@@ -50,7 +54,12 @@ TEST_CASE("msgpack_light::object") {
             std::numeric_limits<std::uint64_t>::max());
         obj.set_unsigned_integer(value);
 
+        CHECK(obj.type() == object_data_type::unsigned_integer);
         CHECK(obj.as_unsigned_integer() == value);
+        CHECK_THROWS((void)obj.as_signed_integer());
+        CHECK_THROWS((void)obj.as_boolean());
+        CHECK_THROWS((void)obj.as_float32());
+        CHECK_THROWS((void)obj.as_float64());
     }
 
     SECTION("create an object of signed integer") {
@@ -61,7 +70,12 @@ TEST_CASE("msgpack_light::object") {
             std::numeric_limits<std::int64_t>::max());
         obj.set_signed_integer(value);
 
+        CHECK(obj.type() == object_data_type::signed_integer);
         CHECK(obj.as_signed_integer() == value);
+        CHECK_THROWS((void)obj.as_unsigned_integer());
+        CHECK_THROWS((void)obj.as_boolean());
+        CHECK_THROWS((void)obj.as_float32());
+        CHECK_THROWS((void)obj.as_float64());
     }
 
     SECTION("create an object of boolean value") {
@@ -70,6 +84,39 @@ TEST_CASE("msgpack_light::object") {
         const auto value = GENERATE(true, false);
         obj.set_boolean(value);
 
+        CHECK(obj.type() == object_data_type::boolean);
         CHECK(obj.as_boolean() == value);
+        CHECK_THROWS((void)obj.as_unsigned_integer());
+        CHECK_THROWS((void)obj.as_signed_integer());
+        CHECK_THROWS((void)obj.as_float32());
+        CHECK_THROWS((void)obj.as_float64());
+    }
+
+    SECTION("create an object of 32-bit floating-point numbers") {
+        object_type obj;
+
+        constexpr float value = 1.25F;
+        obj.set_float32(value);
+
+        CHECK(obj.type() == object_data_type::float32);
+        CHECK(obj.as_float32() == value);
+        CHECK_THROWS((void)obj.as_unsigned_integer());
+        CHECK_THROWS((void)obj.as_signed_integer());
+        CHECK_THROWS((void)obj.as_boolean());
+        CHECK_THROWS((void)obj.as_float64());
+    }
+
+    SECTION("create an object of 64-bit floating-point numbers") {
+        object_type obj;
+
+        constexpr double value = 1.25;
+        obj.set_float64(value);
+
+        CHECK(obj.type() == object_data_type::float64);
+        CHECK(obj.as_float64() == value);
+        CHECK_THROWS((void)obj.as_unsigned_integer());
+        CHECK_THROWS((void)obj.as_signed_integer());
+        CHECK_THROWS((void)obj.as_boolean());
+        CHECK_THROWS((void)obj.as_float32());
     }
 }

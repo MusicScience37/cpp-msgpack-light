@@ -73,12 +73,34 @@ public:
     /*!
      * \brief Set this object to a boolean value.
      *
-     * \param[in] value
+     * \param[in] value Value.
      */
     void set_boolean(bool value) noexcept {
         clear();
         data().data.bool_value = value;
         data().type = object_data_type::boolean;
+    }
+
+    /*!
+     * \brief Set this object to a 32-bit floating-point number.
+     *
+     * \param[in] value Value.
+     */
+    void set_float32(float value) noexcept {
+        clear();
+        data().data.float_value = value;
+        data().type = object_data_type::float32;
+    }
+
+    /*!
+     * \brief Set this object to a 64-bit floating-point number.
+     *
+     * \param[in] value Value.
+     */
+    void set_float64(double value) noexcept {
+        clear();
+        data().data.double_value = value;
+        data().type = object_data_type::float64;
     }
 
     /*!
@@ -134,6 +156,32 @@ public:
             throw std::runtime_error("This object is not a boolean.");
         }
         return data().data.bool_value;
+    }
+
+    /*!
+     * \brief Get data as a 32-bit floating-pointe number.
+     *
+     * \return Value.
+     */
+    [[nodiscard]] float as_float32() const {
+        if (data().type != object_data_type::float32) {
+            throw std::runtime_error(
+                "This object is not a 32-bit floating-point number.");
+        }
+        return data().data.float_value;
+    }
+
+    /*!
+     * \brief Get data as a 64-bit floating-pointe number.
+     *
+     * \return Value.
+     */
+    [[nodiscard]] float as_float64() const {
+        if (data().type != object_data_type::float64) {
+            throw std::runtime_error(
+                "This object is not a 64-bit floating-point number.");
+        }
+        return data().data.double_value;
     }
 
     //!\}

@@ -41,7 +41,7 @@ enum class object_data_type {
     float32,
 
     //! 64-bit floating-point numbers.
-    double64,
+    float64,
 
     //! String.
     string,
