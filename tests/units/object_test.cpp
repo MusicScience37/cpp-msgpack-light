@@ -20,6 +20,7 @@
 #include "msgpack_light/object.h"
 
 #include <cstdint>
+#include <limits>
 
 #include <catch2/catch_test_macros.hpp>
 #include <catch2/generators/catch_generators.hpp>
@@ -46,9 +47,29 @@ TEST_CASE("msgpack_light::object") {
 
         const auto value = GENERATE(static_cast<std::uint64_t>(0),
             static_cast<std::uint64_t>(123),
-            static_cast<std::uint64_t>(0xFFFFFFFFULL));
+            std::numeric_limits<std::uint64_t>::max());
         obj.set_unsigned_integer(value);
 
         CHECK(obj.as_unsigned_integer() == value);
+    }
+
+    SECTION("create an object of signed integer") {
+        object_type obj;
+
+        const auto value = GENERATE(std::numeric_limits<std::int64_t>::min(),
+            static_cast<std::int64_t>(0), static_cast<std::int64_t>(123),
+            std::numeric_limits<std::int64_t>::max());
+        obj.set_signed_integer(value);
+
+        CHECK(obj.as_signed_integer() == value);
+    }
+
+    SECTION("create an object of boolean value") {
+        object_type obj;
+
+        const auto value = GENERATE(true, false);
+        obj.set_boolean(value);
+
+        CHECK(obj.as_boolean() == value);
     }
 }

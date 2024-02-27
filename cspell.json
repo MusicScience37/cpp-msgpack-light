@@ -39,6 +39,7 @@
     "doxygen",
     "doxygenclass",
     "doxygendefine",
+    "doxygenenum",
     "doxygenfunction",
     "doxygenstruct",
     "DVCPKG",

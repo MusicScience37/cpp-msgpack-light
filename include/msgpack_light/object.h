@@ -44,27 +44,61 @@ public:
     using allocator_type = Allocator;
 
     /*!
-     * \brief Get the type of this object.
-     *
-     * \return Type of this object.
+     * \name Set data
      */
-    [[nodiscard]] object_data_type type() const noexcept { return data().type; }
+    //!\{
 
     /*!
      * \brief Set this object to an unsigned integer.
      *
      * \param[in] value Value.
      */
-    void set_unsigned_integer(std::uint64_t value) {
+    void set_unsigned_integer(std::uint64_t value) noexcept {
         clear();
         data().data.unsigned_integer_value = value;
         data().type = object_data_type::unsigned_integer;
     }
 
     /*!
+     * \brief Set this object to a signed integer.
+     *
+     * \param[in] value Value.
+     */
+    void set_signed_integer(std::int64_t value) noexcept {
+        clear();
+        data().data.signed_integer_value = value;
+        data().type = object_data_type::signed_integer;
+    }
+
+    /*!
+     * \brief Set this object to a boolean value.
+     *
+     * \param[in] value
+     */
+    void set_boolean(bool value) noexcept {
+        clear();
+        data().data.bool_value = value;
+        data().type = object_data_type::boolean;
+    }
+
+    /*!
      * \brief Clear the data.
      */
-    void clear() { data().type = object_data_type::nil; }
+    void clear() noexcept { data().type = object_data_type::nil; }
+
+    //!\}
+
+    /*!
+     * \name Access to data
+     */
+    //!\{
+
+    /*!
+     * \brief Get the type of this object.
+     *
+     * \return Type of this object.
+     */
+    [[nodiscard]] object_data_type type() const noexcept { return data().type; }
 
     /*!
      * \brief Get data as an unsigned integer.
@@ -77,6 +111,37 @@ public:
         }
         return data().data.unsigned_integer_value;
     }
+
+    /*!
+     * \brief Get data as a signed integer.
+     *
+     * \return Value.
+     */
+    [[nodiscard]] std::int64_t as_signed_integer() const {
+        if (data().type != object_data_type::signed_integer) {
+            throw std::runtime_error("This object is not a signed integer.");
+        }
+        return data().data.signed_integer_value;
+    }
+
+    /*!
+     * \brief Get data as a boolean.
+     *
+     * \return Value.
+     */
+    [[nodiscard]] bool as_boolean() const {
+        if (data().type != object_data_type::boolean) {
+            throw std::runtime_error("This object is not a boolean.");
+        }
+        return data().data.bool_value;
+    }
+
+    //!\}
+
+    /*!
+     * \name Internal data
+     */
+    //!\{
 
     /*!
      * \brief Get the internal data.
@@ -95,6 +160,8 @@ public:
     [[nodiscard]] const details::object_data& data() const noexcept {
         return derived().data();
     }
+
+    //!\}
 
 protected:
     /*!
@@ -132,6 +199,11 @@ public:
     using typename base_type::allocator_type;
 
     /*!
+     * \name Initialization and finalization
+     */
+    //!\{
+
+    /*!
      * \brief Constructor.
      *
      * \param[in] allocator Allocator.
@@ -149,6 +221,13 @@ public:
      * \brief Destructor.
      */
     ~object() = default;
+
+    //!\}
+
+    /*!
+     * \name Internal data
+     */
+    //!\{
 
     /*!
      * \brief Get the internal data.
@@ -172,6 +251,8 @@ public:
      * \return Allocator.
      */
     [[nodiscard]] allocator_type& allocator() noexcept { return allocator_; }
+
+    //!\}
 
 private:
     //! Data.
