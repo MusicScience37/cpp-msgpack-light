@@ -63,11 +63,12 @@ public:
      * \param[in] size Size.
      */
     void resize(std::size_t size) {
-        auto* ptr = static_cast<details::object_data*>(
-            allocator_->allocate(size * sizeof(details::object_data)));
-        std::memset(ptr, 0, size * sizeof(details::object_data));
-        allocator_->deallocate(data_->data);
-        data_->data = ptr;
+        data_->data = static_cast<details::object_data*>(allocator_->reallocate(
+            data_->data, size * sizeof(details::object_data)));
+        if (size > data_->size) {
+            std::memset(data_->data + data_->size, 0,
+                (size - data_->size) * sizeof(details::object_data));
+        }
         data_->size = size;
     }
 
