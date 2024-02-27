@@ -31,6 +31,32 @@
 
 namespace msgpack_light {
 
+namespace details {
+
+/*!
+ * \brief Clear data.
+ *
+ * \tparam Allocator Type of the allocator.
+ * \param[in,out] data Data.
+ * \param[in] allocator Allocator.
+ */
+template <typename Allocator>
+inline void clear_object_data(object_data& data, Allocator& allocator) {
+    switch (data.type) {
+    case object_data_type::array:
+        for (std::size_t i = 0; i < data.data.array_value.size; ++i) {
+            clear_object_data(data.data.array_value.data[i], allocator);
+        }
+        allocator.deallocate(data.data.array_value.data);
+        break;
+    default:
+        break;
+    };
+    data.type = object_data_type::nil;
+}
+
+}  // namespace details
+
 template <typename Allocator = standard_allocator>
 class mutable_object_ref;
 
@@ -63,6 +89,11 @@ public:
      * \param[in] size Size.
      */
     void resize(std::size_t size) {
+        if (size < data_->size) {
+            for (std::size_t i = size; i < data_->size; ++i) {
+                details::clear_object_data(data_->data[i], *allocator_);
+            }
+        }
         data_->data = static_cast<details::object_data*>(allocator_->reallocate(
             data_->data, size * sizeof(details::object_data)));
         if (size > data_->size) {
@@ -195,16 +226,7 @@ public:
     /*!
      * \brief Clear the data.
      */
-    void clear() noexcept {
-        switch (data().type) {
-        case object_data_type::array:
-            allocator().deallocate(data().data.array_value.data);
-            break;
-        default:
-            break;
-        };
-        data().type = object_data_type::nil;
-    }
+    void clear() noexcept { clear_object_data(data(), allocator()); }
 
     //!\}
 
@@ -423,13 +445,13 @@ private:
 };
 
 template <typename Allocator>
-typename mutable_array_ref<Allocator>::object_ref_type
+inline typename mutable_array_ref<Allocator>::object_ref_type
 mutable_array_ref<Allocator>::operator[](std::size_t index) noexcept {
     return object_ref_type(data_->data[index], *allocator_);
 }
 
 template <typename Allocator>
-typename mutable_array_ref<Allocator>::object_ref_type
+inline typename mutable_array_ref<Allocator>::object_ref_type
 mutable_array_ref<Allocator>::operator[](std::size_t index) const noexcept {
     return object_ref_type(data_->data[index], *allocator_);
 }

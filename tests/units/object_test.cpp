@@ -127,6 +127,7 @@ TEST_CASE("msgpack_light::object") {
             auto array_ref = obj.set_array();
             array_ref.resize(3U);
             array_ref[0].set_unsigned_integer(5U);  // NOLINT
+            array_ref[1].set_array().resize(1U);
         }
 
         {
@@ -134,7 +135,24 @@ TEST_CASE("msgpack_light::object") {
             const auto array_ref = obj.as_array();
             REQUIRE(array_ref.size() == 3U);
             CHECK(array_ref[0].as_unsigned_integer() == 5U);  // NOLINT
-            CHECK(array_ref[1].type() == object_data_type::nil);
+            CHECK(array_ref[1].type() == object_data_type::array);
+            CHECK(array_ref[1].as_array().size() == 1U);
+            CHECK(array_ref[2].type() == object_data_type::nil);
+        }
+
+        SECTION("decrease size") {
+            auto array_ref = obj.as_array();
+            array_ref.resize(1U);
+            REQUIRE(array_ref.size() == 1U);
+            CHECK(array_ref[0].as_unsigned_integer() == 5U);  // NOLINT
+        }
+
+        SECTION("increase size") {
+            auto array_ref = obj.as_array();
+            array_ref.resize(4U);  // NOLINT
+            REQUIRE(array_ref.size() == 4U);
+            CHECK(array_ref[0].as_unsigned_integer() == 5U);  // NOLINT
+            CHECK(array_ref[1].as_array().size() == 1U);
             CHECK(array_ref[2].type() == object_data_type::nil);
         }
     }
