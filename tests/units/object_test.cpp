@@ -119,4 +119,23 @@ TEST_CASE("msgpack_light::object") {
         CHECK_THROWS((void)obj.as_boolean());
         CHECK_THROWS((void)obj.as_float32());
     }
+
+    SECTION("create an object of an array") {
+        object_type obj;
+
+        {
+            auto array_ref = obj.set_array();
+            array_ref.resize(3U);
+            array_ref[0].set_unsigned_integer(5U);  // NOLINT
+        }
+
+        {
+            CHECK(obj.type() == object_data_type::array);
+            const auto array_ref = obj.as_array();
+            REQUIRE(array_ref.size() == 3U);
+            CHECK(array_ref[0].as_unsigned_integer() == 5U);  // NOLINT
+            CHECK(array_ref[1].type() == object_data_type::nil);
+            CHECK(array_ref[2].type() == object_data_type::nil);
+        }
+    }
 }

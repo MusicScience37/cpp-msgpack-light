@@ -19,7 +19,9 @@
  */
 #pragma once
 
+#include <cstddef>
 #include <cstdint>
+#include <cstring>
 #include <stdexcept>
 #include <utility>
 
@@ -28,6 +30,77 @@
 #include "msgpack_light/standard_allocator.h"
 
 namespace msgpack_light {
+
+template <typename Allocator = standard_allocator>
+class mutable_object_ref;
+
+/*!
+ * \brief Class of access non-constant arrays.
+ *
+ * \tparam Allocator
+ */
+template <typename Allocator = standard_allocator>
+class mutable_array_ref {
+public:
+    //! Type of the allocator.
+    using allocator_type = Allocator;
+
+    //! Type to access objects.
+    using object_ref_type = mutable_object_ref<Allocator>;
+
+    /*!
+     * \brief Constructor.
+     *
+     * \param[in] data Data.
+     * \param[in] allocator Allocator.
+     */
+    mutable_array_ref(details::array_data& data, allocator_type& allocator)
+        : data_(&data), allocator_(&allocator) {}
+
+    /*!
+     * \brief Change the size.
+     *
+     * \param[in] size Size.
+     */
+    void resize(std::size_t size) {
+        auto* ptr = static_cast<details::object_data*>(
+            allocator_->allocate(size * sizeof(details::object_data)));
+        std::memset(ptr, 0, size * sizeof(details::object_data));
+        allocator_->deallocate(data_->data);
+        data_->data = ptr;
+        data_->size = size;
+    }
+
+    /*!
+     * \brief Get the size.
+     *
+     * \return Size.
+     */
+    [[nodiscard]] std::size_t size() const noexcept { return data_->size; }
+
+    /*!
+     * \brief Get an object.
+     *
+     * \param[in] index Index of the object.
+     * \return Object.
+     */
+    [[nodiscard]] object_ref_type operator[](std::size_t index) noexcept;
+
+    /*!
+     * \brief Get an object.
+     *
+     * \param[in] index Index of the object.
+     * \return Object.
+     */
+    [[nodiscard]] object_ref_type operator[](std::size_t index) const noexcept;
+
+private:
+    //! Data.
+    details::array_data* data_;
+
+    //! Allocator.
+    allocator_type* allocator_;
+};
 
 namespace details {
 
@@ -104,9 +177,33 @@ public:
     }
 
     /*!
+     * \brief Set this object to an array.
+     *
+     * \return Object to access the array.
+     */
+    mutable_array_ref<Allocator> set_array() {
+        clear();
+        data().data.array_value.data =
+            static_cast<object_data*>(allocator().allocate(0U));
+        data().data.array_value.size = 0U;
+        data().type = object_data_type::array;
+        return mutable_array_ref<Allocator>(
+            data().data.array_value, allocator());
+    }
+
+    /*!
      * \brief Clear the data.
      */
-    void clear() noexcept { data().type = object_data_type::nil; }
+    void clear() noexcept {
+        switch (data().type) {
+        case object_data_type::array:
+            allocator().deallocate(data().data.array_value.data);
+            break;
+        default:
+            break;
+        };
+        data().type = object_data_type::nil;
+    }
 
     //!\}
 
@@ -184,6 +281,19 @@ public:
         return data().data.double_value;
     }
 
+    /*!
+     * \brief Get data as an array.
+     *
+     * \return Value.
+     */
+    [[nodiscard]] mutable_array_ref<Allocator> as_array() {
+        if (data().type != object_data_type::array) {
+            throw std::runtime_error("This object is not an array.");
+        }
+        return mutable_array_ref<Allocator>(
+            data().data.array_value, allocator());
+    }
+
     //!\}
 
     /*!
@@ -207,6 +317,15 @@ public:
      */
     [[nodiscard]] const details::object_data& data() const noexcept {
         return derived().data();
+    }
+
+    /*!
+     * \brief Get the allocator.
+     *
+     * \return Allocator.
+     */
+    [[nodiscard]] allocator_type& allocator() noexcept {
+        return derived().allocator();
     }
 
     //!\}
@@ -234,6 +353,87 @@ protected:
 }  // namespace details
 
 /*!
+ * \brief Class to access non-constant objects.
+ *
+ * \tparam Allocator Type of the allocator.
+ */
+template <typename Allocator>
+class mutable_object_ref
+    : public details::object_base<mutable_object_ref<Allocator>, Allocator> {
+public:
+    //! Type of the base class.
+    using base_type =
+        details::object_base<mutable_object_ref<Allocator>, Allocator>;
+
+    using typename base_type::allocator_type;
+
+    /*!
+     * \name Initialization and finalization
+     */
+    //!\{
+
+    /*!
+     * \brief Constructor.
+     *
+     * \param[in] data Data.
+     * \param[in] allocator Allocator.
+     */
+    mutable_object_ref(details::object_data& data, allocator_type& allocator)
+        : data_(&data), allocator_(&allocator) {}
+
+    //!\}
+
+    /*!
+     * \name Internal data
+     */
+    //!\{
+
+    /*!
+     * \brief Get the internal data.
+     *
+     * \return Internal data.
+     */
+    [[nodiscard]] details::object_data& data() noexcept { return *data_; }
+
+    /*!
+     * \brief Get the internal data.
+     *
+     * \return Internal data.
+     */
+    [[nodiscard]] const details::object_data& data() const noexcept {
+        return *data_;
+    }
+
+    /*!
+     * \brief Get the allocator.
+     *
+     * \return Allocator.
+     */
+    [[nodiscard]] allocator_type& allocator() noexcept { return *allocator_; }
+
+    //!\}
+
+private:
+    //! Data.
+    details::object_data* data_;
+
+    //! Allocator.
+    allocator_type* allocator_;
+};
+
+template <typename Allocator>
+typename mutable_array_ref<Allocator>::object_ref_type
+mutable_array_ref<Allocator>::operator[](std::size_t index) noexcept {
+    return object_ref_type(data_->data[index], *allocator_);
+}
+
+template <typename Allocator>
+typename mutable_array_ref<Allocator>::object_ref_type
+mutable_array_ref<Allocator>::operator[](std::size_t index) const noexcept {
+    return object_ref_type(data_->data[index], *allocator_);
+}
+
+/*!
  * \brief Class of objects in MessagePack.
  *
  * \tparam Allocator Type of the allocator.
@@ -244,6 +444,7 @@ public:
     //! Type of the base class.
     using base_type = details::object_base<object<Allocator>, Allocator>;
 
+    using base_type::clear;
     using typename base_type::allocator_type;
 
     /*!
@@ -268,7 +469,7 @@ public:
     /*!
      * \brief Destructor.
      */
-    ~object() = default;
+    ~object() { clear(); }
 
     //!\}
 

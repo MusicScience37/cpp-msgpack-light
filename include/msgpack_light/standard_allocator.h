@@ -37,6 +37,9 @@ public:
      * \return Pointer to the allocated memory.
      */
     [[nodiscard]] void* allocate(std::size_t size) {  // NOLINT
+        if (size == 0U) {
+            size = 1U;
+        }
         void* ptr = std::malloc(size);
         if (ptr == nullptr) {
             throw std::bad_alloc();
@@ -48,10 +51,8 @@ public:
      * \brief Deallocate memory.
      *
      * \param[in] ptr Pointer to the deallocated memory.
-     * \param[in] size Number of bytes of memory.
      */
-    void deallocate(void* ptr, std::size_t size) noexcept {  // NOLINT
-        (void)size;
+    void deallocate(void* ptr) noexcept {  // NOLINT
         std::free(ptr);
     }
 };
