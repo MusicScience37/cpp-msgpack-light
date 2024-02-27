@@ -136,7 +136,8 @@ TEST_CASE("msgpack_light::object") {
             REQUIRE(array_ref.size() == 3U);
             CHECK(array_ref[0].as_unsigned_integer() == 5U);  // NOLINT
             CHECK(array_ref[1].type() == object_data_type::array);
-            CHECK(array_ref[1].as_array().size() == 1U);
+            REQUIRE(array_ref[1].as_array().size() == 1U);
+            CHECK(array_ref[1].as_array()[0].type() == object_data_type::nil);
             CHECK(array_ref[2].type() == object_data_type::nil);
         }
 
