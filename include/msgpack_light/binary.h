@@ -96,6 +96,9 @@ public:
      * \param[in] size Size of the data.
      */
     binary(const unsigned char* data, std::size_t size) : binary(size) {
+        if (size == 0U) {
+            return;
+        }
         std::memcpy(buffer_.data(), data, size);
     }
 
