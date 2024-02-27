@@ -34,25 +34,25 @@ TEST_CASE("msgpack_light::details::calculate_expanded_memory_buffer_size") {
         << (digits - 1U);
 
     SECTION("calculate capacities in ordinary range") {
-        // NOLINTNEXTLINE(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
+        // NOLINTNEXTLINE(readability-magic-numbers)
         CHECK(calculate_expanded_memory_buffer_size(8U, 1U) == 16U);
 
-        // NOLINTNEXTLINE(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
+        // NOLINTNEXTLINE(readability-magic-numbers)
         CHECK(calculate_expanded_memory_buffer_size(8U, 7U) == 16U);
-        // NOLINTNEXTLINE(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
+        // NOLINTNEXTLINE(readability-magic-numbers)
         CHECK(calculate_expanded_memory_buffer_size(8U, 8U) == 16U);
-        // NOLINTNEXTLINE(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
+        // NOLINTNEXTLINE(readability-magic-numbers)
         CHECK(calculate_expanded_memory_buffer_size(8U, 9U) == 32U);
     }
 
     SECTION("calculate capacities near the maximum power of 2") {
-        // NOLINTNEXTLINE(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
+        // NOLINTNEXTLINE(readability-magic-numbers)
         CHECK(calculate_expanded_memory_buffer_size(8U, max_power_of_2 - 9U) ==
             max_power_of_2);
-        // NOLINTNEXTLINE(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
+        // NOLINTNEXTLINE(readability-magic-numbers)
         CHECK(calculate_expanded_memory_buffer_size(8U, max_power_of_2 - 8U) ==
             max_power_of_2);
-        // NOLINTNEXTLINE(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
+        // NOLINTNEXTLINE(readability-magic-numbers)
         CHECK(calculate_expanded_memory_buffer_size(8U, max_power_of_2 - 7U) ==
             max_size);
 
@@ -61,16 +61,16 @@ TEST_CASE("msgpack_light::details::calculate_expanded_memory_buffer_size") {
     }
 
     SECTION("calculate capacities near the maximum sizes") {
-        // NOLINTNEXTLINE(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
+        // NOLINTNEXTLINE(readability-magic-numbers)
         CHECK(calculate_expanded_memory_buffer_size(8U, max_size - 10U) ==
             max_size);
-        // NOLINTNEXTLINE(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
+        // NOLINTNEXTLINE(readability-magic-numbers)
         CHECK(calculate_expanded_memory_buffer_size(8U, max_size - 9U) ==
             max_size);
-        // NOLINTNEXTLINE(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
+        // NOLINTNEXTLINE(readability-magic-numbers)
         CHECK(calculate_expanded_memory_buffer_size(8U, max_size - 8U) ==
             max_size);
-        // NOLINTNEXTLINE(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
+        // NOLINTNEXTLINE(readability-magic-numbers)
         CHECK_THROWS(calculate_expanded_memory_buffer_size(8U, max_size - 7U));
     }
 }

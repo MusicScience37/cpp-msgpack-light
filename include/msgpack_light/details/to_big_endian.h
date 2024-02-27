@@ -90,9 +90,9 @@ inline void to_big_endian<4U>(
  * \param[out] to Output.
  */
 template <>
-// NOLINTNEXTLINE(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
+// NOLINTNEXTLINE(readability-magic-numbers)
 inline void to_big_endian<8U>(
-    // NOLINTNEXTLINE(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
+    // NOLINTNEXTLINE(readability-magic-numbers)
     const void* from, mutable_static_binary_view<8U> to) noexcept {
     std::uint64_t value{};
     std::memcpy(&value, from, sizeof(value));

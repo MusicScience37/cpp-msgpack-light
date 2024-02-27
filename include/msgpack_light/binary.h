@@ -316,9 +316,9 @@ inline std::ostream& operator<<(std::ostream& stream, const binary& value) {
     constexpr std::string_view hex_digits = "0123456789ABCDEF";
     for (std::size_t i = 0; i < value.size(); ++i) {
         const unsigned int byte = value.data()[i];
-        // NOLINTNEXTLINE(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
+        // NOLINTNEXTLINE(readability-magic-numbers)
         stream << hex_digits[(byte >> 4U) & 0x0FU];
-        // NOLINTNEXTLINE(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
+        // NOLINTNEXTLINE(readability-magic-numbers)
         stream << hex_digits[byte & 0x0FU];
     }
     return stream;

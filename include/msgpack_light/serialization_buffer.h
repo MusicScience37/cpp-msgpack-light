@@ -257,7 +257,7 @@ public:
     void serialize_float64(double value) {
         static_assert(std::numeric_limits<double>::is_iec559,
             "IEEE 754 double precision floating point number is required.");
-        // NOLINTNEXTLINE(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
+        // NOLINTNEXTLINE(readability-magic-numbers)
         static_assert(sizeof(double) == 8U,
             "IEEE 754 double precision floating point number is required.");
 

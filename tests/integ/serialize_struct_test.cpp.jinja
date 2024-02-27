@@ -55,7 +55,6 @@ TEST_CASE("serialize struct into maps") {
             const binary serialized = serialize(value);
 
             const msgpack::object_handle deserialized = msgpack::unpack(
-                // NOLINTNEXTLINE(cppcoreguidelines-pro-type-reinterpret-cast)
                 reinterpret_cast<const char*>(serialized.data()),
                 serialized.size());
 
@@ -91,7 +90,6 @@ TEST_CASE("serialize struct into arrays") {
             const binary serialized = serialize(value);
 
             const msgpack::object_handle deserialized = msgpack::unpack(
-                // NOLINTNEXTLINE(cppcoreguidelines-pro-type-reinterpret-cast)
                 reinterpret_cast<const char*>(serialized.data()),
                 serialized.size());
 

@@ -35,10 +35,9 @@ TEST_CASE("serialize std::chrono::system_clock::time_point objects") {
 
         const binary serialized = serialize(value);
 
-        const msgpack::object_handle deserialized = msgpack::unpack(
-            // NOLINTNEXTLINE(cppcoreguidelines-pro-type-reinterpret-cast)
-            reinterpret_cast<const char*>(serialized.data()),
-            serialized.size());
+        const msgpack::object_handle deserialized =
+            msgpack::unpack(reinterpret_cast<const char*>(serialized.data()),
+                serialized.size());
 
         CHECK(
             value == deserialized->as<std::chrono::system_clock::time_point>());
