@@ -44,6 +44,8 @@ TEST_CASE("msgpack_light::object") {
         CHECK_THROWS((void)obj.as_boolean());
         CHECK_THROWS((void)obj.as_float32());
         CHECK_THROWS((void)obj.as_float64());
+        CHECK_THROWS((void)obj.as_string());
+        CHECK_THROWS((void)obj.as_array());
 
         SECTION("copy") {
             const object_type copy{obj};  // NOLINT
@@ -72,6 +74,8 @@ TEST_CASE("msgpack_light::object") {
         CHECK_THROWS((void)obj.as_boolean());
         CHECK_THROWS((void)obj.as_float32());
         CHECK_THROWS((void)obj.as_float64());
+        CHECK_THROWS((void)obj.as_string());
+        CHECK_THROWS((void)obj.as_array());
 
         SECTION("copy") {
             const object_type copy{obj};  // NOLINT
@@ -102,6 +106,8 @@ TEST_CASE("msgpack_light::object") {
         CHECK_THROWS((void)obj.as_boolean());
         CHECK_THROWS((void)obj.as_float32());
         CHECK_THROWS((void)obj.as_float64());
+        CHECK_THROWS((void)obj.as_string());
+        CHECK_THROWS((void)obj.as_array());
 
         SECTION("copy") {
             const object_type copy{obj};  // NOLINT
@@ -130,6 +136,8 @@ TEST_CASE("msgpack_light::object") {
         CHECK_THROWS((void)obj.as_signed_integer());
         CHECK_THROWS((void)obj.as_float32());
         CHECK_THROWS((void)obj.as_float64());
+        CHECK_THROWS((void)obj.as_string());
+        CHECK_THROWS((void)obj.as_array());
 
         SECTION("copy") {
             const object_type copy{obj};  // NOLINT
@@ -158,6 +166,8 @@ TEST_CASE("msgpack_light::object") {
         CHECK_THROWS((void)obj.as_signed_integer());
         CHECK_THROWS((void)obj.as_boolean());
         CHECK_THROWS((void)obj.as_float64());
+        CHECK_THROWS((void)obj.as_string());
+        CHECK_THROWS((void)obj.as_array());
 
         SECTION("copy") {
             const object_type copy{obj};  // NOLINT
@@ -186,6 +196,8 @@ TEST_CASE("msgpack_light::object") {
         CHECK_THROWS((void)obj.as_signed_integer());
         CHECK_THROWS((void)obj.as_boolean());
         CHECK_THROWS((void)obj.as_float32());
+        CHECK_THROWS((void)obj.as_string());
+        CHECK_THROWS((void)obj.as_array());
 
         SECTION("copy") {
             const object_type copy{obj};  // NOLINT
@@ -199,6 +211,37 @@ TEST_CASE("msgpack_light::object") {
 
             CHECK(moved.type() == object_data_type::float64);
             CHECK(moved.as_float64() == value);
+        }
+    }
+
+    SECTION("create an object of a string") {
+        object_type obj;
+
+        const auto value = GENERATE(std::string(), std::string("a"),
+            std::string("ab"), std::string("abc"));
+        obj.set_string(value);
+
+        CHECK(obj.type() == object_data_type::string);
+        CHECK(obj.as_string() == value);
+        CHECK_THROWS((void)obj.as_unsigned_integer());
+        CHECK_THROWS((void)obj.as_signed_integer());
+        CHECK_THROWS((void)obj.as_boolean());
+        CHECK_THROWS((void)obj.as_float32());
+        CHECK_THROWS((void)obj.as_float64());
+        CHECK_THROWS((void)obj.as_array());
+
+        SECTION("copy") {
+            const object_type copy{obj};  // NOLINT
+
+            CHECK(copy.type() == object_data_type::string);
+            CHECK(copy.as_string() == value);
+        }
+
+        SECTION("move") {
+            const object_type moved{std::move(obj)};
+
+            CHECK(moved.type() == object_data_type::string);
+            CHECK(moved.as_string() == value);
         }
     }
 
@@ -222,6 +265,12 @@ TEST_CASE("msgpack_light::object") {
             CHECK(array_ref[1].as_array()[0].type() == object_data_type::nil);
             CHECK(array_ref[2].type() == object_data_type::nil);
         }
+        CHECK_THROWS((void)obj.as_unsigned_integer());
+        CHECK_THROWS((void)obj.as_signed_integer());
+        CHECK_THROWS((void)obj.as_boolean());
+        CHECK_THROWS((void)obj.as_float32());
+        CHECK_THROWS((void)obj.as_float64());
+        CHECK_THROWS((void)obj.as_string());
 
         SECTION("decrease size") {
             auto array_ref = obj.as_array();

@@ -23,6 +23,7 @@
 #include <cstdint>
 #include <cstring>
 #include <stdexcept>
+#include <string_view>
 #include <utility>
 
 #include "msgpack_light/details/object_data.h"
@@ -43,6 +44,9 @@ namespace details {
 template <typename Allocator>
 inline void clear_object_data(object_data& data, Allocator& allocator) {
     switch (data.type) {
+    case object_data_type::string:
+        allocator.deallocate(data.data.string_value.data);
+        break;
     case object_data_type::array:
         for (std::size_t i = 0; i < data.data.array_value.size; ++i) {
             clear_object_data(data.data.array_value.data[i], allocator);
@@ -67,6 +71,14 @@ template <typename Allocator>
 inline void copy_object_data(
     object_data& to, const object_data& from, Allocator& allocator) {
     switch (from.type) {
+    case object_data_type::string:
+        to.data.string_value.data =
+            static_cast<char*>(allocator.allocate(from.data.string_value.size));
+        std::memcpy(to.data.string_value.data, from.data.string_value.data,
+            from.data.string_value.size);
+        to.data.string_value.size = from.data.string_value.size;
+        to.type = object_data_type::string;
+        break;
     case object_data_type::array:
         to.data.array_value.data = static_cast<object_data*>(allocator.allocate(
             from.data.array_value.size * sizeof(object_data)));
@@ -292,6 +304,19 @@ public:
     }
 
     /*!
+     * \brief Get data as a string.
+     *
+     * \return Value.
+     */
+    [[nodiscard]] std::string_view as_string() const {
+        if (data().type != object_data_type::string) {
+            throw std::runtime_error("This object is not a string.");
+        }
+        return std::string_view(
+            data().data.string_value.data, data().data.string_value.size);
+    }
+
+    /*!
      * \brief Get data as an array.
      *
      * \return Value.
@@ -402,6 +427,20 @@ public:
         clear();
         data().data.double_value = value;
         data().type = object_data_type::float64;
+    }
+
+    /*!
+     * \brief Set this object to a string.
+     *
+     * \param[in] value Value.
+     */
+    void set_string(std::string_view value) {
+        auto* ptr = static_cast<char*>(allocator().allocate(value.size()));
+        std::memcpy(ptr, value.data(), value.size());
+        clear();
+        data().data.string_value.data = ptr;
+        data().data.string_value.size = value.size();
+        data().type = object_data_type::string;
     }
 
     /*!
