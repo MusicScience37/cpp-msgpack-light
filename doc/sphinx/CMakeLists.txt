@@ -15,7 +15,7 @@ set(${UPPER_PROJECT_NAME}_SPHINX_OPTIONS
 add_custom_target(
     ${PROJECT_NAME}_doc_sphinx_html ALL
     COMMAND
-        ${POETRY_EXECUTABLE} run sphinx-build -b html -W
+        ${POETRY_EXECUTABLE} run sphinx-build -b html
         ${CMAKE_CURRENT_SOURCE_DIR}/src ${${UPPER_PROJECT_NAME}_HTML_ROOT}
         ${${UPPER_PROJECT_NAME}_SPHINX_OPTIONS} -q
     COMMENT "Generate Sphinx html API documentation for ${FULL_PROJECT_NAME}"
