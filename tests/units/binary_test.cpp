@@ -380,3 +380,51 @@ TEST_CASE("msgpack_light::binary") {
         }
     }
 }
+
+TEST_CASE("msgpack_light::binary_view") {
+    using msgpack_light::binary;
+    using msgpack_light::binary_view;
+
+    SECTION("create a view of an empty binary") {
+        binary_view view;
+
+        CHECK(view.size() == 0U);
+    }
+
+    SECTION("create a view with data") {
+        const auto data = binary("A1B2C3");
+
+        const auto view = binary_view(data.data(), data.size());
+
+        CHECK(binary(view.data(), view.size()) == data);
+    }
+
+    SECTION("create a view with binary object") {
+        const auto data = binary("A1B2C3");
+
+        const binary_view view = data;
+
+        CHECK(binary(view.data(), view.size()) == data);
+    }
+
+    SECTION("cast to binary object") {
+        const auto data = binary("A1B2C3");
+        const binary_view view = data;
+
+        CHECK(binary{view} == data);
+    }
+
+    SECTION("compare data") {
+        CHECK(binary_view(binary("010203")) == binary_view(binary("010203")));
+        CHECK(binary_view(binary("010203")) != binary_view(binary("0102")));
+        CHECK(binary_view(binary("010203")) != binary_view(binary("01020304")));
+        CHECK(binary_view(binary("010203")) != binary_view(binary("010204")));
+    }
+
+    SECTION("compare with implicit conversion") {
+        CHECK(binary_view(binary("010203")) == binary("010203"));
+        CHECK(binary("010203") == binary_view(binary("010203")));
+        CHECK(binary_view(binary("010203")) != binary("0102"));
+        CHECK(binary("010203") != binary_view(binary("0102")));
+    }
+}
