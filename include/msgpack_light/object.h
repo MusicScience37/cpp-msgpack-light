@@ -26,6 +26,7 @@
 #include <string_view>
 #include <utility>
 
+#include "msgpack_light/binary.h"
 #include "msgpack_light/details/object_data.h"
 #include "msgpack_light/object_data_type.h"
 #include "msgpack_light/standard_allocator.h"
@@ -46,6 +47,9 @@ inline void clear_object_data(object_data& data, Allocator& allocator) {
     switch (data.type) {
     case object_data_type::string:
         allocator.deallocate(data.data.string_value.data);
+        break;
+    case object_data_type::binary:
+        allocator.deallocate(data.data.binary_value.data);
         break;
     case object_data_type::array:
         for (std::size_t i = 0; i < data.data.array_value.size; ++i) {
@@ -78,6 +82,14 @@ inline void copy_object_data(
             from.data.string_value.size);
         to.data.string_value.size = from.data.string_value.size;
         to.type = object_data_type::string;
+        break;
+    case object_data_type::binary:
+        to.data.binary_value.data = static_cast<unsigned char*>(
+            allocator.allocate(from.data.binary_value.size));
+        std::memcpy(to.data.binary_value.data, from.data.binary_value.data,
+            from.data.binary_value.size);
+        to.data.binary_value.size = from.data.binary_value.size;
+        to.type = object_data_type::binary;
         break;
     case object_data_type::array:
         to.data.array_value.data = static_cast<object_data*>(allocator.allocate(
@@ -317,6 +329,19 @@ public:
     }
 
     /*!
+     * \brief Get data as a binary.
+     *
+     * \return Value.
+     */
+    [[nodiscard]] binary_view as_binary() const {
+        if (data().type != object_data_type::binary) {
+            throw std::runtime_error("This object is not a binary.");
+        }
+        return binary_view(
+            data().data.binary_value.data, data().data.binary_value.size);
+    }
+
+    /*!
      * \brief Get data as an array.
      *
      * \return Value.
@@ -441,6 +466,21 @@ public:
         data().data.string_value.data = ptr;
         data().data.string_value.size = value.size();
         data().type = object_data_type::string;
+    }
+
+    /*!
+     * \brief Set this object to a binary.
+     *
+     * \param[in] value Value.
+     */
+    void set_binary(binary_view value) {
+        auto* ptr =
+            static_cast<unsigned char*>(allocator().allocate(value.size()));
+        std::memcpy(ptr, value.data(), value.size());
+        clear();
+        data().data.binary_value.data = ptr;
+        data().data.binary_value.size = value.size();
+        data().type = object_data_type::binary;
     }
 
     /*!

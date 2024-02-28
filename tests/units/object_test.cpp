@@ -25,10 +25,12 @@
 #include <catch2/catch_test_macros.hpp>
 #include <catch2/generators/catch_generators.hpp>
 
+#include "msgpack_light/binary.h"
 #include "msgpack_light/object_data_type.h"
 #include "msgpack_light/standard_allocator.h"
 
 TEST_CASE("msgpack_light::object") {
+    using msgpack_light::binary;
     using msgpack_light::object;
     using msgpack_light::object_data_type;
 
@@ -45,6 +47,7 @@ TEST_CASE("msgpack_light::object") {
         CHECK_THROWS((void)obj.as_float32());
         CHECK_THROWS((void)obj.as_float64());
         CHECK_THROWS((void)obj.as_string());
+        CHECK_THROWS((void)obj.as_binary());
         CHECK_THROWS((void)obj.as_array());
 
         SECTION("copy") {
@@ -75,6 +78,7 @@ TEST_CASE("msgpack_light::object") {
         CHECK_THROWS((void)obj.as_float32());
         CHECK_THROWS((void)obj.as_float64());
         CHECK_THROWS((void)obj.as_string());
+        CHECK_THROWS((void)obj.as_binary());
         CHECK_THROWS((void)obj.as_array());
 
         SECTION("copy") {
@@ -107,6 +111,7 @@ TEST_CASE("msgpack_light::object") {
         CHECK_THROWS((void)obj.as_float32());
         CHECK_THROWS((void)obj.as_float64());
         CHECK_THROWS((void)obj.as_string());
+        CHECK_THROWS((void)obj.as_binary());
         CHECK_THROWS((void)obj.as_array());
 
         SECTION("copy") {
@@ -137,6 +142,7 @@ TEST_CASE("msgpack_light::object") {
         CHECK_THROWS((void)obj.as_float32());
         CHECK_THROWS((void)obj.as_float64());
         CHECK_THROWS((void)obj.as_string());
+        CHECK_THROWS((void)obj.as_binary());
         CHECK_THROWS((void)obj.as_array());
 
         SECTION("copy") {
@@ -167,6 +173,7 @@ TEST_CASE("msgpack_light::object") {
         CHECK_THROWS((void)obj.as_boolean());
         CHECK_THROWS((void)obj.as_float64());
         CHECK_THROWS((void)obj.as_string());
+        CHECK_THROWS((void)obj.as_binary());
         CHECK_THROWS((void)obj.as_array());
 
         SECTION("copy") {
@@ -197,6 +204,7 @@ TEST_CASE("msgpack_light::object") {
         CHECK_THROWS((void)obj.as_boolean());
         CHECK_THROWS((void)obj.as_float32());
         CHECK_THROWS((void)obj.as_string());
+        CHECK_THROWS((void)obj.as_binary());
         CHECK_THROWS((void)obj.as_array());
 
         SECTION("copy") {
@@ -228,6 +236,7 @@ TEST_CASE("msgpack_light::object") {
         CHECK_THROWS((void)obj.as_boolean());
         CHECK_THROWS((void)obj.as_float32());
         CHECK_THROWS((void)obj.as_float64());
+        CHECK_THROWS((void)obj.as_binary());
         CHECK_THROWS((void)obj.as_array());
 
         SECTION("copy") {
@@ -242,6 +251,38 @@ TEST_CASE("msgpack_light::object") {
 
             CHECK(moved.type() == object_data_type::string);
             CHECK(moved.as_string() == value);
+        }
+    }
+
+    SECTION("create an object of a binary") {
+        object_type obj;
+
+        const auto value =
+            GENERATE(binary(), binary("A1"), binary("A1B2"), binary("A1B2C3"));
+        obj.set_binary(value);
+
+        CHECK(obj.type() == object_data_type::binary);
+        CHECK(obj.as_binary() == value);
+        CHECK_THROWS((void)obj.as_unsigned_integer());
+        CHECK_THROWS((void)obj.as_signed_integer());
+        CHECK_THROWS((void)obj.as_boolean());
+        CHECK_THROWS((void)obj.as_float32());
+        CHECK_THROWS((void)obj.as_float64());
+        CHECK_THROWS((void)obj.as_string());
+        CHECK_THROWS((void)obj.as_array());
+
+        SECTION("copy") {
+            const object_type copy{obj};  // NOLINT
+
+            CHECK(copy.type() == object_data_type::binary);
+            CHECK(copy.as_binary() == value);
+        }
+
+        SECTION("move") {
+            const object_type moved{std::move(obj)};
+
+            CHECK(moved.type() == object_data_type::binary);
+            CHECK(moved.as_binary() == value);
         }
     }
 
@@ -271,6 +312,7 @@ TEST_CASE("msgpack_light::object") {
         CHECK_THROWS((void)obj.as_float32());
         CHECK_THROWS((void)obj.as_float64());
         CHECK_THROWS((void)obj.as_string());
+        CHECK_THROWS((void)obj.as_binary());
 
         SECTION("decrease size") {
             auto array_ref = obj.as_array();

@@ -68,6 +68,61 @@ constexpr std::size_t default_binary_capacity = 8U;
 
 }  // namespace details
 
+class binary;
+
+/*!
+ * \brief Class to refer binary data.
+ *
+ * \note This class doesn't manage memory of binary data as `std::string_view`.
+ */
+class binary_view {
+public:
+    /*!
+     * \brief Constructor.
+     *
+     * Create empty data.
+     */
+    binary_view() noexcept : data_(nullptr), size_(0U) {}
+
+    /*!
+     * \brief Constructor.
+     *
+     * \param[in] data Pointer to the data.
+     * \param[in] size Size of the data.
+     */
+    binary_view(const unsigned char* data, std::size_t size) noexcept
+        : data_(data), size_(size) {}
+
+    /*!
+     * \brief Constructor.
+     *
+     * \param[in] data Data.
+     */
+    binary_view(  // NOLINT(google-explicit-constructor,hicpp-explicit-conversions)
+        const binary& data) noexcept;
+
+    /*!
+     * \brief Get the pointer to the data.
+     *
+     * \return Pointer to the data.
+     */
+    [[nodiscard]] const unsigned char* data() const noexcept { return data_; }
+
+    /*!
+     * \brief Get the size of the data.
+     *
+     * \return Size of the data.
+     */
+    [[nodiscard]] std::size_t size() const noexcept { return size_; }
+
+private:
+    //! Data.
+    const unsigned char* data_;
+
+    //! Size.
+    std::size_t size_;
+};
+
 /*!
  * \brief Class of binary data.
  */
@@ -101,6 +156,13 @@ public:
         }
         std::memcpy(buffer_.data(), data, size);
     }
+
+    /*!
+     * \brief Constructor.
+     *
+     * \param[in] data Data.
+     */
+    explicit binary(binary_view data) : binary(data.data(), data.size()) {}
 
     /*!
      * \brief Constructor.
@@ -297,6 +359,9 @@ private:
     std::size_t size_;
 };
 
+inline binary_view::binary_view(const binary& data) noexcept
+    : data_(data.data()), size_(data.size()) {}
+
 /*!
  * \brief Connect two binary data.
  *
@@ -306,6 +371,31 @@ private:
  */
 [[nodiscard]] inline binary operator+(const binary& lhs, const binary& rhs) {
     return binary(lhs) += rhs;
+}
+
+/*!
+ * \brief Compare two binary data.
+ *
+ * \param[in] lhs Light-hand-side data.
+ * \param[in] rhs Right-hand-side data.
+ * \retval true Two object are equal.
+ * \retval false Two object are not equal.
+ */
+[[nodiscard]] inline bool operator==(binary_view lhs, binary_view rhs) {
+    return lhs.size() == rhs.size() &&
+        std::memcmp(lhs.data(), rhs.data(), lhs.size()) == 0;
+}
+
+/*!
+ * \brief Compare two binary data.
+ *
+ * \param[in] lhs Light-hand-side data.
+ * \param[in] rhs Right-hand-side data.
+ * \retval true Two object are not equal.
+ * \retval false Two object are equal.
+ */
+[[nodiscard]] inline bool operator!=(binary_view lhs, binary_view rhs) {
+    return !(lhs == rhs);
 }
 
 /*!
