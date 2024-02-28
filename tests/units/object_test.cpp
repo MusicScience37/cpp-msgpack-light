@@ -44,6 +44,18 @@ TEST_CASE("msgpack_light::object") {
         CHECK_THROWS((void)obj.as_boolean());
         CHECK_THROWS((void)obj.as_float32());
         CHECK_THROWS((void)obj.as_float64());
+
+        SECTION("copy") {
+            const object_type copy{obj};  // NOLINT
+
+            CHECK(copy.type() == object_data_type::nil);
+        }
+
+        SECTION("move") {
+            const object_type moved{std::move(obj)};
+
+            CHECK(moved.type() == object_data_type::nil);
+        }
     }
 
     SECTION("create an object of unsigned integer") {
@@ -60,6 +72,20 @@ TEST_CASE("msgpack_light::object") {
         CHECK_THROWS((void)obj.as_boolean());
         CHECK_THROWS((void)obj.as_float32());
         CHECK_THROWS((void)obj.as_float64());
+
+        SECTION("copy") {
+            const object_type copy{obj};  // NOLINT
+
+            CHECK(copy.type() == object_data_type::unsigned_integer);
+            CHECK(copy.as_unsigned_integer() == value);
+        }
+
+        SECTION("move") {
+            const object_type moved{std::move(obj)};
+
+            CHECK(moved.type() == object_data_type::unsigned_integer);
+            CHECK(moved.as_unsigned_integer() == value);
+        }
     }
 
     SECTION("create an object of signed integer") {
@@ -76,6 +102,20 @@ TEST_CASE("msgpack_light::object") {
         CHECK_THROWS((void)obj.as_boolean());
         CHECK_THROWS((void)obj.as_float32());
         CHECK_THROWS((void)obj.as_float64());
+
+        SECTION("copy") {
+            const object_type copy{obj};  // NOLINT
+
+            CHECK(copy.type() == object_data_type::signed_integer);
+            CHECK(copy.as_signed_integer() == value);
+        }
+
+        SECTION("move") {
+            const object_type moved{std::move(obj)};
+
+            CHECK(moved.type() == object_data_type::signed_integer);
+            CHECK(moved.as_signed_integer() == value);
+        }
     }
 
     SECTION("create an object of boolean value") {
@@ -90,6 +130,20 @@ TEST_CASE("msgpack_light::object") {
         CHECK_THROWS((void)obj.as_signed_integer());
         CHECK_THROWS((void)obj.as_float32());
         CHECK_THROWS((void)obj.as_float64());
+
+        SECTION("copy") {
+            const object_type copy{obj};  // NOLINT
+
+            CHECK(copy.type() == object_data_type::boolean);
+            CHECK(copy.as_boolean() == value);
+        }
+
+        SECTION("move") {
+            const object_type moved{std::move(obj)};
+
+            CHECK(moved.type() == object_data_type::boolean);
+            CHECK(moved.as_boolean() == value);
+        }
     }
 
     SECTION("create an object of 32-bit floating-point numbers") {
@@ -104,6 +158,20 @@ TEST_CASE("msgpack_light::object") {
         CHECK_THROWS((void)obj.as_signed_integer());
         CHECK_THROWS((void)obj.as_boolean());
         CHECK_THROWS((void)obj.as_float64());
+
+        SECTION("copy") {
+            const object_type copy{obj};  // NOLINT
+
+            CHECK(copy.type() == object_data_type::float32);
+            CHECK(copy.as_float32() == value);
+        }
+
+        SECTION("move") {
+            const object_type moved{std::move(obj)};
+
+            CHECK(moved.type() == object_data_type::float32);
+            CHECK(moved.as_float32() == value);
+        }
     }
 
     SECTION("create an object of 64-bit floating-point numbers") {
@@ -118,6 +186,20 @@ TEST_CASE("msgpack_light::object") {
         CHECK_THROWS((void)obj.as_signed_integer());
         CHECK_THROWS((void)obj.as_boolean());
         CHECK_THROWS((void)obj.as_float32());
+
+        SECTION("copy") {
+            const object_type copy{obj};  // NOLINT
+
+            CHECK(copy.type() == object_data_type::float64);
+            CHECK(copy.as_float64() == value);
+        }
+
+        SECTION("move") {
+            const object_type moved{std::move(obj)};
+
+            CHECK(moved.type() == object_data_type::float64);
+            CHECK(moved.as_float64() == value);
+        }
     }
 
     SECTION("create an object of an array") {
@@ -154,6 +236,126 @@ TEST_CASE("msgpack_light::object") {
             REQUIRE(array_ref.size() == 4U);
             CHECK(array_ref[0].as_unsigned_integer() == 5U);  // NOLINT
             CHECK(array_ref[1].as_array().size() == 1U);
+            CHECK(array_ref[2].type() == object_data_type::nil);
+        }
+
+        SECTION("copy") {
+            const object_type copy{obj};  // NOLINT
+
+            CHECK(copy.type() == object_data_type::array);
+            const auto array_ref = copy.as_array();
+            REQUIRE(array_ref.size() == 3U);
+            CHECK(array_ref[0].as_unsigned_integer() == 5U);  // NOLINT
+            CHECK(array_ref[1].type() == object_data_type::array);
+            REQUIRE(array_ref[1].as_array().size() == 1U);
+            CHECK(array_ref[1].as_array()[0].type() == object_data_type::nil);
+            CHECK(array_ref[2].type() == object_data_type::nil);
+        }
+
+        SECTION("move") {
+            const object_type moved{std::move(obj)};
+
+            CHECK(moved.type() == object_data_type::array);
+            const auto array_ref = moved.as_array();
+            REQUIRE(array_ref.size() == 3U);
+            CHECK(array_ref[0].as_unsigned_integer() == 5U);  // NOLINT
+            CHECK(array_ref[1].type() == object_data_type::array);
+            REQUIRE(array_ref[1].as_array().size() == 1U);
+            CHECK(array_ref[1].as_array()[0].type() == object_data_type::nil);
+            CHECK(array_ref[2].type() == object_data_type::nil);
+        }
+    }
+
+    SECTION("copy constructor") {
+        object_type obj;
+        {
+            auto array_ref = obj.set_array();
+            array_ref.resize(3U);
+            array_ref[0].set_unsigned_integer(5U);  // NOLINT
+            array_ref[1].set_array().resize(1U);
+        }
+
+        const object_type copy{obj};  // NOLINT
+
+        {
+            CHECK(copy.type() == object_data_type::array);
+            const auto array_ref = copy.as_array();
+            REQUIRE(array_ref.size() == 3U);
+            CHECK(array_ref[0].as_unsigned_integer() == 5U);  // NOLINT
+            CHECK(array_ref[1].type() == object_data_type::array);
+            REQUIRE(array_ref[1].as_array().size() == 1U);
+            CHECK(array_ref[1].as_array()[0].type() == object_data_type::nil);
+            CHECK(array_ref[2].type() == object_data_type::nil);
+        }
+    }
+
+    SECTION("copy assignment operator") {
+        object_type obj;
+        {
+            auto array_ref = obj.set_array();
+            array_ref.resize(3U);
+            array_ref[0].set_unsigned_integer(5U);  // NOLINT
+            array_ref[1].set_array().resize(1U);
+        }
+
+        object_type copy;
+        copy = obj;
+
+        {
+            CHECK(copy.type() == object_data_type::array);
+            const auto array_ref = copy.as_array();
+            REQUIRE(array_ref.size() == 3U);
+            CHECK(array_ref[0].as_unsigned_integer() == 5U);  // NOLINT
+            CHECK(array_ref[1].type() == object_data_type::array);
+            REQUIRE(array_ref[1].as_array().size() == 1U);
+            CHECK(array_ref[1].as_array()[0].type() == object_data_type::nil);
+            CHECK(array_ref[2].type() == object_data_type::nil);
+        }
+    }
+
+    SECTION("move constructor") {
+        object_type obj;
+        {
+            auto array_ref = obj.set_array();
+            array_ref.resize(3U);
+            array_ref[0].set_unsigned_integer(5U);  // NOLINT
+            array_ref[1].set_array().resize(1U);
+        }
+
+        const object_type moved{std::move(obj)};  // NOLINT
+
+        {
+            CHECK(moved.type() == object_data_type::array);
+            const auto array_ref = moved.as_array();
+            REQUIRE(array_ref.size() == 3U);
+            CHECK(array_ref[0].as_unsigned_integer() == 5U);  // NOLINT
+            CHECK(array_ref[1].type() == object_data_type::array);
+            REQUIRE(array_ref[1].as_array().size() == 1U);
+            CHECK(array_ref[1].as_array()[0].type() == object_data_type::nil);
+            CHECK(array_ref[2].type() == object_data_type::nil);
+        }
+    }
+
+    SECTION("move assignment operator") {
+        object_type obj;
+        {
+            auto array_ref = obj.set_array();
+            array_ref.resize(3U);
+            array_ref[0].set_unsigned_integer(5U);  // NOLINT
+            array_ref[1].set_array().resize(1U);
+        }
+
+        object_type moved;
+        moved = std::move(obj);
+
+        {
+            CHECK(moved.type() == object_data_type::array);
+            const auto array_ref = moved.as_array();
+            REQUIRE(array_ref.size() == 3U);
+            CHECK(array_ref[0].as_unsigned_integer() == 5U);  // NOLINT
+            CHECK(array_ref[1].type() == object_data_type::array);
+            REQUIRE(array_ref[1].as_array().size() == 1U);
+            CHECK(array_ref[1].as_array()[0].type() == object_data_type::nil);
             CHECK(array_ref[2].type() == object_data_type::nil);
         }
     }

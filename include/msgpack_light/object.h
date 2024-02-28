@@ -55,6 +55,34 @@ inline void clear_object_data(object_data& data, Allocator& allocator) {
     data.type = object_data_type::nil;
 }
 
+/*!
+ * \brief Copy data.
+ *
+ * \tparam Allocator Type of the allocator.
+ * \param[out] to Object to copy to.
+ * \param[in] from Object to copy from.
+ * \param[in] allocator Allocator.
+ */
+template <typename Allocator>
+inline void copy_object_data(
+    object_data& to, const object_data& from, Allocator& allocator) {
+    switch (from.type) {
+    case object_data_type::array:
+        to.data.array_value.data = static_cast<object_data*>(allocator.allocate(
+            from.data.array_value.size * sizeof(object_data)));
+        to.data.array_value.size = from.data.array_value.size;
+        for (std::size_t i = 0; i < from.data.array_value.size; ++i) {
+            copy_object_data(to.data.array_value.data[i],
+                from.data.array_value.data[i], allocator);
+        }
+        to.type = object_data_type::array;
+        break;
+    default:
+        to = from;
+        break;
+    };
+}
+
 }  // namespace details
 
 template <typename Allocator = standard_allocator>
@@ -403,6 +431,8 @@ public:
      */
     //!\{
 
+    using const_object_base<Derived>::as_array;
+
     /*!
      * \brief Get data as an array.
      *
@@ -631,11 +661,60 @@ public:
     explicit object(allocator_type allocator = allocator_type())
         : allocator_(std::move(allocator)) {}
 
-    // TODO implement copy and move.
-    object(const object&) = delete;
-    object(object&&) = delete;
-    object& operator=(const object&) = delete;
-    object& operator=(object&&) = delete;
+    /*!
+     * \brief Copy constructor.
+     *
+     * \param[in] other Another object to copy from.
+     */
+    object(const object& other) : allocator_(other.allocator_) {
+        details::copy_object_data(data_, other.data_, allocator_);
+    }
+
+    /*!
+     * \brief Move constructor.
+     *
+     * \param[in,out] other Another object to move from.
+     */
+    object(object&& other) noexcept
+        : data_(other.data_), allocator_(std::move(other.allocator_)) {
+        std::memset(&other.data_, 0, sizeof(other.data_));
+    }
+
+    /*!
+     * \brief Copy assignment operator.
+     *
+     * \param[in] other Another object to copy from.
+     * \return This object after copy.
+     */
+    object& operator=(const object& other) {
+        if (this == &other) {
+            return *this;
+        }
+        clear();
+        details::copy_object_data(data_, other.data_, allocator_);
+        return *this;
+    }
+
+    /*!
+     * \brief Move assignment operator.
+     *
+     * \param[in,out] other Another object to move from.
+     * \return This object after move.
+     */
+    object& operator=(object&& other) noexcept {
+        swap(other);
+        return *this;
+    }
+
+    /*!
+     * \brief Swap this object with another object.
+     *
+     * \param[in,out] other Another object to move with.
+     */
+    void swap(object& other) noexcept {
+        std::swap(data_, other.data_);
+        std::swap(allocator_, other.allocator_);
+    }
 
     /*!
      * \brief Destructor.
