@@ -21,6 +21,7 @@
 
 #include <cstdint>
 #include <limits>
+#include <vector>
 
 #include <catch2/catch_test_macros.hpp>
 #include <catch2/generators/catch_generators.hpp>
@@ -354,6 +355,48 @@ TEST_CASE("msgpack_light::object") {
             REQUIRE(array_ref[1].as_array().size() == 1U);
             CHECK(array_ref[1].as_array()[0].type() == object_data_type::nil);
             CHECK(array_ref[2].type() == object_data_type::nil);
+        }
+    }
+
+    SECTION("iterate over an array") {
+        object_type obj;
+
+        {
+            auto array_ref = obj.set_array();
+            array_ref.resize(3U);
+            array_ref[0].set_signed_integer(1);
+            array_ref[1].set_signed_integer(2);
+            array_ref[2].set_signed_integer(3);
+        }
+
+        SECTION("using const_iterator in const_array_ref") {
+            const auto& const_obj = obj;
+
+            std::vector<std::int64_t> values;
+            values.reserve(const_obj.as_array().size());
+            for (const auto& elem : const_obj.as_array()) {
+                REQUIRE_NOTHROW(values.push_back(elem.as_signed_integer()));
+            }
+            CHECK(values == std::vector<std::int64_t>{1, 2, 3});
+        }
+
+        SECTION("using iterator in array_ref") {
+            std::vector<std::int64_t> values;
+            values.reserve(obj.as_array().size());
+            for (const auto& elem : obj.as_array()) {
+                REQUIRE_NOTHROW(values.push_back(elem.as_signed_integer()));
+            }
+            CHECK(values == std::vector<std::int64_t>{1, 2, 3});
+        }
+
+        SECTION("using const_iterator in array_ref") {
+            std::vector<std::int64_t> values;
+            const auto array_ref = obj.as_array();
+            values.reserve(obj.as_array().size());
+            for (const auto& elem : array_ref) {
+                REQUIRE_NOTHROW(values.push_back(elem.as_signed_integer()));
+            }
+            CHECK(values == std::vector<std::int64_t>{1, 2, 3});
         }
     }
 

@@ -115,7 +115,138 @@ class mutable_object_ref;
 class const_object_ref;
 
 /*!
- * \brief Class of access constant arrays.
+ * \brief Class of iterators of arrays to access non-constant objects.
+ *
+ * \tparam Allocator Type of the allocator.
+ */
+template <typename Allocator = standard_allocator>
+class mutable_array_iterator {
+public:
+    //! Type of differences.
+    using difference_type = std::ptrdiff_t;
+
+    //! Type of values.
+    using value_type = mutable_object_ref<Allocator>;
+
+    //! Type of references.
+    using reference = mutable_object_ref<Allocator>;
+
+    /*!
+     * \brief Constructor.
+     */
+    mutable_array_iterator() noexcept
+        : pointer_(nullptr), allocator_(nullptr) {}
+
+    /*!
+     * \brief Constructor.
+     *
+     * \param[in] pointer Pointer to the current data.
+     * \param[in] allocator Allocator.
+     */
+    mutable_array_iterator(
+        details::object_data* pointer, Allocator* allocator) noexcept
+        : pointer_(pointer), allocator_(allocator) {}
+
+    /*!
+     * \brief Dereference this iterator.
+     *
+     * \return Reference to the current object.
+     */
+    mutable_object_ref<Allocator> operator*() const noexcept;
+
+    /*!
+     * \brief Increment this iterator.
+     *
+     * \return This iterator.
+     */
+    mutable_array_iterator& operator++() noexcept {
+        ++pointer_;
+        return *this;
+    }
+
+    /*!
+     * \brief Increment this iterator.
+     *
+     * \return This iterator.
+     */
+    const mutable_array_iterator  // NOLINT(readability-const-return-type)
+    operator++(int) noexcept {
+        mutable_array_iterator copy{*this};
+        ++(*this);
+        return copy;
+    }
+
+private:
+    //! Pointer to the current data.
+    details::object_data* pointer_;
+
+    //! Allocator.
+    Allocator* allocator_;
+};
+
+/*!
+ * \brief Class of iterators of arrays to access constant objects.
+ */
+class const_array_iterator {
+public:
+    //! Type of differences.
+    using difference_type = std::ptrdiff_t;
+
+    //! Type of values.
+    using value_type = const_object_ref;
+
+    //! Type of references.
+    using reference = const_object_ref;
+
+    /*!
+     * \brief Constructor.
+     */
+    const_array_iterator() noexcept : pointer_(nullptr) {}
+
+    /*!
+     * \brief Constructor.
+     *
+     * \param[in] pointer Pointer to the current data.
+     */
+    explicit const_array_iterator(const details::object_data* pointer) noexcept
+        : pointer_(pointer) {}
+
+    /*!
+     * \brief Dereference this iterator.
+     *
+     * \return Reference to the current object.
+     */
+    const_object_ref operator*() const noexcept;
+
+    /*!
+     * \brief Increment this iterator.
+     *
+     * \return This iterator.
+     */
+    const_array_iterator& operator++() noexcept {
+        ++pointer_;
+        return *this;
+    }
+
+    /*!
+     * \brief Increment this iterator.
+     *
+     * \return This iterator.
+     */
+    const const_array_iterator  // NOLINT(readability-const-return-type)
+    operator++(int) noexcept {
+        const_array_iterator copy{*this};
+        ++(*this);
+        return copy;
+    }
+
+private:
+    //! Pointer to the current data.
+    const details::object_data* pointer_;
+};
+
+/*!
+ * \brief Class to access constant arrays.
  *
  * \tparam Allocator
  */
@@ -123,6 +254,12 @@ class const_array_ref {
 public:
     //! Type to access constant objects.
     using const_object_ref_type = const_object_ref;
+
+    //! Type of iterators.
+    using iterator = const_array_iterator;
+
+    //! Type of iterators.
+    using const_iterator = const_array_iterator;
 
     /*!
      * \brief Constructor.
@@ -147,6 +284,42 @@ public:
     [[nodiscard]] const_object_ref_type operator[](
         std::size_t index) const noexcept;
 
+    /*!
+     * \brief Get an iterator to the first element.
+     *
+     * \return Iterator.
+     */
+    [[nodiscard]] const_array_iterator begin() const noexcept {
+        return const_array_iterator{data_->data};
+    }
+
+    /*!
+     * \brief Get an iterator to the past-the-end element.
+     *
+     * \return Iterator.
+     */
+    [[nodiscard]] const_array_iterator end() const noexcept {
+        return const_array_iterator{data_->data + data_->size};
+    }
+
+    /*!
+     * \brief Get an iterator to the first element.
+     *
+     * \return Iterator.
+     */
+    [[nodiscard]] const_array_iterator cbegin() const noexcept {
+        return const_array_iterator{data_->data};
+    }
+
+    /*!
+     * \brief Get an iterator to the past-the-end element.
+     *
+     * \return Iterator.
+     */
+    [[nodiscard]] const_array_iterator cend() const noexcept {
+        return const_array_iterator{data_->data + data_->size};
+    }
+
 private:
     //! Data.
     const details::array_data* data_;
@@ -155,7 +328,7 @@ private:
 /*!
  * \brief Class of access non-constant arrays.
  *
- * \tparam Allocator
+ * \tparam Allocator Type of the allocator.
  */
 template <typename Allocator = standard_allocator>
 class mutable_array_ref {
@@ -168,6 +341,12 @@ public:
 
     //! Type to access constant objects.
     using const_object_ref_type = const_object_ref;
+
+    //! Type of iterators.
+    using iterator = mutable_array_iterator<Allocator>;
+
+    //! Type of iterators.
+    using const_iterator = const_array_iterator;
 
     /*!
      * \brief Constructor.
@@ -222,6 +401,43 @@ public:
      */
     [[nodiscard]] const_object_ref_type operator[](
         std::size_t index) const noexcept;
+
+    /*!
+     * \brief Get an iterator to the first element.
+     *
+     * \return Iterator.
+     */
+    [[nodiscard]] mutable_array_iterator<Allocator> begin() noexcept {
+        return mutable_array_iterator<Allocator>{data_->data, allocator_};
+    }
+
+    /*!
+     * \brief Get an iterator to the past-the-end element.
+     *
+     * \return Iterator.
+     */
+    [[nodiscard]] mutable_array_iterator<Allocator> end() noexcept {
+        return mutable_array_iterator<Allocator>{
+            data_->data + data_->size, allocator_};
+    }
+
+    /*!
+     * \brief Get an iterator to the first element.
+     *
+     * \return Iterator.
+     */
+    [[nodiscard]] const_array_iterator begin() const noexcept {
+        return const_array_iterator{data_->data};
+    }
+
+    /*!
+     * \brief Get an iterator to the past-the-end element.
+     *
+     * \return Iterator.
+     */
+    [[nodiscard]] const_array_iterator end() const noexcept {
+        return const_array_iterator{data_->data + data_->size};
+    }
 
 private:
     //! Data.
@@ -711,6 +927,72 @@ mutable_array_ref<Allocator>::operator[](std::size_t index) const noexcept {
 inline typename const_array_ref::const_object_ref_type
 const_array_ref::operator[](std::size_t index) const noexcept {
     return const_object_ref_type{data_->data[index]};
+}
+
+template <typename Allocator>
+inline mutable_object_ref<Allocator>
+mutable_array_iterator<Allocator>::operator*() const noexcept {
+    return mutable_object_ref<Allocator>(*pointer_, *allocator_);
+}
+
+/*!
+ * \brief Compare two iterators.
+ *
+ * \tparam Allocator Type of the allocator.
+ * \param[in] lhs Light-hand-side object.
+ * \param[in] rhs Right-hand-side object.
+ * \retval true Two objects are equal.
+ * \retval false Two objects are not equal.
+ */
+template <typename Allocator>
+[[nodiscard]] inline bool operator==(mutable_array_iterator<Allocator> lhs,
+    mutable_array_iterator<Allocator> rhs) noexcept {
+    return &(*lhs).data() == &(*rhs).data();
+}
+
+/*!
+ * \brief Compare two iterators.
+ *
+ * \tparam Allocator Type of the allocator.
+ * \param[in] lhs Light-hand-side object.
+ * \param[in] rhs Right-hand-side object.
+ * \retval true Two objects are not equal.
+ * \retval false Two objects are equal.
+ */
+template <typename Allocator>
+[[nodiscard]] inline bool operator!=(mutable_array_iterator<Allocator> lhs,
+    mutable_array_iterator<Allocator> rhs) noexcept {
+    return !(lhs == rhs);
+}
+
+inline const_object_ref const_array_iterator::operator*() const noexcept {
+    return const_object_ref(*pointer_);
+}
+
+/*!
+ * \brief Compare two iterators.
+ *
+ * \param[in] lhs Light-hand-side object.
+ * \param[in] rhs Right-hand-side object.
+ * \retval true Two objects are equal.
+ * \retval false Two objects are not equal.
+ */
+[[nodiscard]] inline bool operator==(
+    const_array_iterator lhs, const_array_iterator rhs) noexcept {
+    return &(*lhs).data() == &(*rhs).data();
+}
+
+/*!
+ * \brief Compare two iterators.
+ *
+ * \param[in] lhs Light-hand-side object.
+ * \param[in] rhs Right-hand-side object.
+ * \retval true Two objects are not equal.
+ * \retval false Two objects are equal.
+ */
+[[nodiscard]] inline bool operator!=(
+    const_array_iterator lhs, const_array_iterator rhs) noexcept {
+    return !(lhs == rhs);
 }
 
 /*!
