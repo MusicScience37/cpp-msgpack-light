@@ -21,6 +21,8 @@
 
 #include <cstdint>
 #include <limits>
+#include <string>
+#include <unordered_map>
 #include <vector>
 
 #include <catch2/catch_template_test_macros.hpp>
@@ -471,6 +473,59 @@ TEMPLATE_TEST_CASE("msgpack_light::object", "",
             CHECK(map_ref.key(2).type() == object_data_type::map);
             CHECK(map_ref.key(2).as_map().size() == 1U);
             CHECK(map_ref.value(2).as_boolean() == true);
+        }
+    }
+
+    SECTION("iterate over a map") {
+        object_type obj;
+
+        {
+            auto map_ref = obj.set_map(3U);
+            map_ref.key(0).set_signed_integer(1);
+            map_ref.value(0).set_string("A");
+            map_ref.key(1).set_signed_integer(2);
+            map_ref.value(1).set_string("B");
+            map_ref.key(2).set_signed_integer(3);
+            map_ref.value(2).set_string("C");
+        }
+
+        SECTION("using iterator in map_ref") {
+            const auto& const_obj = obj;
+
+            std::unordered_map<int, std::string> values;
+            values.reserve(const_obj.as_map().size());
+            for (const auto& [key, value] : const_obj.as_map()) {
+                REQUIRE_NOTHROW(values.try_emplace(
+                    key.as_signed_integer(), value.as_string()));
+            }
+            CHECK(values ==
+                std::unordered_map<int, std::string>{
+                    {1, "A"}, {2, "B"}, {3, "C"}});
+        }
+
+        SECTION("using iterator in map_ref") {
+            std::unordered_map<int, std::string> values;
+            values.reserve(obj.as_map().size());
+            for (const auto& [key, value] : obj.as_map()) {
+                REQUIRE_NOTHROW(values.try_emplace(
+                    key.as_signed_integer(), value.as_string()));
+            }
+            CHECK(values ==
+                std::unordered_map<int, std::string>{
+                    {1, "A"}, {2, "B"}, {3, "C"}});
+        }
+
+        SECTION("using const_iterator in map_ref") {
+            std::unordered_map<int, std::string> values;
+            const auto map_ref = obj.as_map();
+            values.reserve(map_ref.size());
+            for (const auto& [key, value] : map_ref) {
+                REQUIRE_NOTHROW(values.try_emplace(
+                    key.as_signed_integer(), value.as_string()));
+            }
+            CHECK(values ==
+                std::unordered_map<int, std::string>{
+                    {1, "A"}, {2, "B"}, {3, "C"}});
         }
     }
 

@@ -472,12 +472,151 @@ private:
 };
 
 /*!
+ * \brief Class of iterators of maps to access non-constant objects.
+ *
+ * \tparam Allocator Type of the allocator.
+ */
+template <typename Allocator = standard_allocator>
+class mutable_map_iterator {
+public:
+    //! Type of differences.
+    using difference_type = std::ptrdiff_t;
+
+    //! Type of values.
+    using value_type =
+        std::pair<mutable_object_ref<Allocator>, mutable_object_ref<Allocator>>;
+
+    //! Type of references.
+    using reference = value_type;
+
+    /*!
+     * \brief Constructor.
+     */
+    mutable_map_iterator() noexcept : pointer_(nullptr), allocator_(nullptr) {}
+
+    /*!
+     * \brief Constructor.
+     *
+     * \param[in] pointer Pointer to the current data.
+     * \param[in] allocator Allocator.
+     */
+    mutable_map_iterator(details::key_value_pair_data* pointer,
+        details::allocator_wrapper<Allocator>* allocator) noexcept
+        : pointer_(pointer), allocator_(allocator) {}
+
+    /*!
+     * \brief Dereference this iterator.
+     *
+     * \return References to the current key and value.
+     */
+    std::pair<mutable_object_ref<Allocator>, mutable_object_ref<Allocator>>
+    operator*() const noexcept;
+
+    /*!
+     * \brief Increment this iterator.
+     *
+     * \return This iterator.
+     */
+    mutable_map_iterator& operator++() noexcept {
+        ++pointer_;
+        return *this;
+    }
+
+    /*!
+     * \brief Increment this iterator.
+     *
+     * \return This iterator.
+     */
+    const mutable_map_iterator  // NOLINT(readability-const-return-type)
+    operator++(int) noexcept {
+        mutable_map_iterator copy{*this};
+        ++(*this);
+        return copy;
+    }
+
+private:
+    //! Pointer to the current data.
+    details::key_value_pair_data* pointer_;
+
+    //! Allocator.
+    details::allocator_wrapper<Allocator>* allocator_;
+};
+
+/*!
+ * \brief Class of iterators of maps to access constant objects.
+ */
+class const_map_iterator {
+public:
+    //! Type of differences.
+    using difference_type = std::ptrdiff_t;
+
+    //! Type of values.
+    using value_type = std::pair<const_object_ref, const_object_ref>;
+
+    //! Type of references.
+    using reference = value_type;
+
+    /*!
+     * \brief Constructor.
+     */
+    const_map_iterator() noexcept : pointer_(nullptr) {}
+
+    /*!
+     * \brief Constructor.
+     *
+     * \param[in] pointer Pointer to the current data.
+     */
+    explicit const_map_iterator(
+        const details::key_value_pair_data* pointer) noexcept
+        : pointer_(pointer) {}
+
+    /*!
+     * \brief Dereference this iterator.
+     *
+     * \return References to the current key and value.
+     */
+    std::pair<const_object_ref, const_object_ref> operator*() const noexcept;
+
+    /*!
+     * \brief Increment this iterator.
+     *
+     * \return This iterator.
+     */
+    const_map_iterator& operator++() noexcept {
+        ++pointer_;
+        return *this;
+    }
+
+    /*!
+     * \brief Increment this iterator.
+     *
+     * \return This iterator.
+     */
+    const const_map_iterator  // NOLINT(readability-const-return-type)
+    operator++(int) noexcept {
+        const_map_iterator copy{*this};
+        ++(*this);
+        return copy;
+    }
+
+private:
+    //! Pointer to the current data.
+    const details::key_value_pair_data* pointer_;
+};
+
+/*!
  * \brief Class to access constant maps.
  */
 class const_map_ref {
 public:
     //! Type to access constant objects.
     using const_object_ref_type = const_object_ref;
+
+    //! Type of iterators.
+    using iterator = const_map_iterator;
+
+    //! Type of iterators.
+    using const_iterator = const_map_iterator;
 
     /*!
      * \brief Constructor.
@@ -509,6 +648,24 @@ public:
      */
     [[nodiscard]] const_object_ref_type value(std::size_t index) const noexcept;
 
+    /*!
+     * \brief Get an iterator to the first key-value pair.
+     *
+     * \return Iterator.
+     */
+    [[nodiscard]] const_map_iterator begin() const noexcept {
+        return const_map_iterator{data_->data};
+    }
+
+    /*!
+     * \brief Get an iterator to the past-the-end key-value pair.
+     *
+     * \return Iterator.
+     */
+    [[nodiscard]] const_map_iterator end() const noexcept {
+        return const_map_iterator{data_->data + data_->size};
+    }
+
 private:
     //! Data.
     const details::map_data* data_;
@@ -530,6 +687,12 @@ public:
 
     //! Type to access constant objects.
     using const_object_ref_type = const_object_ref;
+
+    //! Type of iterators.
+    using iterator = mutable_map_iterator<Allocator>;
+
+    //! Type of iterators.
+    using const_iterator = const_map_iterator;
 
     /*!
      * \brief Constructor.
@@ -579,6 +742,43 @@ public:
      * \return Object of the value.
      */
     [[nodiscard]] const_object_ref_type value(std::size_t index) const noexcept;
+
+    /*!
+     * \brief Get an iterator to the first key-value pair.
+     *
+     * \return Iterator.
+     */
+    [[nodiscard]] mutable_map_iterator<Allocator> begin() noexcept {
+        return mutable_map_iterator<Allocator>{data_->data, allocator_};
+    }
+
+    /*!
+     * \brief Get an iterator to the past-the-end key-value pair.
+     *
+     * \return Iterator.
+     */
+    [[nodiscard]] mutable_map_iterator<Allocator> end() noexcept {
+        return mutable_map_iterator<Allocator>{
+            data_->data + data_->size, allocator_};
+    }
+
+    /*!
+     * \brief Get an iterator to the first key-value pair.
+     *
+     * \return Iterator.
+     */
+    [[nodiscard]] const_map_iterator begin() const noexcept {
+        return const_map_iterator{data_->data};
+    }
+
+    /*!
+     * \brief Get an iterator to the past-the-end key-value pair.
+     *
+     * \return Iterator.
+     */
+    [[nodiscard]] const_map_iterator end() const noexcept {
+        return const_map_iterator{data_->data + data_->size};
+    }
 
 private:
     //! Data.
@@ -1196,6 +1396,82 @@ inline const_object_ref const_array_iterator::operator*() const noexcept {
  */
 [[nodiscard]] inline bool operator!=(
     const_array_iterator lhs, const_array_iterator rhs) noexcept {
+    return !(lhs == rhs);
+}
+
+/*
+ * Definition of some members of mutable_array_iterator.
+ */
+
+template <typename Allocator>
+inline std::pair<mutable_object_ref<Allocator>, mutable_object_ref<Allocator>>
+mutable_map_iterator<Allocator>::operator*() const noexcept {
+    return {mutable_object_ref<Allocator>(pointer_->key, *allocator_),
+        mutable_object_ref<Allocator>(pointer_->value, *allocator_)};
+}
+
+/*!
+ * \brief Compare two iterators.
+ *
+ * \tparam Allocator Type of the allocator.
+ * \param[in] lhs Light-hand-side object.
+ * \param[in] rhs Right-hand-side object.
+ * \retval true Two objects are equal.
+ * \retval false Two objects are not equal.
+ */
+template <typename Allocator>
+[[nodiscard]] inline bool operator==(mutable_map_iterator<Allocator> lhs,
+    mutable_map_iterator<Allocator> rhs) noexcept {
+    return &(*lhs).first.data() == &(*rhs).first.data();
+}
+
+/*!
+ * \brief Compare two iterators.
+ *
+ * \tparam Allocator Type of the allocator.
+ * \param[in] lhs Light-hand-side object.
+ * \param[in] rhs Right-hand-side object.
+ * \retval true Two objects are not equal.
+ * \retval false Two objects are equal.
+ */
+template <typename Allocator>
+[[nodiscard]] inline bool operator!=(mutable_map_iterator<Allocator> lhs,
+    mutable_map_iterator<Allocator> rhs) noexcept {
+    return !(lhs == rhs);
+}
+
+/*
+ * Definition of some members of const_map_iterator.
+ */
+
+inline std::pair<const_object_ref, const_object_ref>
+const_map_iterator::operator*() const noexcept {
+    return {const_object_ref{pointer_->key}, const_object_ref{pointer_->value}};
+}
+
+/*!
+ * \brief Compare two iterators.
+ *
+ * \param[in] lhs Light-hand-side object.
+ * \param[in] rhs Right-hand-side object.
+ * \retval true Two objects are equal.
+ * \retval false Two objects are not equal.
+ */
+[[nodiscard]] inline bool operator==(
+    const_map_iterator lhs, const_map_iterator rhs) noexcept {
+    return &(*lhs).first.data() == &(*rhs).first.data();
+}
+
+/*!
+ * \brief Compare two iterators.
+ *
+ * \param[in] lhs Light-hand-side object.
+ * \param[in] rhs Right-hand-side object.
+ * \retval true Two objects are not equal.
+ * \retval false Two objects are equal.
+ */
+[[nodiscard]] inline bool operator!=(
+    const_map_iterator lhs, const_map_iterator rhs) noexcept {
     return !(lhs == rhs);
 }
 
