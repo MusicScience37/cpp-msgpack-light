@@ -67,6 +67,9 @@ inline void clear_object_data(
         }
         allocator.deallocate_key_value_pair_data(data.data.map_value.data);
         break;
+    case object_data_type::extension:
+        allocator.deallocate_unsigned_char(data.data.extension_value.data);
+        break;
     default:
         break;
     };
@@ -122,6 +125,15 @@ inline void copy_object_data(object_data& to, const object_data& from,
                 from.data.map_value.data[i].value, allocator);
         }
         to.type = object_data_type::map;
+        break;
+    case object_data_type::extension:
+        to.data.extension_value.data =
+            allocator.allocate_unsigned_char(from.data.extension_value.size);
+        std::memcpy(to.data.extension_value.data,
+            from.data.extension_value.data, from.data.extension_value.size);
+        to.data.extension_value.size = from.data.extension_value.size;
+        to.data.extension_value.type = from.data.extension_value.type;
+        to.type = object_data_type::extension;
         break;
     default:
         to = from;
@@ -788,6 +800,40 @@ private:
     details::allocator_wrapper<Allocator>* allocator_;
 };
 
+/*!
+ * \brief Class to access constant extension value.
+ */
+class const_extension_ref {
+public:
+    /*!
+     * \brief Constructor.
+     *
+     * \param[in] data Data.
+     */
+    explicit const_extension_ref(const details::extension_data& data)
+        : data_(&data) {}
+
+    /*!
+     * \brief Get the type.
+     *
+     * \return Type.
+     */
+    [[nodiscard]] std::int8_t type() const { return data_->type; }
+
+    /*!
+     * \brief Get the data of the value.
+     *
+     * \return Data.
+     */
+    [[nodiscard]] binary_view data() const noexcept {
+        return binary_view(data_->data, data_->size);
+    }
+
+private:
+    //! Data.
+    const details::extension_data* data_;
+};
+
 namespace details {
 
 /*!
@@ -920,6 +966,18 @@ public:
             throw std::runtime_error("This object is not a map.");
         }
         return const_map_ref{data().data.map_value};
+    }
+
+    /*!
+     * \brief Get data as an extension.
+     *
+     * \return Value.
+     */
+    [[nodiscard]] const_extension_ref as_extension() const {
+        if (data().type != object_data_type::extension) {
+            throw std::runtime_error("This object is not an extension.");
+        }
+        return const_extension_ref{data().data.extension_value};
     }
 
     //!\}
@@ -1083,6 +1141,22 @@ public:
             data().data.map_value.data, 0, size * sizeof(key_value_pair_data));
         data().type = object_data_type::map;
         return mutable_map_ref<Allocator>(data().data.map_value, allocator());
+    }
+
+    /*!
+     * \brief Set this object to a extension value.
+     *
+     * \param[in] type Type.
+     * \param[in] value_data Data of the value.
+     */
+    void set_extension(std::int8_t type, binary_view value_data) {
+        auto* ptr = allocator().allocate_unsigned_char(value_data.size());
+        std::memcpy(ptr, value_data.data(), value_data.size());
+        clear();
+        data().data.extension_value.type = type;
+        data().data.extension_value.data = ptr;
+        data().data.extension_value.size = value_data.size();
+        data().type = object_data_type::extension;
     }
 
     /*!

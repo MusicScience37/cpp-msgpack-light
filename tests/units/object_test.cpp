@@ -56,6 +56,7 @@ TEMPLATE_TEST_CASE("msgpack_light::object", "",
         CHECK_THROWS((void)obj.as_binary());
         CHECK_THROWS((void)obj.as_array());
         CHECK_THROWS((void)obj.as_map());
+        CHECK_THROWS((void)obj.as_extension());
 
         SECTION("copy") {
             const object_type copy{obj};  // NOLINT
@@ -88,6 +89,7 @@ TEMPLATE_TEST_CASE("msgpack_light::object", "",
         CHECK_THROWS((void)obj.as_binary());
         CHECK_THROWS((void)obj.as_array());
         CHECK_THROWS((void)obj.as_map());
+        CHECK_THROWS((void)obj.as_extension());
 
         SECTION("copy") {
             const object_type copy{obj};  // NOLINT
@@ -122,6 +124,7 @@ TEMPLATE_TEST_CASE("msgpack_light::object", "",
         CHECK_THROWS((void)obj.as_binary());
         CHECK_THROWS((void)obj.as_array());
         CHECK_THROWS((void)obj.as_map());
+        CHECK_THROWS((void)obj.as_extension());
 
         SECTION("copy") {
             const object_type copy{obj};  // NOLINT
@@ -154,6 +157,7 @@ TEMPLATE_TEST_CASE("msgpack_light::object", "",
         CHECK_THROWS((void)obj.as_binary());
         CHECK_THROWS((void)obj.as_array());
         CHECK_THROWS((void)obj.as_map());
+        CHECK_THROWS((void)obj.as_extension());
 
         SECTION("copy") {
             const object_type copy{obj};  // NOLINT
@@ -186,6 +190,7 @@ TEMPLATE_TEST_CASE("msgpack_light::object", "",
         CHECK_THROWS((void)obj.as_binary());
         CHECK_THROWS((void)obj.as_array());
         CHECK_THROWS((void)obj.as_map());
+        CHECK_THROWS((void)obj.as_extension());
 
         SECTION("copy") {
             const object_type copy{obj};  // NOLINT
@@ -218,6 +223,7 @@ TEMPLATE_TEST_CASE("msgpack_light::object", "",
         CHECK_THROWS((void)obj.as_binary());
         CHECK_THROWS((void)obj.as_array());
         CHECK_THROWS((void)obj.as_map());
+        CHECK_THROWS((void)obj.as_extension());
 
         SECTION("copy") {
             const object_type copy{obj};  // NOLINT
@@ -251,6 +257,7 @@ TEMPLATE_TEST_CASE("msgpack_light::object", "",
         CHECK_THROWS((void)obj.as_binary());
         CHECK_THROWS((void)obj.as_array());
         CHECK_THROWS((void)obj.as_map());
+        CHECK_THROWS((void)obj.as_extension());
 
         SECTION("copy") {
             const object_type copy{obj};  // NOLINT
@@ -284,6 +291,7 @@ TEMPLATE_TEST_CASE("msgpack_light::object", "",
         CHECK_THROWS((void)obj.as_string());
         CHECK_THROWS((void)obj.as_array());
         CHECK_THROWS((void)obj.as_map());
+        CHECK_THROWS((void)obj.as_extension());
 
         SECTION("copy") {
             const object_type copy{obj};  // NOLINT
@@ -327,6 +335,7 @@ TEMPLATE_TEST_CASE("msgpack_light::object", "",
         CHECK_THROWS((void)obj.as_string());
         CHECK_THROWS((void)obj.as_binary());
         CHECK_THROWS((void)obj.as_map());
+        CHECK_THROWS((void)obj.as_extension());
 
         SECTION("decrease size") {
             auto array_ref = obj.as_array();
@@ -444,6 +453,7 @@ TEMPLATE_TEST_CASE("msgpack_light::object", "",
         CHECK_THROWS((void)obj.as_string());
         CHECK_THROWS((void)obj.as_binary());
         CHECK_THROWS((void)obj.as_array());
+        CHECK_THROWS((void)obj.as_extension());
 
         SECTION("copy") {
             const object_type copy{obj};  // NOLINT
@@ -526,6 +536,44 @@ TEMPLATE_TEST_CASE("msgpack_light::object", "",
             CHECK(values ==
                 std::unordered_map<int, std::string>{
                     {1, "A"}, {2, "B"}, {3, "C"}});
+        }
+    }
+
+    SECTION("create an object of an extension value") {
+        object_type obj;
+
+        const auto type = static_cast<std::int8_t>(123);
+        const auto value =
+            GENERATE(binary(), binary("A1"), binary("A1B2"), binary("A1B2C3"));
+        obj.set_extension(type, value);
+
+        CHECK(obj.type() == object_data_type::extension);
+        CHECK(obj.as_extension().type() == type);
+        CHECK(obj.as_extension().data() == value);
+        CHECK_THROWS((void)obj.as_unsigned_integer());
+        CHECK_THROWS((void)obj.as_signed_integer());
+        CHECK_THROWS((void)obj.as_boolean());
+        CHECK_THROWS((void)obj.as_float32());
+        CHECK_THROWS((void)obj.as_float64());
+        CHECK_THROWS((void)obj.as_string());
+        CHECK_THROWS((void)obj.as_binary());
+        CHECK_THROWS((void)obj.as_array());
+        CHECK_THROWS((void)obj.as_map());
+
+        SECTION("copy") {
+            const object_type copy{obj};  // NOLINT
+
+            CHECK(copy.type() == object_data_type::extension);
+            CHECK(copy.as_extension().type() == type);
+            CHECK(copy.as_extension().data() == value);
+        }
+
+        SECTION("move") {
+            const object_type moved{std::move(obj)};
+
+            CHECK(moved.type() == object_data_type::extension);
+            CHECK(moved.as_extension().type() == type);
+            CHECK(moved.as_extension().data() == value);
         }
     }
 
