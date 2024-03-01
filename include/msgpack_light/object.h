@@ -60,6 +60,13 @@ inline void clear_object_data(
         }
         allocator.deallocate_object_data(data.data.array_value.data);
         break;
+    case object_data_type::map:
+        for (std::size_t i = 0; i < data.data.map_value.size; ++i) {
+            clear_object_data(data.data.map_value.data[i].key, allocator);
+            clear_object_data(data.data.map_value.data[i].value, allocator);
+        }
+        allocator.deallocate_key_value_pair_data(data.data.map_value.data);
+        break;
     default:
         break;
     };
@@ -103,6 +110,18 @@ inline void copy_object_data(object_data& to, const object_data& from,
                 from.data.array_value.data[i], allocator);
         }
         to.type = object_data_type::array;
+        break;
+    case object_data_type::map:
+        to.data.map_value.data =
+            allocator.allocate_key_value_pair_data(from.data.map_value.size);
+        to.data.map_value.size = from.data.map_value.size;
+        for (std::size_t i = 0; i < from.data.map_value.size; ++i) {
+            copy_object_data(to.data.map_value.data[i].key,
+                from.data.map_value.data[i].key, allocator);
+            copy_object_data(to.data.map_value.data[i].value,
+                from.data.map_value.data[i].value, allocator);
+        }
+        to.type = object_data_type::map;
         break;
     default:
         to = from;
@@ -250,8 +269,6 @@ private:
 
 /*!
  * \brief Class to access constant arrays.
- *
- * \tparam Allocator
  */
 class const_array_ref {
 public:
@@ -329,7 +346,7 @@ private:
 };
 
 /*!
- * \brief Class of access non-constant arrays.
+ * \brief Class to access non-constant arrays.
  *
  * \tparam Allocator Type of the allocator.
  */
@@ -449,6 +466,123 @@ public:
 private:
     //! Data.
     details::array_data* data_;
+
+    //! Allocator.
+    details::allocator_wrapper<Allocator>* allocator_;
+};
+
+/*!
+ * \brief Class to access constant maps.
+ */
+class const_map_ref {
+public:
+    //! Type to access constant objects.
+    using const_object_ref_type = const_object_ref;
+
+    /*!
+     * \brief Constructor.
+     *
+     * \param[in] data Data.
+     */
+    explicit const_map_ref(const details::map_data& data) : data_(&data) {}
+
+    /*!
+     * \brief Get the size.
+     *
+     * \return Size.
+     */
+    [[nodiscard]] std::size_t size() const noexcept { return data_->size; }
+
+    /*!
+     * \brief Get a key.
+     *
+     * \param[in] index Index of the key-value pair.
+     * \return Object of the key.
+     */
+    [[nodiscard]] const_object_ref_type key(std::size_t index) const noexcept;
+
+    /*!
+     * \brief Get a value.
+     *
+     * \param[in] index Index of the key-value pair.
+     * \return Object of the value.
+     */
+    [[nodiscard]] const_object_ref_type value(std::size_t index) const noexcept;
+
+private:
+    //! Data.
+    const details::map_data* data_;
+};
+
+/*!
+ * \brief Class to access non-constant maps.
+ *
+ * \tparam Allocator Type of the allocator.
+ */
+template <typename Allocator = standard_allocator>
+class mutable_map_ref {
+public:
+    //! Type of the allocator.
+    using allocator_type = Allocator;
+
+    //! Type to access non-constant objects.
+    using mutable_object_ref_type = mutable_object_ref<Allocator>;
+
+    //! Type to access constant objects.
+    using const_object_ref_type = const_object_ref;
+
+    /*!
+     * \brief Constructor.
+     *
+     * \param[in] data Data.
+     * \param[in] allocator Allocator.
+     */
+    mutable_map_ref(details::map_data& data,
+        details::allocator_wrapper<Allocator>& allocator)
+        : data_(&data), allocator_(&allocator) {}
+
+    /*!
+     * \brief Get the size.
+     *
+     * \return Size.
+     */
+    [[nodiscard]] std::size_t size() const noexcept { return data_->size; }
+
+    /*!
+     * \brief Get a key.
+     *
+     * \param[in] index Index of the key-value pair.
+     * \return Object of the key.
+     */
+    [[nodiscard]] mutable_object_ref_type key(std::size_t index) noexcept;
+
+    /*!
+     * \brief Get a key.
+     *
+     * \param[in] index Index of the key-value pair.
+     * \return Object of the key.
+     */
+    [[nodiscard]] const_object_ref_type key(std::size_t index) const noexcept;
+
+    /*!
+     * \brief Get a value.
+     *
+     * \param[in] index Index of the key-value pair.
+     * \return Object of the value.
+     */
+    [[nodiscard]] mutable_object_ref_type value(std::size_t index) noexcept;
+
+    /*!
+     * \brief Get a value.
+     *
+     * \param[in] index Index of the key-value pair.
+     * \return Object of the value.
+     */
+    [[nodiscard]] const_object_ref_type value(std::size_t index) const noexcept;
+
+private:
+    //! Data.
+    details::map_data* data_;
 
     //! Allocator.
     details::allocator_wrapper<Allocator>* allocator_;
@@ -574,6 +708,18 @@ public:
             throw std::runtime_error("This object is not an array.");
         }
         return const_array_ref{data().data.array_value};
+    }
+
+    /*!
+     * \brief Get data as a map.
+     *
+     * \return Value.
+     */
+    [[nodiscard]] const_map_ref as_map() const {
+        if (data().type != object_data_type::map) {
+            throw std::runtime_error("This object is not a map.");
+        }
+        return const_map_ref{data().data.map_value};
     }
 
     //!\}
@@ -708,24 +854,10 @@ public:
     /*!
      * \brief Set this object to an array.
      *
+     * \param[in] size Number of elements.
      * \return Object to access the array.
      */
-    mutable_array_ref<Allocator> set_array() {
-        clear();
-        data().data.array_value.data = allocator().allocate_object_data(0U);
-        data().data.array_value.size = 0U;
-        data().type = object_data_type::array;
-        return mutable_array_ref<Allocator>(
-            data().data.array_value, allocator());
-    }
-
-    /*!
-     * \brief Set this object to an array.
-     *
-     * \param[in] size Size.
-     * \return Object to access the array.
-     */
-    mutable_array_ref<Allocator> set_array(std::size_t size) {
+    mutable_array_ref<Allocator> set_array(std::size_t size = 0U) {
         clear();
         data().data.array_value.data = allocator().allocate_object_data(size);
         data().data.array_value.size = size;
@@ -734,6 +866,23 @@ public:
         data().type = object_data_type::array;
         return mutable_array_ref<Allocator>(
             data().data.array_value, allocator());
+    }
+
+    /*!
+     * \brief Set this object to a map.
+     *
+     * \param[in] size Number of key-value pairs.
+     * \return Object to access the map.
+     */
+    mutable_map_ref<Allocator> set_map(std::size_t size = 0U) {
+        clear();
+        data().data.map_value.data =
+            allocator().allocate_key_value_pair_data(size);
+        data().data.map_value.size = size;
+        std::memset(
+            data().data.map_value.data, 0, size * sizeof(key_value_pair_data));
+        data().type = object_data_type::map;
+        return mutable_map_ref<Allocator>(data().data.map_value, allocator());
     }
 
     /*!
@@ -761,6 +910,20 @@ public:
         }
         return mutable_array_ref<Allocator>(
             data().data.array_value, allocator());
+    }
+
+    using const_object_base<Derived>::as_map;
+
+    /*!
+     * \brief Get data as a map.
+     *
+     * \return Value.
+     */
+    [[nodiscard]] mutable_map_ref<Allocator> as_map() {
+        if (data().type != object_data_type::map) {
+            throw std::runtime_error("This object is not a map.");
+        }
+        return mutable_map_ref<Allocator>(data().data.map_value, allocator());
     }
 
     //!\}
@@ -937,6 +1100,10 @@ private:
     const details::object_data* data_;
 };
 
+/*
+ * Definition of some members of mutable_array_ref.
+ */
+
 template <typename Allocator>
 inline typename mutable_array_ref<Allocator>::mutable_object_ref_type
 mutable_array_ref<Allocator>::operator[](std::size_t index) noexcept {
@@ -949,10 +1116,18 @@ mutable_array_ref<Allocator>::operator[](std::size_t index) const noexcept {
     return const_object_ref_type{data_->data[index]};
 }
 
+/*
+ * Definition of some members of const_array_ref.
+ */
+
 inline typename const_array_ref::const_object_ref_type
 const_array_ref::operator[](std::size_t index) const noexcept {
     return const_object_ref_type{data_->data[index]};
 }
+
+/*
+ * Definition of some members of mutable_array_iterator.
+ */
 
 template <typename Allocator>
 inline mutable_object_ref<Allocator>
@@ -990,6 +1165,10 @@ template <typename Allocator>
     return !(lhs == rhs);
 }
 
+/*
+ * Definition of some members of const_array_iterator.
+ */
+
 inline const_object_ref const_array_iterator::operator*() const noexcept {
     return const_object_ref(*pointer_);
 }
@@ -1018,6 +1197,48 @@ inline const_object_ref const_array_iterator::operator*() const noexcept {
 [[nodiscard]] inline bool operator!=(
     const_array_iterator lhs, const_array_iterator rhs) noexcept {
     return !(lhs == rhs);
+}
+
+/*
+ * Definition of some members of mutable_map_ref.
+ */
+
+template <typename Allocator>
+inline typename mutable_map_ref<Allocator>::mutable_object_ref_type
+mutable_map_ref<Allocator>::key(std::size_t index) noexcept {
+    return mutable_object_ref_type(data_->data[index].key, *allocator_);
+}
+
+template <typename Allocator>
+inline typename mutable_map_ref<Allocator>::const_object_ref_type
+mutable_map_ref<Allocator>::key(std::size_t index) const noexcept {
+    return const_object_ref_type{data_->data[index].key};
+}
+
+template <typename Allocator>
+inline typename mutable_map_ref<Allocator>::mutable_object_ref_type
+mutable_map_ref<Allocator>::value(std::size_t index) noexcept {
+    return mutable_object_ref_type(data_->data[index].value, *allocator_);
+}
+
+template <typename Allocator>
+inline typename mutable_map_ref<Allocator>::const_object_ref_type
+mutable_map_ref<Allocator>::value(std::size_t index) const noexcept {
+    return const_object_ref_type{data_->data[index].value};
+}
+
+/*
+ * Definition of some members of const_map_ref.
+ */
+
+inline typename const_map_ref::const_object_ref_type const_map_ref::key(
+    std::size_t index) const noexcept {
+    return const_object_ref_type{data_->data[index].key};
+}
+
+inline typename const_map_ref::const_object_ref_type const_map_ref::value(
+    std::size_t index) const noexcept {
+    return const_object_ref_type{data_->data[index].value};
 }
 
 /*!

@@ -63,6 +63,27 @@ public:
     }
 
     /*!
+     * \brief Allocate key-value pair data.
+     *
+     * \param[in] size Number of pairs.
+     * \return Pointer to the allocated key-value pair data.
+     */
+    [[nodiscard]] key_value_pair_data* allocate_key_value_pair_data(
+        std::size_t size) {
+        return static_cast<key_value_pair_data*>(allocator_.allocate(
+            size * sizeof(key_value_pair_data), alignof(key_value_pair_data)));
+    }
+
+    /*!
+     * \brief Deallocate key-value pair data.
+     *
+     * \param[in] ptr Pointer to the key-value pair data.
+     */
+    void deallocate_key_value_pair_data(key_value_pair_data* ptr) noexcept {
+        allocator_.deallocate(ptr);
+    }
+
+    /*!
      * \brief Allocator unsigned char objects.
      *
      * \param[in] size Number of elements.

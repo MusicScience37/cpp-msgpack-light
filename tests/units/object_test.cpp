@@ -53,6 +53,7 @@ TEMPLATE_TEST_CASE("msgpack_light::object", "",
         CHECK_THROWS((void)obj.as_string());
         CHECK_THROWS((void)obj.as_binary());
         CHECK_THROWS((void)obj.as_array());
+        CHECK_THROWS((void)obj.as_map());
 
         SECTION("copy") {
             const object_type copy{obj};  // NOLINT
@@ -84,6 +85,7 @@ TEMPLATE_TEST_CASE("msgpack_light::object", "",
         CHECK_THROWS((void)obj.as_string());
         CHECK_THROWS((void)obj.as_binary());
         CHECK_THROWS((void)obj.as_array());
+        CHECK_THROWS((void)obj.as_map());
 
         SECTION("copy") {
             const object_type copy{obj};  // NOLINT
@@ -117,6 +119,7 @@ TEMPLATE_TEST_CASE("msgpack_light::object", "",
         CHECK_THROWS((void)obj.as_string());
         CHECK_THROWS((void)obj.as_binary());
         CHECK_THROWS((void)obj.as_array());
+        CHECK_THROWS((void)obj.as_map());
 
         SECTION("copy") {
             const object_type copy{obj};  // NOLINT
@@ -148,6 +151,7 @@ TEMPLATE_TEST_CASE("msgpack_light::object", "",
         CHECK_THROWS((void)obj.as_string());
         CHECK_THROWS((void)obj.as_binary());
         CHECK_THROWS((void)obj.as_array());
+        CHECK_THROWS((void)obj.as_map());
 
         SECTION("copy") {
             const object_type copy{obj};  // NOLINT
@@ -179,6 +183,7 @@ TEMPLATE_TEST_CASE("msgpack_light::object", "",
         CHECK_THROWS((void)obj.as_string());
         CHECK_THROWS((void)obj.as_binary());
         CHECK_THROWS((void)obj.as_array());
+        CHECK_THROWS((void)obj.as_map());
 
         SECTION("copy") {
             const object_type copy{obj};  // NOLINT
@@ -210,6 +215,7 @@ TEMPLATE_TEST_CASE("msgpack_light::object", "",
         CHECK_THROWS((void)obj.as_string());
         CHECK_THROWS((void)obj.as_binary());
         CHECK_THROWS((void)obj.as_array());
+        CHECK_THROWS((void)obj.as_map());
 
         SECTION("copy") {
             const object_type copy{obj};  // NOLINT
@@ -242,6 +248,7 @@ TEMPLATE_TEST_CASE("msgpack_light::object", "",
         CHECK_THROWS((void)obj.as_float64());
         CHECK_THROWS((void)obj.as_binary());
         CHECK_THROWS((void)obj.as_array());
+        CHECK_THROWS((void)obj.as_map());
 
         SECTION("copy") {
             const object_type copy{obj};  // NOLINT
@@ -274,6 +281,7 @@ TEMPLATE_TEST_CASE("msgpack_light::object", "",
         CHECK_THROWS((void)obj.as_float64());
         CHECK_THROWS((void)obj.as_string());
         CHECK_THROWS((void)obj.as_array());
+        CHECK_THROWS((void)obj.as_map());
 
         SECTION("copy") {
             const object_type copy{obj};  // NOLINT
@@ -316,6 +324,7 @@ TEMPLATE_TEST_CASE("msgpack_light::object", "",
         CHECK_THROWS((void)obj.as_float64());
         CHECK_THROWS((void)obj.as_string());
         CHECK_THROWS((void)obj.as_binary());
+        CHECK_THROWS((void)obj.as_map());
 
         SECTION("decrease size") {
             auto array_ref = obj.as_array();
@@ -398,6 +407,70 @@ TEMPLATE_TEST_CASE("msgpack_light::object", "",
                 REQUIRE_NOTHROW(values.push_back(elem.as_signed_integer()));
             }
             CHECK(values == std::vector<std::int64_t>{1, 2, 3});
+        }
+    }
+
+    SECTION("create an object of a map") {
+        object_type obj;
+
+        {
+            auto map_ref = obj.set_map(3U);
+            map_ref.key(0).set_signed_integer(1);
+            map_ref.value(0).set_string("1");
+            map_ref.key(1).set_signed_integer(2);
+            map_ref.key(2).set_map(1U);
+            map_ref.value(2).set_boolean(true);
+        }
+
+        {
+            CHECK(obj.type() == object_data_type::map);
+            const auto map_ref = obj.as_map();
+            REQUIRE(map_ref.size() == 3U);
+            CHECK(map_ref.key(0).as_signed_integer() == 1);
+            CHECK(map_ref.value(0).as_string() == "1");
+            CHECK(map_ref.key(1).as_signed_integer() == 2);
+            CHECK(map_ref.value(1).type() == object_data_type::nil);
+            CHECK(map_ref.key(2).type() == object_data_type::map);
+            CHECK(map_ref.key(2).as_map().size() == 1U);
+            CHECK(map_ref.value(2).as_boolean() == true);
+        }
+        CHECK_THROWS((void)obj.as_unsigned_integer());
+        CHECK_THROWS((void)obj.as_signed_integer());
+        CHECK_THROWS((void)obj.as_boolean());
+        CHECK_THROWS((void)obj.as_float32());
+        CHECK_THROWS((void)obj.as_float64());
+        CHECK_THROWS((void)obj.as_string());
+        CHECK_THROWS((void)obj.as_binary());
+        CHECK_THROWS((void)obj.as_array());
+
+        SECTION("copy") {
+            const object_type copy{obj};  // NOLINT
+
+            CHECK(copy.type() == object_data_type::map);
+            const auto map_ref = copy.as_map();
+            REQUIRE(map_ref.size() == 3U);
+            CHECK(map_ref.key(0).as_signed_integer() == 1);
+            CHECK(map_ref.value(0).as_string() == "1");
+            CHECK(map_ref.key(1).as_signed_integer() == 2);
+            CHECK(map_ref.value(1).type() == object_data_type::nil);
+            CHECK(map_ref.key(2).type() == object_data_type::map);
+            CHECK(map_ref.key(2).as_map().size() == 1U);
+            CHECK(map_ref.value(2).as_boolean() == true);
+        }
+
+        SECTION("move") {
+            const object_type moved{std::move(obj)};
+
+            CHECK(moved.type() == object_data_type::map);
+            const auto map_ref = moved.as_map();
+            REQUIRE(map_ref.size() == 3U);
+            CHECK(map_ref.key(0).as_signed_integer() == 1);
+            CHECK(map_ref.value(0).as_string() == "1");
+            CHECK(map_ref.key(1).as_signed_integer() == 2);
+            CHECK(map_ref.value(1).type() == object_data_type::nil);
+            CHECK(map_ref.key(2).type() == object_data_type::map);
+            CHECK(map_ref.key(2).as_map().size() == 1U);
+            CHECK(map_ref.value(2).as_boolean() == true);
         }
     }
 
