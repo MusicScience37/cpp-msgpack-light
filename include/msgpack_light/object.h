@@ -19,6 +19,7 @@
  */
 #pragma once
 
+#include <algorithm>
 #include <cstddef>
 #include <cstdint>
 #include <cstring>
@@ -371,7 +372,11 @@ public:
                 details::clear_object_data(data_->data[i], *allocator_);
             }
         }
-        data_->data = allocator_->reallocate_object_data(data_->data, size);
+        details::object_data* new_data = allocator_->allocate_object_data(size);
+        std::memcpy(new_data, data_->data,
+            std::min(data_->size, size) * sizeof(details::object_data));
+        allocator_->deallocate_object_data(data_->data);
+        data_->data = new_data;
         if (size > data_->size) {
             std::memset(data_->data + data_->size, 0,
                 (size - data_->size) * sizeof(details::object_data));

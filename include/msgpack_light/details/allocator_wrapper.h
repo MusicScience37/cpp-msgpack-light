@@ -54,19 +54,6 @@ public:
     }
 
     /*!
-     * \brief Reallocate object data.
-     *
-     * \param[in] ptr Existing pointer to object data.
-     * \param[in] new_size New number of elements.
-     * \return Pointer to the allocated object data.
-     */
-    [[nodiscard]] object_data* reallocate_object_data(
-        object_data* ptr, std::size_t new_size) {
-        return static_cast<object_data*>(allocator_.reallocate(
-            ptr, new_size * sizeof(object_data), alignof(object_data)));
-    }
-
-    /*!
      * \brief Deallocate object data.
      *
      * \param[in] ptr Pointer to the object data.

@@ -8,6 +8,7 @@ set(SOURCE_FILES
     details/to_big_endian_test.cpp
     details/total_size_of_test.cpp
     memory_output_stream_test.cpp
+    monotonic_allocator_test.cpp
     object_test.cpp
     serialization_buffer_test.cpp
     serialize_test.cpp

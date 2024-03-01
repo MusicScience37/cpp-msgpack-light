@@ -23,19 +23,22 @@
 #include <limits>
 #include <vector>
 
+#include <catch2/catch_template_test_macros.hpp>
 #include <catch2/catch_test_macros.hpp>
 #include <catch2/generators/catch_generators.hpp>
 
 #include "msgpack_light/binary.h"
+#include "msgpack_light/monotonic_allocator.h"
 #include "msgpack_light/object_data_type.h"
 #include "msgpack_light/standard_allocator.h"
 
-TEST_CASE("msgpack_light::object") {
+TEMPLATE_TEST_CASE("msgpack_light::object", "",
+    msgpack_light::standard_allocator, msgpack_light::monotonic_allocator) {
     using msgpack_light::binary;
     using msgpack_light::object;
     using msgpack_light::object_data_type;
 
-    using allocator_type = msgpack_light::standard_allocator;
+    using allocator_type = TestType;
     using object_type = object<allocator_type>;
 
     SECTION("create an empty object") {

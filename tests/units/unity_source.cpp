@@ -7,6 +7,7 @@
 #include "details/to_big_endian_test.cpp"  // NOLINT(bugprone-suspicious-include)
 #include "details/total_size_of_test.cpp"  // NOLINT(bugprone-suspicious-include)
 #include "memory_output_stream_test.cpp"  // NOLINT(bugprone-suspicious-include)
+#include "monotonic_allocator_test.cpp"   // NOLINT(bugprone-suspicious-include)
 #include "object_test.cpp"                // NOLINT(bugprone-suspicious-include)
 #include "serialization_buffer_test.cpp"  // NOLINT(bugprone-suspicious-include)
 #include "serialize_test.cpp"             // NOLINT(bugprone-suspicious-include)
