@@ -36,7 +36,8 @@ public:
      * \param[in] size Number of bytes to allocate.
      * \return Pointer to the allocated memory.
      */
-    [[nodiscard]] void* allocate(std::size_t size) {  // NOLINT
+    [[nodiscard]] void* allocate(  // NOLINT
+        std::size_t size, std::size_t /*alignment*/) {
         if (size == 0U) {
             size = 1U;
         }
@@ -54,7 +55,8 @@ public:
      * \param[in] new_size New size to allocate.
      * \return Pointer to the allocated memory.
      */
-    [[nodiscard]] void* reallocate(void* ptr, std::size_t new_size) {  // NOLINT
+    [[nodiscard]] void* reallocate(  // NOLINT
+        void* ptr, std::size_t new_size, std::size_t /*alignment*/) {
         if (new_size == 0U) {
             new_size = 1U;
         }

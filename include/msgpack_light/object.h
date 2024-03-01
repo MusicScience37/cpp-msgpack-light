@@ -27,6 +27,7 @@
 #include <utility>
 
 #include "msgpack_light/binary.h"
+#include "msgpack_light/details/allocator_wrapper.h"
 #include "msgpack_light/details/object_data.h"
 #include "msgpack_light/object_data_type.h"
 #include "msgpack_light/standard_allocator.h"
@@ -43,19 +44,20 @@ namespace details {
  * \param[in] allocator Allocator.
  */
 template <typename Allocator>
-inline void clear_object_data(object_data& data, Allocator& allocator) {
+inline void clear_object_data(
+    object_data& data, allocator_wrapper<Allocator>& allocator) {
     switch (data.type) {
     case object_data_type::string:
-        allocator.deallocate(data.data.string_value.data);
+        allocator.deallocate_char(data.data.string_value.data);
         break;
     case object_data_type::binary:
-        allocator.deallocate(data.data.binary_value.data);
+        allocator.deallocate_unsigned_char(data.data.binary_value.data);
         break;
     case object_data_type::array:
         for (std::size_t i = 0; i < data.data.array_value.size; ++i) {
             clear_object_data(data.data.array_value.data[i], allocator);
         }
-        allocator.deallocate(data.data.array_value.data);
+        allocator.deallocate_object_data(data.data.array_value.data);
         break;
     default:
         break;
@@ -72,28 +74,28 @@ inline void clear_object_data(object_data& data, Allocator& allocator) {
  * \param[in] allocator Allocator.
  */
 template <typename Allocator>
-inline void copy_object_data(
-    object_data& to, const object_data& from, Allocator& allocator) {
+inline void copy_object_data(object_data& to, const object_data& from,
+    allocator_wrapper<Allocator>& allocator) {
     switch (from.type) {
     case object_data_type::string:
         to.data.string_value.data =
-            static_cast<char*>(allocator.allocate(from.data.string_value.size));
+            allocator.allocate_char(from.data.string_value.size);
         std::memcpy(to.data.string_value.data, from.data.string_value.data,
             from.data.string_value.size);
         to.data.string_value.size = from.data.string_value.size;
         to.type = object_data_type::string;
         break;
     case object_data_type::binary:
-        to.data.binary_value.data = static_cast<unsigned char*>(
-            allocator.allocate(from.data.binary_value.size));
+        to.data.binary_value.data =
+            allocator.allocate_unsigned_char(from.data.binary_value.size);
         std::memcpy(to.data.binary_value.data, from.data.binary_value.data,
             from.data.binary_value.size);
         to.data.binary_value.size = from.data.binary_value.size;
         to.type = object_data_type::binary;
         break;
     case object_data_type::array:
-        to.data.array_value.data = static_cast<object_data*>(allocator.allocate(
-            from.data.array_value.size * sizeof(object_data)));
+        to.data.array_value.data =
+            allocator.allocate_object_data(from.data.array_value.size);
         to.data.array_value.size = from.data.array_value.size;
         for (std::size_t i = 0; i < from.data.array_value.size; ++i) {
             copy_object_data(to.data.array_value.data[i],
@@ -143,8 +145,8 @@ public:
      * \param[in] pointer Pointer to the current data.
      * \param[in] allocator Allocator.
      */
-    mutable_array_iterator(
-        details::object_data* pointer, Allocator* allocator) noexcept
+    mutable_array_iterator(details::object_data* pointer,
+        details::allocator_wrapper<Allocator>* allocator) noexcept
         : pointer_(pointer), allocator_(allocator) {}
 
     /*!
@@ -181,7 +183,7 @@ private:
     details::object_data* pointer_;
 
     //! Allocator.
-    Allocator* allocator_;
+    details::allocator_wrapper<Allocator>* allocator_;
 };
 
 /*!
@@ -354,7 +356,8 @@ public:
      * \param[in] data Data.
      * \param[in] allocator Allocator.
      */
-    mutable_array_ref(details::array_data& data, allocator_type& allocator)
+    mutable_array_ref(details::array_data& data,
+        details::allocator_wrapper<Allocator>& allocator)
         : data_(&data), allocator_(&allocator) {}
 
     /*!
@@ -368,8 +371,7 @@ public:
                 details::clear_object_data(data_->data[i], *allocator_);
             }
         }
-        data_->data = static_cast<details::object_data*>(allocator_->reallocate(
-            data_->data, size * sizeof(details::object_data)));
+        data_->data = allocator_->reallocate_object_data(data_->data, size);
         if (size > data_->size) {
             std::memset(data_->data + data_->size, 0,
                 (size - data_->size) * sizeof(details::object_data));
@@ -444,7 +446,7 @@ private:
     details::array_data* data_;
 
     //! Allocator.
-    allocator_type* allocator_;
+    details::allocator_wrapper<Allocator>* allocator_;
 };
 
 namespace details {
@@ -676,7 +678,7 @@ public:
      * \param[in] value Value.
      */
     void set_string(std::string_view value) {
-        auto* ptr = static_cast<char*>(allocator().allocate(value.size()));
+        auto* ptr = allocator().allocate_char(value.size());
         std::memcpy(ptr, value.data(), value.size());
         clear();
         data().data.string_value.data = ptr;
@@ -690,8 +692,7 @@ public:
      * \param[in] value Value.
      */
     void set_binary(binary_view value) {
-        auto* ptr =
-            static_cast<unsigned char*>(allocator().allocate(value.size()));
+        auto* ptr = allocator().allocate_unsigned_char(value.size());
         std::memcpy(ptr, value.data(), value.size());
         clear();
         data().data.binary_value.data = ptr;
@@ -706,8 +707,7 @@ public:
      */
     mutable_array_ref<Allocator> set_array() {
         clear();
-        data().data.array_value.data =
-            static_cast<object_data*>(allocator().allocate(0U));
+        data().data.array_value.data = allocator().allocate_object_data(0U);
         data().data.array_value.size = 0U;
         data().type = object_data_type::array;
         return mutable_array_ref<Allocator>(
@@ -771,7 +771,7 @@ public:
      *
      * \return Allocator.
      */
-    [[nodiscard]] allocator_type& allocator() noexcept {
+    [[nodiscard]] allocator_wrapper<Allocator>& allocator() noexcept {
         return derived().allocator();
     }
 
@@ -825,7 +825,8 @@ public:
      * \param[in] data Data.
      * \param[in] allocator Allocator.
      */
-    mutable_object_ref(details::object_data& data, allocator_type& allocator)
+    mutable_object_ref(details::object_data& data,
+        details::allocator_wrapper<Allocator>& allocator)
         : data_(&data), allocator_(&allocator) {}
 
     //!\}
@@ -856,7 +857,9 @@ public:
      *
      * \return Allocator.
      */
-    [[nodiscard]] allocator_type& allocator() noexcept { return *allocator_; }
+    [[nodiscard]] details::allocator_wrapper<Allocator>& allocator() noexcept {
+        return *allocator_;
+    }
 
     //!\}
 
@@ -865,7 +868,7 @@ private:
     details::object_data* data_;
 
     //! Allocator.
-    allocator_type* allocator_;
+    details::allocator_wrapper<Allocator>* allocator_;
 };
 
 /*!
@@ -1110,7 +1113,9 @@ public:
      *
      * \return Allocator.
      */
-    [[nodiscard]] allocator_type& allocator() noexcept { return allocator_; }
+    [[nodiscard]] details::allocator_wrapper<Allocator>& allocator() noexcept {
+        return allocator_;
+    }
 
     //!\}
 
@@ -1119,7 +1124,7 @@ private:
     details::object_data data_{};
 
     //! Allocator.
-    allocator_type allocator_;
+    details::allocator_wrapper<Allocator> allocator_;
 };
 
 }  // namespace msgpack_light
