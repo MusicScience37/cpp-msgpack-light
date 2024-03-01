@@ -294,10 +294,9 @@ TEMPLATE_TEST_CASE("msgpack_light::object", "",
         object_type obj;
 
         {
-            auto array_ref = obj.set_array();
-            array_ref.resize(3U);
+            auto array_ref = obj.set_array(3U);
             array_ref[0].set_unsigned_integer(5U);  // NOLINT
-            array_ref[1].set_array().resize(1U);
+            array_ref[1].set_array(1U);
         }
 
         {
@@ -365,8 +364,7 @@ TEMPLATE_TEST_CASE("msgpack_light::object", "",
         object_type obj;
 
         {
-            auto array_ref = obj.set_array();
-            array_ref.resize(3U);
+            auto array_ref = obj.set_array(3U);
             array_ref[0].set_signed_integer(1);
             array_ref[1].set_signed_integer(2);
             array_ref[2].set_signed_integer(3);
@@ -406,10 +404,9 @@ TEMPLATE_TEST_CASE("msgpack_light::object", "",
     SECTION("copy constructor") {
         object_type obj;
         {
-            auto array_ref = obj.set_array();
-            array_ref.resize(3U);
+            auto array_ref = obj.set_array(3U);
             array_ref[0].set_unsigned_integer(5U);  // NOLINT
-            array_ref[1].set_array().resize(1U);
+            array_ref[1].set_array(1U);
         }
 
         const object_type copy{obj};  // NOLINT
@@ -429,10 +426,9 @@ TEMPLATE_TEST_CASE("msgpack_light::object", "",
     SECTION("copy assignment operator") {
         object_type obj;
         {
-            auto array_ref = obj.set_array();
-            array_ref.resize(3U);
+            auto array_ref = obj.set_array(3U);
             array_ref[0].set_unsigned_integer(5U);  // NOLINT
-            array_ref[1].set_array().resize(1U);
+            array_ref[1].set_array(1U);
         }
 
         object_type copy;
@@ -453,10 +449,9 @@ TEMPLATE_TEST_CASE("msgpack_light::object", "",
     SECTION("move constructor") {
         object_type obj;
         {
-            auto array_ref = obj.set_array();
-            array_ref.resize(3U);
+            auto array_ref = obj.set_array(3U);
             array_ref[0].set_unsigned_integer(5U);  // NOLINT
-            array_ref[1].set_array().resize(1U);
+            array_ref[1].set_array(1U);
         }
 
         const object_type moved{std::move(obj)};  // NOLINT
@@ -476,10 +471,9 @@ TEMPLATE_TEST_CASE("msgpack_light::object", "",
     SECTION("move assignment operator") {
         object_type obj;
         {
-            auto array_ref = obj.set_array();
-            array_ref.resize(3U);
+            auto array_ref = obj.set_array(3U);
             array_ref[0].set_unsigned_integer(5U);  // NOLINT
-            array_ref[1].set_array().resize(1U);
+            array_ref[1].set_array(1U);
         }
 
         object_type moved;

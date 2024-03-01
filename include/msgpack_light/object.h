@@ -720,6 +720,23 @@ public:
     }
 
     /*!
+     * \brief Set this object to an array.
+     *
+     * \param[in] size Size.
+     * \return Object to access the array.
+     */
+    mutable_array_ref<Allocator> set_array(std::size_t size) {
+        clear();
+        data().data.array_value.data = allocator().allocate_object_data(size);
+        data().data.array_value.size = size;
+        std::memset(
+            data().data.array_value.data, 0, size * sizeof(object_data));
+        data().type = object_data_type::array;
+        return mutable_array_ref<Allocator>(
+            data().data.array_value, allocator());
+    }
+
+    /*!
      * \brief Clear the data.
      */
     void clear() noexcept { clear_object_data(data(), allocator()); }
