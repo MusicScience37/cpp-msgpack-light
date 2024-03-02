@@ -15,7 +15,7 @@
  */
 /*!
  * \file
- * \brief Definition of classes of references to arrays..
+ * \brief Definition of classes of references to arrays.
  */
 #pragma once
 
