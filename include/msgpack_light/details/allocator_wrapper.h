@@ -43,7 +43,7 @@ public:
         : allocator_(std::move(allocator)) {}
 
     /*!
-     * \brief Allocator object data.
+     * \brief Allocate object data.
      *
      * \param[in] size Number of elements.
      * \return Pointer to the allocated object data.
@@ -84,7 +84,7 @@ public:
     }
 
     /*!
-     * \brief Allocator unsigned char instances.
+     * \brief Allocate unsigned char instances.
      *
      * \param[in] size Number of elements.
      * \return Pointer to the allocated unsigned char instances.
@@ -103,7 +103,7 @@ public:
     }
 
     /*!
-     * \brief Allocator char instances.
+     * \brief Allocate char instances.
      *
      * \param[in] size Number of elements.
      * \return Pointer to the allocated char instances.
