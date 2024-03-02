@@ -30,6 +30,17 @@ namespace msgpack_light {
  * \brief Class to access non-constant objects.
  *
  * \tparam Allocator Type of the allocator.
+ *
+ * \note Instances of this class can be created from
+ * msgpack_light::mutable_array_ref,
+ * msgpack_light::mutable_array_iterator,
+ * msgpack_light::mutable_map_ref,
+ * msgpack_light::mutable_map_iterator,
+ * classes.
+ *
+ * \warning This class only holds pointers to data in msgpack_light::object
+ * class, do not call functions in this class without msgpack_light::object
+ * instances holding the data.
  */
 template <typename Allocator>
 class mutable_object_ref
@@ -60,6 +71,8 @@ public:
 
     /*!
      * \name Internal data
+     *
+     * \warning These functions are for internal implementation of this library.
      */
     //!\{
 
@@ -100,6 +113,17 @@ private:
 
 /*!
  * \brief Class to access constant objects.
+ *
+ * \note Instances of this class can be created from
+ * msgpack_light::mutable_array_ref, msgpack_light::const_array_ref,
+ * msgpack_light::mutable_array_iterator, msgpack_light::const_array_iterator,
+ * msgpack_light::mutable_map_ref, msgpack_light::const_map_ref,
+ * msgpack_light::mutable_map_iterator, msgpack_light::const_map_iterator
+ * classes.
+ *
+ * \warning This class only holds pointers to data in msgpack_light::object
+ * class, do not call functions in this class without msgpack_light::object
+ * instances holding the data.
  */
 class const_object_ref : public details::const_object_base<const_object_ref> {
 public:
@@ -123,6 +147,8 @@ public:
 
     /*!
      * \name Internal data
+     *
+     * \warning These functions are for internal implementation of this library.
      */
     //!\{
 

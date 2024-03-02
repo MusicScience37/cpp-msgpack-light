@@ -15,7 +15,7 @@
  */
 /*!
  * \file
- * \brief Definition of classes to support serialization of std::list objects.
+ * \brief Definition of classes to support serialization of std::list instances.
  */
 #pragma once
 
@@ -27,7 +27,7 @@
 namespace msgpack_light::type_support {
 
 /*!
- * \brief Class to serialize std::list objects.
+ * \brief Class to serialize std::list instances.
  *
  * \tparam T Type of elements.
  * \tparam Allocator Type of allocators.

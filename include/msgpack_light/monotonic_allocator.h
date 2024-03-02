@@ -48,7 +48,7 @@ public:
     /*!
      * \brief Copy constructor.
      *
-     * \note This simply initialize this object without any copy.
+     * \note This simply initialize this instance without any copy.
      */
     monotonic_allocator(const monotonic_allocator& /*other*/) noexcept
         : monotonic_allocator() {}
@@ -56,7 +56,7 @@ public:
     /*!
      * \brief Move constructor.
      *
-     * \param[in,out] other Object to move from.
+     * \param[in,out] other Instance to move from.
      */
     monotonic_allocator(monotonic_allocator&& other) noexcept
         : current_buffer_size_(other.current_buffer_size_),
@@ -72,7 +72,7 @@ public:
      *
      * \note This does nothing.
      *
-     * \return This object after copy.
+     * \return This instance after copy.
      */
     monotonic_allocator& operator=(  // NOLINT
         const monotonic_allocator& /*other*/) noexcept {
@@ -82,8 +82,8 @@ public:
     /*!
      * \brief Move assignment operator.
      *
-     * \param[in,out] other Object to move from.
-     * \return This object after move.
+     * \param[in,out] other Instance to move from.
+     * \return This instance after move.
      */
     monotonic_allocator& operator=(monotonic_allocator&& other) noexcept {
         swap(other);
@@ -91,9 +91,9 @@ public:
     }
 
     /*!
-     * \brief Swap with another object.
+     * \brief Swap with another instance.
      *
-     * \param[out] other Another object.
+     * \param[out] other Another instance.
      */
     void swap(monotonic_allocator& other) noexcept {
         std::swap(current_buffer_size_, other.current_buffer_size_);
@@ -260,14 +260,14 @@ private:
 };
 
 /*!
- * \brief Swap two objects.
+ * \brief Swap two instances.
  *
- * \param[in,out] object1 Object.
- * \param[in,out] object2 Object.
+ * \param[in,out] instance1 Instances.
+ * \param[in,out] instance2 Instances.
  */
-inline void swap(msgpack_light::monotonic_allocator& object1,
-    msgpack_light::monotonic_allocator& object2) noexcept {
-    object1.swap(object2);
+inline void swap(msgpack_light::monotonic_allocator& instance1,
+    msgpack_light::monotonic_allocator& instance2) noexcept {
+    instance1.swap(instance2);
 }
 
 }  // namespace msgpack_light

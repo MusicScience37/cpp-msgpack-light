@@ -15,7 +15,7 @@
  */
 /*!
  * \file
- * \brief Definition of classes to support serialization of std::set objects.
+ * \brief Definition of classes to support serialization of std::set instances.
  */
 #pragma once
 
@@ -27,7 +27,7 @@
 namespace msgpack_light::type_support {
 
 /*!
- * \brief Class to serialize std::set objects.
+ * \brief Class to serialize std::set instances.
  *
  * \tparam Key Type of elements.
  * \tparam Compare Type of functions to compare elements.
@@ -39,7 +39,7 @@ struct serialization_traits<std::set<Key, Compare, Allocator>>
           std::set<Key, Compare, Allocator>> {};
 
 /*!
- * \brief Class to serialize std::multiset objects.
+ * \brief Class to serialize std::multiset instances.
  *
  * \tparam Key Type of elements.
  * \tparam Compare Type of functions to compare elements.

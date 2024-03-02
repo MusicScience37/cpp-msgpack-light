@@ -67,7 +67,7 @@ public:
     ~serialization_buffer() noexcept { flush(); }
 
     /*!
-     * \brief Flush the internal buffer in this object.
+     * \brief Flush the internal buffer in this instance.
      *
      * \warning Data may not be written to streams without call of this function
      * or destructor.
@@ -800,7 +800,7 @@ public:
     //!\}
 
 private:
-    //! Object to perform internal processing.
+    //! Instance to perform internal processing.
     details::serialization_buffer_impl buffer_;
 };
 

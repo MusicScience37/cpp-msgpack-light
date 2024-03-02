@@ -35,7 +35,7 @@ Such support can be used by including corresponding headers.
       - Float
       - ``msgpack_light/type_support/common.h``
 
-    - - ``std::nullptr_t`` (``nullptr`` object)
+    - - ``std::nullptr_t`` (``nullptr`` instance)
       - Nil
       - ``msgpack_light/type_support/common.h``
 

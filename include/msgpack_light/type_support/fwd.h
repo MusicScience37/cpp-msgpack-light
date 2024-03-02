@@ -22,9 +22,9 @@
 namespace msgpack_light::type_support {
 
 /*!
- * \brief Class to define functions to serialize objects of various types.
+ * \brief Class to define functions to serialize data of various types.
  *
- * \tparam T Type of the object to serialize.
+ * \tparam T Type of the data to serialize.
  * \tparam SFINAE Template parameter to use for SFINAE.
  *
  * Specializations of this template must implement a function with the following

@@ -15,7 +15,8 @@
  */
 /*!
  * \file
- * \brief Definition of classes to support serialization of std::array objects.
+ * \brief Definition of classes to support serialization of std::array
+ * instances.
  */
 #pragma once
 
@@ -28,10 +29,10 @@
 namespace msgpack_light::type_support {
 
 /*!
- * \brief Class to serialize std::array objects.
+ * \brief Class to serialize std::array instances.
  *
  * \tparam T Type of elements.
- * \tparam N Number of objects
+ * \tparam N Number of elements
  */
 template <typename T, std::size_t N>
 struct serialization_traits<std::array<T, N>>

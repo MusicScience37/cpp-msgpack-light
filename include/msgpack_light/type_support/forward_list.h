@@ -16,7 +16,7 @@
 /*!
  * \file
  * \brief Definition of classes to support serialization of std::forward_list
- * objects.
+ * instances.
  */
 #pragma once
 
@@ -30,7 +30,7 @@
 namespace msgpack_light::type_support {
 
 /*!
- * \brief Class to serialize std::forward_list objects.
+ * \brief Class to serialize std::forward_list instances.
  *
  * \tparam T Type of elements.
  * \tparam Allocator Type of allocators.

@@ -84,38 +84,38 @@ public:
     }
 
     /*!
-     * \brief Allocator unsigned char objects.
+     * \brief Allocator unsigned char instances.
      *
      * \param[in] size Number of elements.
-     * \return Pointer to the allocated unsigned char objects.
+     * \return Pointer to the allocated unsigned char instances.
      */
     [[nodiscard]] unsigned char* allocate_unsigned_char(std::size_t size) {
         return static_cast<unsigned char*>(allocator_.allocate(size, 1U));
     }
 
     /*!
-     * \brief Deallocate unsigned char objects.
+     * \brief Deallocate unsigned char instances.
      *
-     * \param[in] ptr Pointer to the unsigned char objects.
+     * \param[in] ptr Pointer to the unsigned char instances.
      */
     void deallocate_unsigned_char(unsigned char* ptr) noexcept {
         allocator_.deallocate(ptr);
     }
 
     /*!
-     * \brief Allocator char objects.
+     * \brief Allocator char instances.
      *
      * \param[in] size Number of elements.
-     * \return Pointer to the allocated char objects.
+     * \return Pointer to the allocated char instances.
      */
     [[nodiscard]] char* allocate_char(std::size_t size) {
         return static_cast<char*>(allocator_.allocate(size, 1U));
     }
 
     /*!
-     * \brief Deallocate char objects.
+     * \brief Deallocate char instances.
      *
-     * \param[in] ptr Pointer to the char objects.
+     * \param[in] ptr Pointer to the char instances.
      */
     void deallocate_char(char* ptr) noexcept { allocator_.deallocate(ptr); }
 

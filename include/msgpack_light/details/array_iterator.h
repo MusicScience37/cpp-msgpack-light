@@ -32,6 +32,13 @@ namespace msgpack_light {
  * \brief Class of iterators of arrays to access non-constant objects.
  *
  * \tparam Allocator Type of the allocator.
+ *
+ * \note Instances of this class can be created from
+ * msgpack_light::mutable_array_ref class.
+ *
+ * \warning This class only holds pointers to data in msgpack_light::object
+ * class, do not call functions in this class without msgpack_light::object
+ * instances holding the data.
  */
 template <typename Allocator = standard_allocator>
 class mutable_array_iterator {
@@ -100,6 +107,13 @@ private:
 
 /*!
  * \brief Class of iterators of arrays to access constant objects.
+ *
+ * \note Instances of this class can be created from
+ * msgpack_light::const_array_ref, msgpack_light::mutable_array_ref classes.
+ *
+ * \warning This class only holds pointers to data in msgpack_light::object
+ * class, do not call functions in this class without msgpack_light::object
+ * instances holding the data.
  */
 class const_array_iterator {
 public:

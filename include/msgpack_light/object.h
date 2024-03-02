@@ -51,8 +51,10 @@ public:
     //! Type of the base class.
     using base_type = details::object_base<object<Allocator>, Allocator>;
 
+#ifndef MSGPACK_LIGHT_DOCUMENTATION
     using base_type::clear;
     using typename base_type::allocator_type;
+#endif
 
     /*!
      * \name Initialization and finalization
@@ -70,7 +72,7 @@ public:
     /*!
      * \brief Copy constructor.
      *
-     * \param[in] other Another object to copy from.
+     * \param[in] other Another instance to copy from.
      */
     object(const object& other) : allocator_(other.allocator_) {
         details::copy_object_data(data_, other.data_, allocator_);
@@ -79,7 +81,7 @@ public:
     /*!
      * \brief Move constructor.
      *
-     * \param[in,out] other Another object to move from.
+     * \param[in,out] other Another instance to move from.
      */
     object(object&& other) noexcept
         : data_(other.data_), allocator_(std::move(other.allocator_)) {
@@ -89,8 +91,8 @@ public:
     /*!
      * \brief Copy assignment operator.
      *
-     * \param[in] other Another object to copy from.
-     * \return This object after copy.
+     * \param[in] other Another instance to copy from.
+     * \return This instance after copy.
      */
     object& operator=(const object& other) {
         if (this == &other) {
@@ -104,8 +106,8 @@ public:
     /*!
      * \brief Move assignment operator.
      *
-     * \param[in,out] other Another object to move from.
-     * \return This object after move.
+     * \param[in,out] other Another instance to move from.
+     * \return This instance after move.
      */
     object& operator=(object&& other) noexcept {
         swap(other);
@@ -113,9 +115,9 @@ public:
     }
 
     /*!
-     * \brief Swap this object with another object.
+     * \brief Swap this instance with another instance.
      *
-     * \param[in,out] other Another object to move with.
+     * \param[in,out] other Another instance to move with.
      */
     void swap(object& other) noexcept {
         std::swap(data_, other.data_);
@@ -131,6 +133,8 @@ public:
 
     /*!
      * \name Internal data
+     *
+     * \warning These functions are for internal implementation of this library.
      */
     //!\{
 

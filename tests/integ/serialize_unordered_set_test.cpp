@@ -15,7 +15,7 @@
  */
 /*!
  * \file
- * \brief Test to serialize std::unordered_set objects.
+ * \brief Test to serialize std::unordered_set instances.
  */
 #include <unordered_set>
 
@@ -27,11 +27,11 @@
 #include "msgpack_light/serialize.h"
 #include "msgpack_light/type_support/unordered_set.h"  // IWYU pragma: keep
 
-TEST_CASE("serialize std::unordered_set objects of int") {
+TEST_CASE("serialize std::unordered_set instances of int") {
     using msgpack_light::binary;
     using msgpack_light::serialize;
 
-    SECTION("serialize sample std::unordered_set objects") {
+    SECTION("serialize sample std::unordered_set instances") {
         const std::unordered_set<int> value =
             GENERATE(std::unordered_set<int>(), std::unordered_set<int>{0x2A},
                 std::unordered_set<int>{0x2A, 0x3B},
@@ -47,11 +47,11 @@ TEST_CASE("serialize std::unordered_set objects of int") {
     }
 }
 
-TEST_CASE("serialize std::unordered_multiset objects of int") {
+TEST_CASE("serialize std::unordered_multiset instances of int") {
     using msgpack_light::binary;
     using msgpack_light::serialize;
 
-    SECTION("serialize sample std::unordered_multiset objects") {
+    SECTION("serialize sample std::unordered_multiset instances") {
         const std::unordered_multiset<int> value = GENERATE(
             std::unordered_multiset<int>(), std::unordered_multiset<int>{0x2A},
             std::unordered_multiset<int>{0x2A, 0x3B},

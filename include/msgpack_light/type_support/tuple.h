@@ -15,7 +15,8 @@
  */
 /*!
  * \file
- * \brief Definition of classes to support serialization of std::tuple objects.
+ * \brief Definition of classes to support serialization of std::tuple
+ * instances.
  */
 #pragma once
 
@@ -28,7 +29,7 @@
 namespace msgpack_light::type_support {
 
 /*!
- * \brief Class to serialize std::tuple objects.
+ * \brief Class to serialize std::tuple instances.
  *
  * \tparam T Types in the tuple.
  */

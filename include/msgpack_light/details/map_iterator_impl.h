@@ -42,10 +42,10 @@ mutable_map_iterator<Allocator>::operator*() const noexcept {
  * \brief Compare two iterators.
  *
  * \tparam Allocator Type of the allocator.
- * \param[in] lhs Light-hand-side object.
- * \param[in] rhs Right-hand-side object.
- * \retval true Two objects are equal.
- * \retval false Two objects are not equal.
+ * \param[in] lhs Light-hand-side instance.
+ * \param[in] rhs Right-hand-side instance.
+ * \retval true Two instances are equal.
+ * \retval false Two instances are not equal.
  */
 template <typename Allocator>
 [[nodiscard]] inline bool operator==(mutable_map_iterator<Allocator> lhs,
@@ -57,10 +57,10 @@ template <typename Allocator>
  * \brief Compare two iterators.
  *
  * \tparam Allocator Type of the allocator.
- * \param[in] lhs Light-hand-side object.
- * \param[in] rhs Right-hand-side object.
- * \retval true Two objects are not equal.
- * \retval false Two objects are equal.
+ * \param[in] lhs Light-hand-side instance.
+ * \param[in] rhs Right-hand-side instance.
+ * \retval true Two instances are not equal.
+ * \retval false Two instances are equal.
  */
 template <typename Allocator>
 [[nodiscard]] inline bool operator!=(mutable_map_iterator<Allocator> lhs,
@@ -80,10 +80,10 @@ const_map_iterator::operator*() const noexcept {
 /*!
  * \brief Compare two iterators.
  *
- * \param[in] lhs Light-hand-side object.
- * \param[in] rhs Right-hand-side object.
- * \retval true Two objects are equal.
- * \retval false Two objects are not equal.
+ * \param[in] lhs Light-hand-side instance.
+ * \param[in] rhs Right-hand-side instance.
+ * \retval true Two instances are equal.
+ * \retval false Two instances are not equal.
  */
 [[nodiscard]] inline bool operator==(
     const_map_iterator lhs, const_map_iterator rhs) noexcept {
@@ -93,10 +93,10 @@ const_map_iterator::operator*() const noexcept {
 /*!
  * \brief Compare two iterators.
  *
- * \param[in] lhs Light-hand-side object.
- * \param[in] rhs Right-hand-side object.
- * \retval true Two objects are not equal.
- * \retval false Two objects are equal.
+ * \param[in] lhs Light-hand-side instance.
+ * \param[in] rhs Right-hand-side instance.
+ * \retval true Two instances are not equal.
+ * \retval false Two instances are equal.
  */
 [[nodiscard]] inline bool operator!=(
     const_map_iterator lhs, const_map_iterator rhs) noexcept {

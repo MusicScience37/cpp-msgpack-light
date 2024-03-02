@@ -15,7 +15,7 @@
  */
 /*!
  * \file
- * \brief Test of classes to support serialization of std::deque objects.
+ * \brief Test of classes to support serialization of std::deque instances.
  */
 #include "msgpack_light/type_support/deque.h"
 

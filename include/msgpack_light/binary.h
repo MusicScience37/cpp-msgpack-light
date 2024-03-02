@@ -329,11 +329,11 @@ public:
     }
 
     /*!
-     * \brief Compare with another object.
+     * \brief Compare with another instance.
      *
-     * \param[in] other Another object.
-     * \retval true Two object are equal.
-     * \retval false Two object are not equal.
+     * \param[in] other Another instance.
+     * \retval true Two instances are equal.
+     * \retval false Two instances are not equal.
      */
     [[nodiscard]] bool operator==(const binary& other) const noexcept {
         return size_ == other.size_ &&
@@ -341,11 +341,11 @@ public:
     }
 
     /*!
-     * \brief Compare with another object.
+     * \brief Compare with another instance.
      *
-     * \param[in] other Another object.
-     * \retval true Two object are not equal.
-     * \retval false Two object are equal.
+     * \param[in] other Another instance.
+     * \retval true Two instances are not equal.
+     * \retval false Two instances are equal.
      */
     [[nodiscard]] bool operator!=(const binary& other) const noexcept {
         return !operator==(other);
@@ -378,8 +378,8 @@ inline binary_view::binary_view(const binary& data) noexcept
  *
  * \param[in] lhs Light-hand-side data.
  * \param[in] rhs Right-hand-side data.
- * \retval true Two object are equal.
- * \retval false Two object are not equal.
+ * \retval true Two instances are equal.
+ * \retval false Two instances are not equal.
  */
 [[nodiscard]] inline bool operator==(binary_view lhs, binary_view rhs) {
     return lhs.size() == rhs.size() &&
@@ -391,8 +391,8 @@ inline binary_view::binary_view(const binary& data) noexcept
  *
  * \param[in] lhs Light-hand-side data.
  * \param[in] rhs Right-hand-side data.
- * \retval true Two object are not equal.
- * \retval false Two object are equal.
+ * \retval true Two instances are not equal.
+ * \retval false Two instances are equal.
  */
 [[nodiscard]] inline bool operator!=(binary_view lhs, binary_view rhs) {
     return !(lhs == rhs);

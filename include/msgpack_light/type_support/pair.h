@@ -15,7 +15,7 @@
  */
 /*!
  * \file
- * \brief Definition of classes to support serialization of std::pair objects.
+ * \brief Definition of classes to support serialization of std::pair instances.
  */
 #pragma once
 
@@ -28,7 +28,7 @@
 namespace msgpack_light::type_support {
 
 /*!
- * \brief Class to serialize std::pair objects.
+ * \brief Class to serialize std::pair instances.
  *
  * \tparam T1 First type.
  * \tparam T2 Second type.

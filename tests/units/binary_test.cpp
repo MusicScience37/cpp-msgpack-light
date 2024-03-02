@@ -399,7 +399,7 @@ TEST_CASE("msgpack_light::binary_view") {
         CHECK(binary(view.data(), view.size()) == data);
     }
 
-    SECTION("create a view with binary object") {
+    SECTION("create a view with binary instance") {
         const auto data = binary("A1B2C3");
 
         const binary_view view = data;
@@ -407,7 +407,7 @@ TEST_CASE("msgpack_light::binary_view") {
         CHECK(binary(view.data(), view.size()) == data);
     }
 
-    SECTION("cast to binary object") {
+    SECTION("cast to binary instance") {
         const auto data = binary("A1B2C3");
         const binary_view view = data;
 

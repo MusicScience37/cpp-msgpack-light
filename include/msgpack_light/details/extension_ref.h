@@ -28,6 +28,14 @@ namespace msgpack_light {
 
 /*!
  * \brief Class to access constant extension value.
+ *
+ * \note Instances of this class can be created from
+ * msgpack_light::object, msgpack_light::const_object_ref,
+ * msgpack_light::mutable_object_ref classes.
+ *
+ * \warning This class only holds pointers to data in msgpack_light::object
+ * class, do not call functions in this class without msgpack_light::object
+ * instances holding the data.
  */
 class const_extension_ref {
 public:

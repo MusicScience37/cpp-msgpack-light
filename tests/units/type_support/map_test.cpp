@@ -15,7 +15,7 @@
  */
 /*!
  * \file
- * \brief Test of classes to support serialization of std::map objects.
+ * \brief Test of classes to support serialization of std::map instances.
  */
 #include "msgpack_light/type_support/map.h"
 

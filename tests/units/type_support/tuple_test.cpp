@@ -15,7 +15,7 @@
  */
 /*!
  * \file
- * \brief Test of classes to support serialization of std::tuple objects.
+ * \brief Test of classes to support serialization of std::tuple instances.
  */
 #include "msgpack_light/type_support/tuple.h"
 

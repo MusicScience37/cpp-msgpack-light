@@ -16,7 +16,7 @@
 /*!
  * \file
  * \brief Definition of classes to support serialization of std::unordered_map
- * objects.
+ * instances.
  */
 #pragma once
 
@@ -28,7 +28,7 @@
 namespace msgpack_light::type_support {
 
 /*!
- * \brief Class to serialize std::unordered_map objects.
+ * \brief Class to serialize std::unordered_map instances.
  *
  * \tparam Key Type of elements.
  * \tparam Value Type of unordered_mapped values.
@@ -44,7 +44,7 @@ struct serialization_traits<
           std::unordered_map<Key, Value, Hash, KeyEqual, Allocator>> {};
 
 /*!
- * \brief Class to serialize std::unordered_multimap objects.
+ * \brief Class to serialize std::unordered_multimap instances.
  *
  * \tparam Key Type of elements.
  * \tparam Value Type of unordered_mapped values.

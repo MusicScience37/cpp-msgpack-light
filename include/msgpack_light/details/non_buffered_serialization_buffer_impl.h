@@ -60,7 +60,7 @@ public:
     ~non_buffered_serialization_buffer_impl() noexcept { flush(); }
 
     /*!
-     * \brief Flush the internal buffer in this object.
+     * \brief Flush the internal buffer in this instance.
      */
     void flush() {
         // No operation.

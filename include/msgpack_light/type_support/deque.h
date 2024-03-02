@@ -15,7 +15,8 @@
  */
 /*!
  * \file
- * \brief Definition of classes to support serialization of std::deque objects.
+ * \brief Definition of classes to support serialization of std::deque
+ * instances.
  */
 #pragma once
 
@@ -27,7 +28,7 @@
 namespace msgpack_light::type_support {
 
 /*!
- * \brief Class to serialize std::deque objects.
+ * \brief Class to serialize std::deque instances.
  *
  * \tparam T Type of elements.
  * \tparam Allocator Type of allocators.

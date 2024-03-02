@@ -40,6 +40,9 @@ namespace msgpack_light::details {
  * \brief Base class of objects in MessagePack.
  *
  * \tparam Derived Type of the derived class.
+ *
+ * \warning This class cannot be instantiated directly. Instantiate
+ * msgpack_light::object classes.
  */
 template <typename Derived>
 class const_object_base {
@@ -184,6 +187,8 @@ public:
 
     /*!
      * \name Internal data
+     *
+     * \warning These functions are for internal implementation of this library.
      */
     //!\{
 
@@ -214,6 +219,9 @@ protected:
  *
  * \tparam Derived Type of the derived class.
  * \tparam Allocator Type of the allocator.
+ *
+ * \warning This class cannot be instantiated directly. Instantiate
+ * msgpack_light::object classes.
  */
 template <typename Derived, typename Allocator>
 class object_base : public const_object_base<Derived> {
@@ -366,12 +374,13 @@ public:
 
     //!\}
 
+    using const_object_base<Derived>::as_array;
+    using const_object_base<Derived>::as_map;
+
     /*!
      * \name Access to data
      */
     //!\{
-
-    using const_object_base<Derived>::as_array;
 
     /*!
      * \brief Get data as an array.
@@ -385,8 +394,6 @@ public:
         return mutable_array_ref<Allocator>(
             data().data.array_value, allocator());
     }
-
-    using const_object_base<Derived>::as_map;
 
     /*!
      * \brief Get data as a map.
@@ -404,6 +411,8 @@ public:
 
     /*!
      * \name Internal data
+     *
+     * \warning These functions are for internal implementation of this library.
      */
     //!\{
 

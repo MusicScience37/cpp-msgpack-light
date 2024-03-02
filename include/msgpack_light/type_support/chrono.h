@@ -29,7 +29,7 @@
 namespace msgpack_light::type_support {
 
 /*!
- * \brief Class to serialize std::time_point objects.
+ * \brief Class to serialize std::time_point instances.
  *
  * \tparam Duration Type of the duration in std::time_point class.
  */

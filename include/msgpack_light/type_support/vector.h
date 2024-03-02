@@ -28,7 +28,7 @@
 namespace msgpack_light::type_support {
 
 /*!
- * \brief Class to serialize std::vector objects.
+ * \brief Class to serialize std::vector instances.
  *
  * \tparam T Type of elements.
  * \tparam Allocator Type of allocators.
@@ -39,7 +39,8 @@ struct serialization_traits<std::vector<T, Allocator>>
           std::vector<T, Allocator>> {};
 
 /*!
- * \brief Class to serialize std::vector objects with `unsigned char` elements.
+ * \brief Class to serialize std::vector instances with `unsigned char`
+ * elements.
  *
  * \tparam Allocator Type of allocators.
  */

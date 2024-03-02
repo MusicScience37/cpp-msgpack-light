@@ -15,7 +15,7 @@
  */
 /*!
  * \file
- * \brief Test to serialize std::unordered_map objects.
+ * \brief Test to serialize std::unordered_map instances.
  */
 #include <cstddef>
 #include <string>
