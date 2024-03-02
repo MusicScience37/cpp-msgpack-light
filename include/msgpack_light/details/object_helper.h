@@ -98,23 +98,23 @@ inline void copy_object_data(object_data& to, const object_data& from,
         to.data.array_value.data =
             allocator.allocate_object_data(from.data.array_value.size);
         to.data.array_value.size = from.data.array_value.size;
+        to.type = object_data_type::array;
         for (std::size_t i = 0; i < from.data.array_value.size; ++i) {
             copy_object_data(to.data.array_value.data[i],
                 from.data.array_value.data[i], allocator);
         }
-        to.type = object_data_type::array;
         break;
     case object_data_type::map:
         to.data.map_value.data =
             allocator.allocate_key_value_pair_data(from.data.map_value.size);
         to.data.map_value.size = from.data.map_value.size;
+        to.type = object_data_type::map;
         for (std::size_t i = 0; i < from.data.map_value.size; ++i) {
             copy_object_data(to.data.map_value.data[i].key,
                 from.data.map_value.data[i].key, allocator);
             copy_object_data(to.data.map_value.data[i].value,
                 from.data.map_value.data[i].value, allocator);
         }
-        to.type = object_data_type::map;
         break;
     case object_data_type::extension:
         to.data.extension_value.data =
