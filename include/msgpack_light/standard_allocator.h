@@ -49,26 +49,6 @@ public:
     }
 
     /*!
-     * \brief Reallocate memory.
-     *
-     * \param[in] ptr Current pointer to the memory.
-     * \param[in] new_size New size to allocate.
-     * \return Pointer to the allocated memory.
-     */
-    [[nodiscard]] void* reallocate(  // NOLINT
-        void* ptr, std::size_t new_size, std::size_t /*alignment*/) {
-        if (new_size == 0U) {
-            new_size = 1U;
-        }
-        void* new_ptr = std::realloc(ptr, new_size);
-        if (new_ptr == nullptr) {
-            deallocate(ptr);
-            throw std::bad_alloc();
-        }
-        return new_ptr;
-    }
-
-    /*!
      * \brief Deallocate memory.
      *
      * \param[in] ptr Pointer to the deallocated memory.
