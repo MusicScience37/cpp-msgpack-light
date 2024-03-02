@@ -21,9 +21,7 @@
 
 #include <algorithm>
 #include <cassert>
-#include <cstddef>
 #include <cstdlib>
-#include <limits>
 #include <memory>
 #include <new>
 #include <utility>
