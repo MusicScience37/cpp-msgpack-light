@@ -36,7 +36,7 @@ namespace msgpack_light::details {
  */
 template <typename Allocator>
 inline void clear_object_data(
-    object_data& data, allocator_wrapper<Allocator>& allocator) {
+    object_data& data, allocator_wrapper<Allocator>& allocator) noexcept {
     switch (data.type) {
     case object_data_type::string:
         allocator.deallocate_char(data.data.string_value.data);
