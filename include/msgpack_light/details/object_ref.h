@@ -44,11 +44,12 @@ namespace msgpack_light {
  */
 template <typename Allocator>
 class mutable_object_ref
-    : public details::object_base<mutable_object_ref<Allocator>, Allocator> {
+    : public details::mutable_object_base<mutable_object_ref<Allocator>,
+          Allocator> {
 public:
     //! Type of the base class.
     using base_type =
-        details::object_base<mutable_object_ref<Allocator>, Allocator>;
+        details::mutable_object_base<mutable_object_ref<Allocator>, Allocator>;
 
     using typename base_type::allocator_type;
 

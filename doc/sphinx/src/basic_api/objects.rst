@@ -15,7 +15,7 @@ Contents
 
   - :cpp:enum:`msgpack_light::object_data_type`
   - :cpp:class:`msgpack_light::details::const_object_base`
-  - :cpp:class:`msgpack_light::details::object_base`
+  - :cpp:class:`msgpack_light::details::mutable_object_base`
   - :cpp:class:`msgpack_light::const_object_ref`
   - :cpp:class:`msgpack_light::mutable_object_ref`
   - :cpp:class:`msgpack_light::const_array_ref`
@@ -41,7 +41,7 @@ Reference
 
 .. doxygenclass:: msgpack_light::details::const_object_base
 
-.. doxygenclass:: msgpack_light::details::object_base
+.. doxygenclass:: msgpack_light::details::mutable_object_base
 
 .. doxygenclass:: msgpack_light::const_object_ref
 

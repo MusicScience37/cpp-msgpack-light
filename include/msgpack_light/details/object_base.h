@@ -37,7 +37,7 @@
 namespace msgpack_light::details {
 
 /*!
- * \brief Base class of objects in MessagePack.
+ * \brief Base class of constant objects in MessagePack.
  *
  * \tparam Derived Type of the derived class.
  *
@@ -215,7 +215,7 @@ protected:
 };
 
 /*!
- * \brief Base class of objects in MessagePack.
+ * \brief Base class of non-constant objects in MessagePack.
  *
  * \tparam Derived Type of the derived class.
  * \tparam Allocator Type of the allocator.
@@ -224,7 +224,7 @@ protected:
  * msgpack_light::object classes.
  */
 template <typename Derived, typename Allocator>
-class object_base : public const_object_base<Derived> {
+class mutable_object_base : public const_object_base<Derived> {
 public:
     //! Type of the allocator.
     using allocator_type = Allocator;

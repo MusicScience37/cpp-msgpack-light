@@ -46,10 +46,12 @@ namespace msgpack_light {
  * \tparam Allocator Type of the allocator.
  */
 template <typename Allocator = standard_allocator>
-class object : public details::object_base<object<Allocator>, Allocator> {
+class object
+    : public details::mutable_object_base<object<Allocator>, Allocator> {
 public:
     //! Type of the base class.
-    using base_type = details::object_base<object<Allocator>, Allocator>;
+    using base_type =
+        details::mutable_object_base<object<Allocator>, Allocator>;
 
 #ifndef MSGPACK_LIGHT_DOCUMENTATION
     using base_type::clear;
