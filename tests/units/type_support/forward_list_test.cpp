@@ -15,7 +15,8 @@
  */
 /*!
  * \file
- * \brief Test of classes to support serialization of std::forward_list objects.
+ * \brief Test of classes to support serialization of std::forward_list
+ * instances.
  */
 #include "msgpack_light/type_support/forward_list.h"
 

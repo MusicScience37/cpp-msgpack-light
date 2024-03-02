@@ -16,7 +16,7 @@
 /*!
  * \file
  * \brief Definition of classes to support serialization of std::unordered_set
- * objects.
+ * instances.
  */
 #pragma once
 
@@ -28,7 +28,7 @@
 namespace msgpack_light::type_support {
 
 /*!
- * \brief Class to serialize std::unordered_set objects.
+ * \brief Class to serialize std::unordered_set instances.
  *
  * \tparam Key Type of elements.
  * \tparam Hash Type of the hash function.
@@ -41,7 +41,7 @@ struct serialization_traits<std::unordered_set<Key, Hash, KeyEqual, Allocator>>
           std::unordered_set<Key, Hash, KeyEqual, Allocator>> {};
 
 /*!
- * \brief Class to serialize std::unordered_multiset objects.
+ * \brief Class to serialize std::unordered_multiset instances.
  *
  * \tparam Key Type of elements.
  * \tparam Hash Type of the hash function.

@@ -15,7 +15,7 @@
  */
 /*!
  * \file
- * \brief Test of classes to support serialization of std::array objects.
+ * \brief Test of classes to support serialization of std::array instances.
  */
 #include "msgpack_light/type_support/array.h"
 

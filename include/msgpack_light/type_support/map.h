@@ -15,7 +15,7 @@
  */
 /*!
  * \file
- * \brief Definition of classes to support serialization of std::map objects.
+ * \brief Definition of classes to support serialization of std::map instances.
  */
 #pragma once
 
@@ -27,7 +27,7 @@
 namespace msgpack_light::type_support {
 
 /*!
- * \brief Class to serialize std::map objects.
+ * \brief Class to serialize std::map instances.
  *
  * \tparam Key Type of elements.
  * \tparam Value Type of mapped values.
@@ -40,7 +40,7 @@ struct serialization_traits<std::map<Key, Value, Compare, Allocator>>
           std::map<Key, Value, Compare, Allocator>> {};
 
 /*!
- * \brief Class to serialize std::multimap objects.
+ * \brief Class to serialize std::multimap instances.
  *
  * \tparam Key Type of elements.
  * \tparam Value Type of mapped values.

@@ -15,7 +15,7 @@
  */
 /*!
  * \file
- * \brief Test to serialize std::chrono::time_point objects.
+ * \brief Test to serialize std::chrono::time_point instances.
  */
 #include <chrono>
 
@@ -26,7 +26,7 @@
 #include "msgpack_light/serialize.h"
 #include "msgpack_light/type_support/chrono.h"  // IWYU pragma: keep
 
-TEST_CASE("serialize std::chrono::system_clock::time_point objects") {
+TEST_CASE("serialize std::chrono::system_clock::time_point instances") {
     using msgpack_light::binary;
     using msgpack_light::serialize;
 

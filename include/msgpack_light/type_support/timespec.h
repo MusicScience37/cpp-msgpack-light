@@ -16,7 +16,7 @@
 /*!
  * \file
  * \brief Definition of classes to support serialization of std::timespec
- * objects.
+ * instances.
  */
 #pragma once
 
@@ -29,7 +29,7 @@
 namespace msgpack_light::type_support {
 
 /*!
- * \brief Class to serialize std::timespec objects.
+ * \brief Class to serialize std::timespec instances.
  */
 template <>
 struct serialization_traits<std::timespec> {

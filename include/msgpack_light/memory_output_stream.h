@@ -69,9 +69,9 @@ public:
     [[nodiscard]] std::size_t size() const noexcept { return buffer_.size(); }
 
     /*!
-     * \brief Get the data as msgpack_light::binary object.
+     * \brief Get the data as msgpack_light::binary instance.
      *
-     * \return binary object.
+     * \return Data.
      */
     [[nodiscard]] const binary& as_binary() const { return buffer_; }
 

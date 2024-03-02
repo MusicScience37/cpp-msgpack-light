@@ -15,7 +15,7 @@
  */
 /*!
  * \file
- * \brief Test of classes to support serialization of std::list objects.
+ * \brief Test of classes to support serialization of std::list instances.
  */
 #include "msgpack_light/type_support/list.h"
 

@@ -16,7 +16,7 @@
 /*!
  * \file
  * \brief Test of classes to support serialization of std::timespec
- * objects.
+ * instances.
  */
 #include "msgpack_light/type_support/timespec.h"
 

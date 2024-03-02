@@ -15,7 +15,7 @@
  */
 /*!
  * \file
- * \brief Test to serialize std::timespec objects.
+ * \brief Test to serialize std::timespec instances.
  */
 #include <ctime>
 
@@ -26,7 +26,7 @@
 #include "msgpack_light/serialize.h"
 #include "msgpack_light/type_support/timespec.h"  // IWYU pragma: keep
 
-TEST_CASE("serialize std::timespec objects") {
+TEST_CASE("serialize std::timespec instances") {
     using msgpack_light::binary;
     using msgpack_light::serialize;
 

@@ -62,7 +62,7 @@ public:
     ~buffered_serialization_buffer_impl() noexcept { flush(); }
 
     /*!
-     * \brief Flush the internal buffer in this object.
+     * \brief Flush the internal buffer in this instance.
      */
     void flush() {
         stream_.write(buffer_.data(), current_position_in_buffer_);
@@ -76,6 +76,10 @@ public:
      * \param[in] size Size of the data.
      */
     void write(const unsigned char* data, std::size_t size) {
+        if (size == 0U) {
+            return;
+        }
+
         if (buffer_size - current_position_in_buffer_ < size) {
             flush();
             if (buffer_size < size) {

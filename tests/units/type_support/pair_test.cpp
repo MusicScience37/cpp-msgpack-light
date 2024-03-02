@@ -15,7 +15,7 @@
  */
 /*!
  * \file
- * \brief Test of classes to support serialization of std::pair objects.
+ * \brief Test of classes to support serialization of std::pair instances.
  */
 #include "msgpack_light/type_support/pair.h"
 

@@ -15,7 +15,7 @@
  */
 /*!
  * \file
- * \brief Test of classes to support serialization of std::set objects.
+ * \brief Test of classes to support serialization of std::set instances.
  */
 #include "msgpack_light/type_support/set.h"
 

@@ -5,10 +5,13 @@ Contents
 --------------
 
 - :cpp:class:`msgpack_light::binary`
+- :cpp:class:`msgpack_light::binary_view`
 
-  - Class of binary data.
+  - Classes of binary data.
 
 Reference
 ----------------
 
 .. doxygenclass:: msgpack_light::binary
+
+.. doxygenclass:: msgpack_light::binary_view

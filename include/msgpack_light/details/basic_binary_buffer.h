@@ -54,47 +54,46 @@ public:
     /*!
      * \brief Copy constructor.
      *
-     * \param[in] object Object to copy from.
+     * \param[in] other Instance to copy from.
      */
-    basic_binary_buffer(const basic_binary_buffer& object)
-        : basic_binary_buffer(object.size()) {
-        std::memcpy(buffer_, object.buffer_, object.size_);
+    basic_binary_buffer(const basic_binary_buffer& other)
+        : basic_binary_buffer(other.size()) {
+        std::memcpy(buffer_, other.buffer_, other.size_);
     }
 
     /*!
      * \brief Move constructor.
      *
-     * \param[in,out] object Object to move from.
+     * \param[in,out] other Instance to move from.
      */
-    basic_binary_buffer(basic_binary_buffer&& object) noexcept
-        : buffer_(std::exchange(object.buffer_, nullptr)),
-          size_(object.size_) {}
+    basic_binary_buffer(basic_binary_buffer&& other) noexcept
+        : buffer_(std::exchange(other.buffer_, nullptr)), size_(other.size_) {}
 
     /*!
      * \brief Copy assignment operator.
      *
-     * \param[in] object Object to copy from.
-     * \return This object after copy.
+     * \param[in] other Instance to copy from.
+     * \return This instance after copy.
      */
-    basic_binary_buffer& operator=(const basic_binary_buffer& object) {
-        if (this == &object) {
+    basic_binary_buffer& operator=(const basic_binary_buffer& other) {
+        if (this == &other) {
             return *this;
         }
-        if (size_ != object.size_) {
-            resize(object.size());
+        if (size_ != other.size_) {
+            resize(other.size());
         }
-        std::memcpy(buffer_, object.buffer_, object.size_);
+        std::memcpy(buffer_, other.buffer_, other.size_);
         return *this;
     }
 
     /*!
      * \brief Move assignment operator.
      *
-     * \param[in,out] object Object to move from.
-     * \return This object after move.
+     * \param[in,out] other Instance to move from.
+     * \return This instance after move.
      */
-    basic_binary_buffer& operator=(basic_binary_buffer&& object) noexcept {
-        swap(object);
+    basic_binary_buffer& operator=(basic_binary_buffer&& other) noexcept {
+        swap(other);
         return *this;
     }
 
@@ -122,13 +121,13 @@ public:
     }
 
     /*!
-     * \brief Swap with another object.
+     * \brief Swap with another instance.
      *
-     * \param[in,out] object Object to swap with.
+     * \param[in,out] other Instance to swap with.
      */
-    void swap(basic_binary_buffer& object) noexcept {
-        std::swap(buffer_, object.buffer_);
-        std::swap(size_, object.size_);
+    void swap(basic_binary_buffer& other) noexcept {
+        std::swap(buffer_, other.buffer_);
+        std::swap(size_, other.size_);
     }
 
     /*!
@@ -183,17 +182,17 @@ namespace std {
  * \brief Implementation of std::swap for
  * msgpack_light::details::basic_binary_buffer.
  *
- * \param[in,out] object1 An object.
- * \param[in,out] object2 Another object.
+ * \param[in,out] instance1 An instance.
+ * \param[in,out] instance2 Another instance.
  */
 template <>
 inline void
 swap(  // NOLINT(readability-inconsistent-declaration-parameter-name)
     // It's impossible to fix this because different implementation of STL can
     // have different argument names.
-    msgpack_light::details::basic_binary_buffer& object1,
-    msgpack_light::details::basic_binary_buffer& object2) noexcept {
-    object1.swap(object2);
+    msgpack_light::details::basic_binary_buffer& instance1,
+    msgpack_light::details::basic_binary_buffer& instance2) noexcept {
+    instance1.swap(instance2);
 }
 
 }  // namespace std
