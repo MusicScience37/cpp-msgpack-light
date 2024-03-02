@@ -113,7 +113,7 @@ public:
      *
      * \return Value.
      */
-    [[nodiscard]] float as_float64() const {
+    [[nodiscard]] double as_float64() const {
         if (data().type != object_data_type::float64) {
             throw std::runtime_error(
                 "This object is not a 64-bit floating-point number.");

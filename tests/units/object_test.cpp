@@ -180,7 +180,7 @@ TEMPLATE_TEST_CASE("msgpack_light::object", "",
     SECTION("create an object of 32-bit floating-point numbers") {
         object_type obj;
 
-        constexpr float value = 1.25F;
+        constexpr float value = 1.234F;
         obj.set_float32(value);
 
         CHECK(obj.type() == object_data_type::float32);
@@ -213,7 +213,7 @@ TEMPLATE_TEST_CASE("msgpack_light::object", "",
     SECTION("create an object of 64-bit floating-point numbers") {
         object_type obj;
 
-        constexpr double value = 1.25;
+        constexpr double value = 1.234;
         obj.set_float64(value);
 
         CHECK(obj.type() == object_data_type::float64);
