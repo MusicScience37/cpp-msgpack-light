@@ -20,7 +20,7 @@
 #pragma once
 
 #include <cstddef>
-#include <utility>
+#include <utility>  // IWYU pragma: keep
 
 #include "msgpack_light/details/object_data.h"
 

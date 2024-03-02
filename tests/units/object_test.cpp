@@ -20,9 +20,12 @@
 #include "msgpack_light/object.h"
 
 #include <cstdint>
+#include <functional>
 #include <limits>
 #include <string>
+#include <string_view>
 #include <unordered_map>
+#include <utility>
 #include <vector>
 
 #include <catch2/catch_template_test_macros.hpp>
