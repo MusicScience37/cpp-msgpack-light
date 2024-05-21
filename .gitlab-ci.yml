@@ -40,7 +40,7 @@ line count:
 pre-commit:
   stage: test
   needs: []
-  image: musicscience37/clang-ci:clang16
+  image: musicscience37/clang-ci:clang17
   script:
     - mkdir -p .venv
     - poetry config virtualenvs.in-project true
@@ -87,7 +87,7 @@ test release:
     matrix:
       - COMPILER_TYPE: ["gcc10", "gcc12"]
         IMAGE_PATH: "musicscience37/gcc-ci"
-      - COMPILER_TYPE: ["clang15", "clang16"]
+      - COMPILER_TYPE: ["clang16", "clang17"]
         IMAGE_PATH: "musicscience37/clang-ci"
   image: ${IMAGE_PATH}:${COMPILER_TYPE}
   variables:
@@ -147,7 +147,7 @@ test debug:
     matrix:
       - COMPILER_TYPE: ["gcc10", "gcc12"]
         IMAGE_PATH: "musicscience37/gcc-ci"
-      - COMPILER_TYPE: ["clang15", "clang16"]
+      - COMPILER_TYPE: ["clang16", "clang17"]
         IMAGE_PATH: "musicscience37/clang-ci"
   variables:
     BUILD_TYPE: Debug
@@ -170,7 +170,7 @@ static analysis:
   extends: test release
   parallel:
     matrix:
-      - COMPILER_TYPE: "clang16"
+      - COMPILER_TYPE: "clang17"
         IMAGE_PATH: "musicscience37/clang-ci"
   variables:
     BUILD_TYPE: Debug
@@ -204,7 +204,7 @@ clang coverage:
   extends: test release
   parallel:
     matrix:
-      - COMPILER_TYPE: "clang16"
+      - COMPILER_TYPE: "clang17"
         IMAGE_PATH: "musicscience37/clang-ci"
   variables:
     BUILD_TYPE: Debug
@@ -250,7 +250,7 @@ test asan ubsan:
   extends: test release
   parallel:
     matrix:
-      - COMPILER_TYPE: "clang16"
+      - COMPILER_TYPE: "clang17"
         IMAGE_PATH: "musicscience37/clang-ci"
   variables:
     BUILD_TYPE: Debug
@@ -330,7 +330,7 @@ doc:
   extends: test release
   parallel:
     matrix:
-      - COMPILER_TYPE: "clang16"
+      - COMPILER_TYPE: "clang17"
         IMAGE_PATH: "musicscience37/sphinx-doxygen"
   variables:
     BUILD_TYPE: Release
