@@ -53,5 +53,6 @@
   },
   "isort.args": ["--profile", "black"],
   "cSpell.enableFiletypes": ["cmake", "jinja-cpp", "plantuml", "toml"],
-  "cmake.ctest.allowParallelJobs": false
+  "cmake.ctest.allowParallelJobs": false,
+  "restructuredtext.pythonRecommendation.disabled": true
 }
