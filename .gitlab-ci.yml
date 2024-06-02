@@ -12,7 +12,6 @@ variables:
 
 include:
   - template: Dependency-Scanning.gitlab-ci.yml
-  - template: Security/SAST.gitlab-ci.yml
 dependency_scanning:
   needs: []
 sast:
