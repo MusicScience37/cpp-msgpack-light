@@ -19,12 +19,14 @@
  */
 #pragma once
 
+#include <cstdint>
+
 namespace msgpack_light {
 
 /*!
  * \brief Enumeration to specify types of data in objects.
  */
-enum class object_data_type {
+enum class object_data_type : std::uint8_t {
     //! Nil.
     nil,
 

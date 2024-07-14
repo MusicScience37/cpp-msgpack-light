@@ -90,7 +90,7 @@ public:
      * \param[in] values Values.
      */
     template <typename... T>
-    inline void write_in_big_endian(T... values) {
+    void write_in_big_endian(T... values) {
         std::array<unsigned char, total_size_of<T...>> buffer{};
         pack_in_big_endian(
             mutable_static_binary_view<total_size_of<T...>>(buffer.data()),

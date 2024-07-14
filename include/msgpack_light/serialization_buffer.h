@@ -793,7 +793,7 @@ public:
      * \param[in] values Values.
      */
     template <typename... T>
-    inline void write_in_big_endian(T... values) {
+    void write_in_big_endian(T... values) {
         buffer_.write_in_big_endian(values...);
     }
 

@@ -112,7 +112,7 @@ public:
      * \param[in] values Values.
      */
     template <typename... T>
-    inline void write_in_big_endian(T... values) {
+    void write_in_big_endian(T... values) {
         details::pack_in_big_endian(
             prepare_buffer<total_size_of<T...>>(), values...);
         set_buffer_written<total_size_of<T...>>();
@@ -126,8 +126,7 @@ private:
      * \return Buffer.
      */
     template <std::size_t N>
-    [[nodiscard]] inline details::mutable_static_binary_view<N>
-    prepare_buffer() {
+    [[nodiscard]] details::mutable_static_binary_view<N> prepare_buffer() {
         static_assert(N <= buffer_size);
 
         if (buffer_size - current_position_in_buffer_ < N) {
@@ -144,7 +143,7 @@ private:
      * \tparam N Number of bytes.
      */
     template <std::size_t N>
-    inline void set_buffer_written() noexcept {
+    void set_buffer_written() noexcept {
         current_position_in_buffer_ += N;
     }
 
