@@ -46,13 +46,13 @@ This library can be installed via vcpkg using following configurations:
     "default-registry": {
       "kind": "git",
       "repository": "https://github.com/Microsoft/vcpkg",
-      "baseline": "13bde2ff13192e1b2fdd37bd9b475c7665ae6ae5"
+      "baseline": "7aeffc91033ad35cc4e2c152f213a866ec6c11ac"
     },
     "registries": [
       {
         "kind": "git",
         "repository": "https://gitlab.com/MusicScience37Projects/vcpkg-registry",
-        "baseline": "60b09d7b836e5a731d864a7227d68901ec8f3071",
+        "baseline": "bd7d4ded3e5312cc66f16bc729317ec64fa4e613",
         "packages": ["cpp-msgpack-light"]
       }
     ]
@@ -80,7 +80,7 @@ A development environment including dependencies can be created using
 To build this repository,
 you will require following dependencies:
 
-- [Python](https://www.python.org/) 3.11
+- [Python](https://www.python.org/) 3.12
   - You may want to use [pyenv](https://github.com/pyenv/pyenv).
 - [poetry](https://python-poetry.org/)
   - Required Python packages can be installed using poetry.
@@ -94,8 +94,8 @@ you will require following dependencies:
   - Following compilers are tested in CI:
     - GCC 10
     - GCC 12
-    - Clang 15
     - Clang 16
+    - Clang 18
     - MSVC 19
 
 Additionally, you will require following dependencies

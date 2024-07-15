@@ -45,9 +45,8 @@ public:
      */
     static void serialize(serialization_buffer& buffer, const T& value) {
         buffer.serialize_str_size(value.size());
-        buffer.write(static_cast<const unsigned char*>(
-                         static_cast<const void*>(value.data())),
-            value.size());
+        buffer.write(
+            reinterpret_cast<const unsigned char*>(value.data()), value.size());
     }
 };
 
