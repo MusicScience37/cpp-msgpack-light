@@ -6,7 +6,7 @@ A light library to serialize MessagePack.
 Developed at
 `https://gitlab.com/MusicScience37Projects/utility-libraries/cpp-msgpack-light <https://gitlab.com/MusicScience37Projects/utility-libraries/cpp-msgpack-light>`_.
 
-API reference can be viewed `here <api/index.html>`_.
+Full API reference can be viewed `here <api/index.html>`_.
 
 .. toctree::
     :maxdepth: 1
