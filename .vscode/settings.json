@@ -51,6 +51,9 @@
       "source.organizeImports": "explicit"
     }
   },
+  "[css]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
   "isort.args": ["--profile", "black"],
   "cSpell.enableFiletypes": ["cmake", "jinja-cpp", "plantuml", "toml"],
   "cmake.ctest.allowParallelJobs": false,
