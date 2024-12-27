@@ -27,6 +27,7 @@ Checks: >
     -bugprone-easily-swappable-parameters,
     -bugprone-unchecked-optional-access,
     -bugprone-multi-level-implicit-pointer-conversion,
+    -bugprone-crtp-constructor-accessibility,
   concurrency-*,
   boost-*,
   openmp-*,
@@ -45,6 +46,7 @@ Checks: >
 # - hicpp-no-malloc generates many false positives in implementation of containers in this library.
 # - readability-redundant-member-init prevents specifying use of default initializer.
 # - bugprone-multi-level-implicit-pointer-conversion prevents implementation of allocators.
+# - bugprone-crtp-constructor-accessibility causes compile errors.
 
 CheckOptions:
   # Naming Conventions
