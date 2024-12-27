@@ -212,6 +212,9 @@ protected:
     [[nodiscard]] const Derived& derived() const noexcept {
         return *static_cast<const Derived*>(this);
     }
+
+    //! Constructor.
+    const_object_base() = default;
 };
 
 /*!
@@ -446,6 +449,9 @@ public:
     //!\}
 
 protected:
+    //! Constructor.
+    mutable_object_base() = default;
+
     /*!
      * \brief Access the derived class.
      *
