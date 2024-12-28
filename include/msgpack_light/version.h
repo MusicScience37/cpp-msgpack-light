@@ -23,7 +23,7 @@
 #define MSGPACK_LIGHT_VERSION_MAJOR 0
 
 //! Minor version of this project.
-#define MSGPACK_LIGHT_VERSION_MINOR 2
+#define MSGPACK_LIGHT_VERSION_MINOR 3
 
 //! Patch version of this project.
 #define MSGPACK_LIGHT_VERSION_PATCH 0
