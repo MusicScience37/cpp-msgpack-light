@@ -44,11 +44,11 @@ line count:
 pre-commit:
   stage: test
   needs: []
-  image: musicscience37/clang-ci:clang19
+  image: musicscience37/clang-ci:clang20
   script:
     - mkdir -p .venv
     - poetry config virtualenvs.in-project true
-    - poetry env use 3.12
+    - poetry env use 3.13
     - poetry install
     - poetry run pre-commit run --all-files
   cache:
@@ -91,7 +91,7 @@ test release:
     matrix:
       - COMPILER_TYPE: ["gcc12", "gcc13"]
         IMAGE_PATH: "musicscience37/gcc-ci"
-      - COMPILER_TYPE: ["clang18", "clang19"]
+      - COMPILER_TYPE: ["clang18", "clang20"]
         IMAGE_PATH: "musicscience37/clang-ci"
   image: ${IMAGE_PATH}:${COMPILER_TYPE}
   variables:
@@ -103,7 +103,7 @@ test release:
     VCPKG_DEFAULT_BINARY_CACHE: ${CI_PROJECT_DIR}/.vcpkg-cache
   before_script:
     - poetry config virtualenvs.in-project true
-    - poetry env use 3.12
+    - poetry env use 3.13
     - poetry install
     - apt-get update
     - apt-get install -y --no-install-recommends curl zip unzip tar
@@ -151,7 +151,7 @@ test debug:
     matrix:
       - COMPILER_TYPE: ["gcc12", "gcc13"]
         IMAGE_PATH: "musicscience37/gcc-ci"
-      - COMPILER_TYPE: ["clang18", "clang19"]
+      - COMPILER_TYPE: ["clang18", "clang20"]
         IMAGE_PATH: "musicscience37/clang-ci"
   variables:
     BUILD_TYPE: Debug
@@ -174,7 +174,7 @@ static analysis:
   extends: test release
   parallel:
     matrix:
-      - COMPILER_TYPE: "clang19"
+      - COMPILER_TYPE: "clang20"
         IMAGE_PATH: "musicscience37/clang-ci"
   variables:
     BUILD_TYPE: Debug
@@ -208,7 +208,7 @@ clang coverage:
   extends: test release
   parallel:
     matrix:
-      - COMPILER_TYPE: "clang19"
+      - COMPILER_TYPE: "clang20"
         IMAGE_PATH: "musicscience37/clang-ci"
   variables:
     BUILD_TYPE: Debug
@@ -254,7 +254,7 @@ test asan ubsan:
   extends: test release
   parallel:
     matrix:
-      - COMPILER_TYPE: "clang19"
+      - COMPILER_TYPE: "clang20"
         IMAGE_PATH: "musicscience37/clang-ci"
   variables:
     BUILD_TYPE: Debug
@@ -334,7 +334,7 @@ doc:
   extends: test release
   parallel:
     matrix:
-      - COMPILER_TYPE: "clang19"
+      - COMPILER_TYPE: "clang20"
         IMAGE_PATH: "musicscience37/sphinx-doxygen"
   variables:
     BUILD_TYPE: Release
