@@ -91,7 +91,7 @@ test release:
     matrix:
       - COMPILER_TYPE: ["gcc12", "gcc13"]
         IMAGE_PATH: "musicscience37/gcc-ci"
-      - COMPILER_TYPE: ["clang18", "clang20"]
+      - COMPILER_TYPE: ["clang18", "clang20", "clang21"]
         IMAGE_PATH: "musicscience37/clang-ci"
   image: ${IMAGE_PATH}:${COMPILER_TYPE}
   variables:
@@ -151,7 +151,7 @@ test debug:
     matrix:
       - COMPILER_TYPE: ["gcc12", "gcc13"]
         IMAGE_PATH: "musicscience37/gcc-ci"
-      - COMPILER_TYPE: ["clang18", "clang20"]
+      - COMPILER_TYPE: ["clang18", "clang20", "clang21"]
         IMAGE_PATH: "musicscience37/clang-ci"
   variables:
     BUILD_TYPE: Debug
@@ -174,7 +174,7 @@ static analysis:
   extends: test release
   parallel:
     matrix:
-      - COMPILER_TYPE: "clang20"
+      - COMPILER_TYPE: "clang21"
         IMAGE_PATH: "musicscience37/clang-ci"
   variables:
     BUILD_TYPE: Debug
@@ -208,7 +208,7 @@ clang coverage:
   extends: test release
   parallel:
     matrix:
-      - COMPILER_TYPE: "clang20"
+      - COMPILER_TYPE: "clang21"
         IMAGE_PATH: "musicscience37/clang-ci"
   variables:
     BUILD_TYPE: Debug
@@ -254,7 +254,7 @@ test asan ubsan:
   extends: test release
   parallel:
     matrix:
-      - COMPILER_TYPE: "clang20"
+      - COMPILER_TYPE: "clang21"
         IMAGE_PATH: "musicscience37/clang-ci"
   variables:
     BUILD_TYPE: Debug
@@ -321,7 +321,7 @@ doc:
   extends: test release
   parallel:
     matrix:
-      - COMPILER_TYPE: "clang20"
+      - COMPILER_TYPE: "clang21"
         IMAGE_PATH: "musicscience37/sphinx-doxygen"
   variables:
     BUILD_TYPE: Release
