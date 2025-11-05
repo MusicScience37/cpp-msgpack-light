@@ -9,12 +9,14 @@ Checks: >
     -google-readability-todo,
   performance-*,
   portability-*,
+    -portability-avoid-pragma-once,
   readability-*,
     readability-identifier-naming,
     -readability-identifier-length,
     -readability-function-cognitive-complexity,
     -readability-suspicious-call-argument,
     -readability-redundant-member-init,
+    -readability-use-concise-preprocessor-directives,
   modernize-*,
     -modernize-return-braced-init-list,
     -modernize-use-trailing-return-type,
@@ -47,6 +49,8 @@ Checks: >
 # - readability-redundant-member-init prevents specifying use of default initializer.
 # - bugprone-multi-level-implicit-pointer-conversion prevents implementation of allocators.
 # - bugprone-crtp-constructor-accessibility causes compile errors.
+# - portability-avoid-pragma-once is disabled because this project supports only ordinary development environments.
+# - readability-use-concise-preprocessor-directives is postponed.
 
 CheckOptions:
   # Naming Conventions
