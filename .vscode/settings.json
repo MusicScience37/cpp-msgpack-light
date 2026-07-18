@@ -57,5 +57,7 @@
   "isort.args": ["--profile", "black"],
   "cSpell.enableFiletypes": ["cmake", "jinja-cpp", "plantuml", "toml"],
   "cmake.ctest.allowParallelJobs": false,
-  "restructuredtext.pythonRecommendation.disabled": true
+  "restructuredtext.pythonRecommendation.disabled": true,
+  "python-envs.defaultEnvManager": "ms-python.python:poetry",
+  "python-envs.defaultPackageManager": "ms-python.python:poetry"
 }
