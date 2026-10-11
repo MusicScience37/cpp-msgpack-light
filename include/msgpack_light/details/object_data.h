@@ -123,7 +123,7 @@ struct object_data {
 
         //! Extension.
         extension_data extension_value;
-    } data{};
+    } data{};  //!< Data.
 
     //! Type of the data.
     object_data_type type{object_data_type::nil};
